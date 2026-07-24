@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#EDE6D3">
+<title>Ideologle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* ===== tokens: color ===== */
+    --paper: #EDE6D3;
+    --paper-alt: #E3DAC0;
+    --card: #F5F0E1;
+    --ink: #2B2A25;
+    --ink-soft: #6B6455;
+    --line: #C9BFA0;
+    --stamp-blue: #35618F;
+    --stamp-blue-bg: #D9E4EC;
+    --stamp-gold: #B8892C;
+    --stamp-brick: #A13D2B;
+    --stamp-brick-bg: #EBD9D3;
+    --moss: #4C7A57;
+    --moss-bg: #DCE9DE;
+
+    /* ===== tokens: shape / space ===== */
+    --radius-tag: 7px;
+    --radius-card: 12px;
+    --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px;
+
+    /* ===== tokens: type ===== */
+    --font-display: 'IBM Plex Mono', ui-monospace, monospace;
+    --font-body: 'Karla', -apple-system, "Segoe UI", sans-serif;
+    --fs-h1: 1.55rem; --fs-body: 1rem; --fs-small: 0.85rem; --fs-tiny: 0.7rem;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-body);
+    background: var(--paper);
+    background-image: repeating-linear-gradient(180deg, rgba(43,42,37,0.035) 0px, rgba(43,42,37,0.035) 1px, transparent 1px, transparent 29px);
+    color: var(--ink);
+  }
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 16px 60px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-display); font-size: var(--fs-tiny); font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+    margin-bottom: var(--sp-1);
+  }
+  h1 {
+    font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 700;
+    letter-spacing: 0.01em; margin: 0 0 var(--sp-1);
+  }
+  h1 .wt { font-size: var(--fs-tiny); font-weight: 500; color: var(--ink-soft); text-transform: none; letter-spacing: normal; }
+  .sub { color: var(--ink-soft); font-size: var(--fs-small); margin-bottom: var(--sp-3); line-height: 1.5; }
+
+  .disclaimer {
+    font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--ink-soft);
+    background: var(--paper-alt); border: 1px dashed var(--line);
+    padding: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-4); border-radius: var(--radius-tag);
+    line-height: 1.6;
+  }
+
+  .rules-p { font-size: var(--fs-small); color: var(--ink-soft); line-height: 1.6; margin: 0 0 var(--sp-4); }
+  .legend-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size: var(--fs-small); color: var(--ink-soft); flex-wrap: wrap; }
+  .stamp-mini {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:44px; height:44px; border-radius:50%; border:2px dashed currentColor;
+    font-family: var(--font-display); font-weight:700; font-size:0.6rem; flex-shrink:0;
+  }
+  #startBtn { width:100%; padding:13px; font-size:0.9rem; margin-top: var(--sp-2); }
+
+  .fiction-badge {
+    display: inline-flex; align-items:center; gap:5px;
+    font-family: var(--font-display); font-size: var(--fs-tiny); font-weight:700;
+    letter-spacing:0.06em; text-transform:uppercase;
+    padding: 3px 8px; border-radius: var(--radius-tag);
+    border-style: dashed; border-width: 1px; margin: 2px 0 8px;
+  }
+  .fiction-badge.hit { border-color: var(--moss); background: var(--moss-bg); color: var(--moss); }
+  .fiction-badge.miss { border-color: var(--stamp-brick); background: var(--stamp-brick-bg); color: var(--stamp-brick); }
+
+  .reference { border: 1px dashed var(--line); background: var(--paper-alt); border-radius: var(--radius-tag); margin: 0 0 var(--sp-4); overflow: hidden; }
+  .reference summary {
+    list-style: none; cursor: pointer; padding: var(--sp-2) var(--sp-3);
+    font-family: var(--font-display); font-size: var(--fs-tiny); font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .reference summary::-webkit-details-marker { display: none; }
+  .reference summary::before { content: "▸"; display:inline-block; transition: transform 0.15s ease; }
+  .reference[open] summary::before { transform: rotate(90deg); }
+  .reference .ref-block { padding: 0 var(--sp-3) var(--sp-3); }
+  .ref-block .tagrow { margin-bottom: var(--sp-3); }
+  .ref-empty { font-size: var(--fs-small); color: var(--ink-soft); font-style: italic; padding: 0 0 4px; }
+
+  #warnings {
+    display: none;
+    font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--stamp-brick);
+    background: var(--stamp-brick-bg); border: 1px dashed var(--stamp-brick);
+    padding: var(--sp-3); margin: 0 0 var(--sp-4); border-radius: var(--radius-tag); line-height: 1.7;
+  }
+  #warnings strong { display:block; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  #warnings ul { margin: 0; padding-left: 18px; }
+
+  #guessForm { display: flex; gap: var(--sp-2); margin-bottom: var(--sp-1); }
+  .input-wrap { position: relative; flex: 1; }
+  #guessInput {
+    width: 100%; padding: 11px 12px; border-radius: var(--radius-tag);
+    border: 1.5px solid var(--line); background: var(--card); color: var(--ink);
+    font-family: var(--font-body); font-size: 1rem; transition: border-color 0.15s ease;
+  }
+  #guessInput:focus-visible { outline: 2px solid var(--stamp-blue); outline-offset: 1px; }
+
+  .suggestions {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+    background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius-tag);
+    max-height: 240px; overflow-y: auto; z-index: 20;
+    box-shadow: 0 6px 14px rgba(43,42,37,0.15);
+    display: none;
+  }
+  .suggestions.open { display: block; }
+  .suggestion-item {
+    padding: 10px 12px; font-family: var(--font-body); font-size: 0.92rem; color: var(--ink);
+    cursor: pointer; border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  .suggestion-item:last-child { border-bottom: none; }
+  .suggestion-item:hover, .suggestion-item.active { background: var(--paper-alt); }
+  .suggestion-item mark { background: var(--stamp-blue-bg); color: var(--stamp-blue); font-weight: 700; border-radius: 3px; padding: 0 1px; }
+  .sugg-badge { font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--ink-soft); flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.05em; }
+  .suggestion-empty { padding: 10px 12px; font-size: var(--fs-small); color: var(--ink-soft); font-style: italic; }
+
+  button {
+    font-family: var(--font-display); font-weight: 600; font-size: var(--fs-small);
+    letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 10px 18px; border-radius: var(--radius-tag); border: 1.5px solid var(--stamp-blue);
+    background: var(--stamp-blue); color: var(--paper); cursor: pointer;
+    transition: transform 0.08s ease;
+  }
+  button:hover { background: #2c5279; }
+  button:active { transform: translateY(1px) scale(0.97); }
+  button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  button:disabled { opacity: 0.45; cursor: default; }
+
+  .input-hint {
+    font-family: var(--font-display); font-size: var(--fs-tiny);
+    min-height: 1.3em; margin: 0 0 var(--sp-3); letter-spacing: 0.02em;
+  }
+  .input-hint.err { color: var(--stamp-brick); }
+  .input-hint.warn { color: var(--stamp-gold); }
+
+  #status { font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--ink-soft); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: var(--sp-3); }
+
+  .mode-label { font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--stamp-blue); letter-spacing: 0.05em; margin-bottom: 4px; }
+  .mode-label a { color: var(--ink-soft); text-decoration: underline; cursor: pointer; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: var(--sp-3); }
+  .stat-box { text-align: center; }
+  .stat-num { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--ink); }
+  .stat-label { font-family: var(--font-display); font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); margin-top: 2px; }
+  .dist-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-family: var(--font-display); font-size: var(--fs-tiny); }
+  .dist-label { width: 34px; text-align: right; color: var(--ink-soft); flex-shrink: 0; }
+  .dist-bar-wrap { flex: 1; background: var(--card); border-radius: 4px; overflow: hidden; height: 18px; }
+  .dist-bar { height: 100%; background: var(--stamp-blue); display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; color: var(--paper); font-weight: 700; font-size: 0.65rem; min-width: 4px; transition: width 0.3s ease; }
+  .stats-actions { display: flex; gap: 8px; margin-top: var(--sp-3); flex-wrap: wrap; }
+  .stats-actions button { flex: 1; font-size: 0.72rem; padding: 9px 8px; }
+  .danger-btn { background: transparent; border-color: var(--stamp-brick); color: var(--stamp-brick); }
+  .danger-btn:hover { background: var(--stamp-brick); color: var(--paper); }
+
+  #shareBtn { display: block; margin-top: var(--sp-3); background: transparent; border-color: currentColor; color: inherit; }
+  .manual-copy-box { margin-top: var(--sp-2); }
+  .manual-copy-ta {
+    width: 100%; min-height: 76px; padding: 8px; border-radius: var(--radius-tag);
+    border: 1.5px solid var(--line); background: var(--card); color: var(--ink);
+    font-family: var(--font-display); font-size: 0.82rem; resize: vertical;
+  }
+  #shareBtn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  #win {
+    display:none; margin-bottom: var(--sp-3); padding: var(--sp-4); border-radius: var(--radius-card);
+    border: 2px dashed var(--moss); background: var(--moss-bg); color: var(--ink);
+  }
+  #win.lose { border-color: var(--stamp-brick); background: var(--stamp-brick-bg); }
+  #win .stamp-word {
+    font-family: var(--font-display); font-weight: 700; font-size: 1.15rem;
+    letter-spacing: 0.06em; text-transform: uppercase; display:block; margin-bottom: 3px;
+  }
+  #win .stamp-detail { font-size: var(--fs-small); color: var(--ink-soft); }
+
+  #newGame { margin-bottom: var(--sp-5); display:none; background: transparent; color: var(--ink); border-color: var(--ink); }
+  #newGame:hover { background: var(--ink); color: var(--paper); }
+
+  .guess-row {
+    position: relative;
+    padding: var(--sp-3) var(--sp-3) var(--sp-3);
+    border-radius: var(--radius-card);
+    background: var(--card);
+    border: 1px solid var(--line);
+    margin-bottom: var(--sp-3);
+    animation: stampIn 0.32s cubic-bezier(.2,1.4,.4,1) both;
+  }
+  @keyframes stampIn {
+    0% { opacity: 0; transform: scale(1.18) rotate(-2deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  @keyframes alreadyPulse {
+    0%, 100% { box-shadow: none; }
+    25% { box-shadow: 0 0 0 3px var(--stamp-gold); }
+    60% { box-shadow: 0 0 0 3px var(--stamp-gold); }
+  }
+  .already-flash { animation: alreadyPulse 0.9s ease; }
+
+  .entry-no { font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--ink-soft); letter-spacing: 0.08em; margin-bottom: 2px; }
+  .word { font-family: var(--font-display); font-weight: 600; font-size: 1.02rem; padding-right: 64px; }
+
+  .stamp {
+    position: absolute; top: var(--sp-3); right: var(--sp-3);
+    width: 54px; height: 54px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 0.78rem;
+    border: 2px dashed currentColor; background: transparent;
+    line-height: 1.05; text-align: center;
+  }
+
+  .section-label {
+    font-family: var(--font-display); font-size: var(--fs-tiny); text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--ink-soft); margin: var(--sp-3) 0 6px;
+  }
+  .tagrow { display:flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--font-display); font-size: var(--fs-tiny); font-weight: 600;
+    padding: 4px 9px; border-radius: var(--radius-tag); border: 1px solid;
+    display:flex; align-items:center; gap:5px; white-space: nowrap;
+    animation: chipIn 0.22s ease-out both;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+  @keyframes chipIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+  .chip.zone-hit { background: var(--stamp-blue-bg); border-color: var(--stamp-blue); color: var(--stamp-blue); }
+  .chip.zone-miss, .chip.miss { background: var(--paper-alt); border-color: var(--line); color: var(--ink-soft); }
+  .rarity-label { opacity: 0.7; font-weight: 500; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .guess-row, .chip, .already-flash { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="eyebrow">Field log — mystery ideology</div>
+<h1>Ideologle <span class="wt">(working title)</span></h1>
+<div class="sub">One ideology is on file. Each guess logs its compass-zone overlap and category-tag overlap separately — no lineage, no tree, just the record.</div>
+
+<!-- ================= INTRO / RULES ================= -->
+<div id="introScreen">
+  <div class="disclaimer">Early build — 57 entries on file, heading toward ~200.</div>
+
+  <div class="section-label">How this works</div>
+  <p class="rules-p">An ideology is filed as the mystery answer. Type any ideology you know into the box — a dropdown will narrow it down as you type — and press Guess. You'll get back an entry card showing how <em>that</em> ideology's own compass zone(s) and category tags line up against the one that's actually filed. Identify the filed ideology in 15 entries or fewer.</p>
+
+  <div class="section-label">Compass zone colors</div>
+  <div class="legend-row"><span class="chip zone-hit js-zone-hit-ex"></span><span>shares this zone with the answer</span></div>
+  <div class="legend-row"><span class="chip zone-miss js-zone-miss-ex"></span><span>does not</span></div>
+
+  <div class="section-label">Category tag colors</div>
+  <div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared and rare — a strong signal, worth more toward your match %</span></div>
+  <div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared but common — worth less</span></div>
+  <div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div>
+  <p class="rules-p">The number on a tag is its rarity score, computed fresh from whatever's currently on file — log-weighted by how few entries carry it. Higher number, rarer tag, bigger boost when it's shared. These examples update automatically as entries are added, so they can't go stale.</p>
+
+  <div class="section-label">Match % stamp</div>
+  <div class="legend-row">
+    <span class="stamp-mini" style="color:var(--stamp-brick)">&lt;35%</span>
+    <span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span>
+    <span class="stamp-mini" style="color:var(--moss)">70%+</span>
+  </div>
+  <p class="rules-p">The stamp blends zone overlap (40% of the score) with rarity-weighted category overlap (60%) — matching one rare tag can outweigh matching several common ones.</p>
+
+  <div class="section-label">Fictional ideologies</div>
+  <p class="rules-p">A few entries are marked Fictional — no real-world basis, usually pulled from fiction (like IngSoc from Nineteen Eighty-Four). Guess one and you'll get a badge: green if the answer is fictional too, red if it isn't. It only shows up when the entry you guessed is itself fictional — guessing a real-world entry reveals nothing on this axis.</p>
+  <div class="legend-row">
+    <span class="fiction-badge hit">✦ Fictional — matches the answer</span>
+    <span class="fiction-badge miss">✦ Fictional — doesn't match</span>
+  </div>
+
+  <div class="section-label">A couple of extras</div>
+  <p class="rules-p">Guessing the same ideology twice won't burn an entry — it points you back to the card instead. The Confirmed box below collects every zone and tag a guess has proven true about the answer, so you don't have to scroll back through every card to remember.</p>
+
+  <div class="section-label">Daily puzzle</div>
+  <p class="rules-p">There's one filed ideology per calendar day, same for everyone — but nothing locks you out after you solve it. Hit "New ideology" any time for an unlimited random practice round, or head back to today's puzzle whenever you like. Solve the daily one and you can share your result as a row of colored squares (🟩🟨🟥, one per guess) without spoiling the answer. Your stats — games played, streak, guess distribution — save locally in your browser and are visible any time from the Stats box in-game.</p>
+
+  <button id="startBtn" type="button">Start Ideologle</button>
+</div>
+
+<!-- ================= GAME ================= -->
+<div id="gameScreen" style="display:none">
+
+  <details class="reference" id="howtoBox">
+    <summary>How to play</summary>
+    <div class="ref-block">
+      <div class="section-label">Compass zone colors</div>
+      <div class="legend-row"><span class="chip zone-hit js-zone-hit-ex"></span><span>shares this zone with the answer</span></div>
+      <div class="legend-row"><span class="chip zone-miss js-zone-miss-ex"></span><span>does not</span></div>
+      <div class="section-label">Category tag colors</div>
+      <div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared, rare — worth more</span></div>
+      <div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared, common — worth less</span></div>
+      <div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div>
+      <div class="section-label">Match % stamp</div>
+      <div class="legend-row">
+        <span class="stamp-mini" style="color:var(--stamp-brick)">&lt;35%</span>
+        <span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span>
+        <span class="stamp-mini" style="color:var(--moss)">70%+</span>
+      </div>
+      <div class="section-label">Fictional ideologies</div>
+      <div class="legend-row">
+        <span class="fiction-badge hit">✦ Fictional — matches</span>
+        <span class="fiction-badge miss">✦ Fictional — doesn't match</span>
+      </div>
+      <p class="rules-p">Only shows when the guessed entry is itself fictional.</p>
+      <p class="rules-p" style="margin-bottom:0">40% zone overlap + 60% rarity-weighted category overlap. Repeat guesses don't cost an entry.</p>
+    </div>
+  </details>
+
+  <details class="reference" open>
+    <summary>Confirmed — <span id="refCounts">nothing yet</span></summary>
+    <div class="ref-block">
+      <div id="refEmpty" class="ref-empty">Nothing confirmed yet — make a guess, and anything it shares with the answer shows up here.</div>
+      <div id="refFilled" style="display:none">
+        <div id="refZonesBlock" style="display:none">
+          <div class="section-label">Compass zone</div>
+          <div class="tagrow" id="refZones"></div>
+        </div>
+        <div id="refCatsBlock" style="display:none">
+          <div class="section-label">Category tags</div>
+          <div class="tagrow" id="refCats"></div>
+        </div>
+        <div id="refFictionBlock" style="display:none">
+          <div class="section-label">Fictional status</div>
+          <div class="tagrow" id="refFiction"></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="reference" id="statsBox">
+    <summary>Your stats — <span id="statsSummaryCount">no games yet</span></summary>
+    <div class="ref-block">
+      <div id="statsEmpty" class="ref-empty">Play today's Ideologle to start tracking stats. Saved right in your browser (localStorage) — nothing is sent anywhere, and it's just for daily rounds, not practice ones.</div>
+      <div id="statsFilled" style="display:none">
+        <div class="stats-grid">
+          <div class="stat-box"><div class="stat-num" id="statPlayed">0</div><div class="stat-label">Played</div></div>
+          <div class="stat-box"><div class="stat-num" id="statWinPct">0%</div><div class="stat-label">Win %</div></div>
+          <div class="stat-box"><div class="stat-num" id="statCurrent">0</div><div class="stat-label">Streak</div></div>
+          <div class="stat-box"><div class="stat-num" id="statMax">0</div><div class="stat-label">Best streak</div></div>
+        </div>
+        <div class="section-label">Guesses to solve</div>
+        <div id="statsDist"></div>
+        <div class="stats-actions">
+          <button id="statsShareBtn" type="button">Share stats</button>
+          <button id="statsClearBtn" type="button" class="danger-btn">Clear my stats</button>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div id="warnings"></div>
+
+  <form id="guessForm" autocomplete="off">
+    <div class="input-wrap">
+      <input type="text" id="guessInput" placeholder="Type an ideology…" autocomplete="off" aria-autocomplete="list">
+      <div id="suggestions" class="suggestions" role="listbox"></div>
+    </div>
+    <button type="submit">Guess</button>
+  </form>
+  <div id="inputHint" class="input-hint"></div>
+
+  <div id="modeLabel" class="mode-label"></div>
+  <div id="status">Entry 0 / 15</div>
+  <div id="win"></div>
+  <button id="newGame">New ideology</button>
+  <div id="guesses"></div>
+
+</div>
+
+</div>
+
+<script>
+// ============================================================
+// EDIT ZONE — this is the only section that should change as
+// the dataset grows. Game logic below never needs to be touched
+// to add an entry.
+// ============================================================
+
+// Canonical compass positions. Closed set — every entry's `zones`
+// must resolve to a subset of this list. normalizeZone() below
+// auto-fixes common shorthand. Anything it can't safely resolve is
+// left untouched and shows up in the Data check panel instead of
+// silently breaking a match.
+const ZONES = [
+  "Authoritarian Left","Authoritarian Right","Authoritarian Unity",
+  "Centrists","Cultural Center","Cultural Center-Left","Cultural Center-Right",
+  "Culturally Far-Left","Culturally Far-Right","Culturally Left","Culturally Right","Left Unity",
+  "Libertarian Left","Libertarian Right","Libertarian Unity",
+  "Non-Quadrant","Off The Compass","Opposite Unity","Right Unity","Syncretic"
+];
+
+// categories: flat, unranked tags — no hierarchy.
+// fictional: optional bool. Only set it on entries that need it —
+// omit it everywhere else, don't write `fictional: false`.
+//
+// "Off The Compass" is a real, specific zone — not the same as an
+// entry having no compass position at all. For truly zoneless or
+// categoryless entries, use an empty array: zones: [] / categories: [].
+// Both are already handled correctly everywhere (scoring, chips,
+// the Confirmed panel) — no code changes needed to use them.
+//
+// NOTE: "Post-Left Anarchists" on Anarcho-Primitivism is left as
+// typed, distinct from "Post-Leftists" used elsewhere — see chat.
+const IDEOLOGIES = [
+  { name: "Crusade of Romanianism", zones: ["Libertarian Left","Culturally Right","Syncretic"], categories: ["Libertarians","Nationalists","Ultranationalists","Revolutionary Nationalists","Socialists","Religious","Quasi-Fascists"] },
+  { name: "Abolitionism", zones: ["Non-Quadrant"], categories: ["Culturally Variable","Diplomatically Variable"] },
+  { name: "Absolute Monarchism", zones: ["Authoritarian Unity"], categories: ["Culturally Variable","Diplomatically Variable","Monarchists","Religious"] },
+  { name: "Accelerationism", zones: [], categories: ["Accelerationists"] },
+  { name: "Acid Communism", zones: ["Left Unity","Libertarian Left"], categories: ["Accelerationists","Socialists","Communists"] },
+  { name: "African Socialism", zones: ["Authoritarian Left"], categories: ["Culturally Variable","Anti-Colonial","Socialists","Communists","Nationalists","Revolutionary Nationalists"] },
+  { name: "Agorism", zones: ["Libertarian Unity"], categories: ["Anarchists","Libertarians"] },
+  { name: "Agrarian Anarchism", zones: ["Libertarian Left","Culturally Right"], categories: ["Agrarians","Anarchists","Environmentalists"] },
+  { name: "Agrarian Capitalism", zones: ["Right Unity","Culturally Right"], categories: ["Diplomatically Variable","Agrarians","Capitalists","Culturally Variable"] },
+  { name: "Agrarian Socialism", zones: ["Left Unity","Culturally Left","Cultural Center"], categories: ["Agrarians","Socialists"] },
+  { name: "Agrarianism", zones: ["Non-Quadrant","Centrists"], categories: ["Agrarians"] },
+  { name: "Alt-Lite", zones: ["Right Unity","Cultural Center-Right","Culturally Far-Right"], categories: ["Capitalists","Conservatives","Liberals","Masculists","Nationalists","New Right","Right-Wing Liberals","Zionists"] },
+  { name: "Alt-Right", zones: ["Non-Quadrant","Authoritarian Unity","Culturally Far-Right"], categories: ["Ethnonationalists","Masculists","Nationalists","New Right","Third Position","Ultranationalists"] },
+  { name: "Alter-Globalism", zones: ["Left Unity","Culturally Left"], categories: ["Internationalists","Environmentalists","Socialists","Anti-Colonial"] },
+  { name: "American Model", zones: ["Cultural Center-Right","Right Unity","Authoritarian Right"], categories: ["Culturally Variable","Capitalists","Democratic","Liberals","Zionists","Libertarians"] },
+  { name: "Anarcha-Feminism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Socialists","Communists","Feminists","Left-Wing Anarchists"] },
+  { name: "Anarchism", zones: ["Libertarian Unity"], categories: ["Anarchists"] },
+  { name: "Anarcho-Capitalism", zones: ["Libertarian Right"], categories: ["Culturally Variable","Capitalists","Libertarians","Anarchists","Right-Wing Anarchists","New Right"] },
+  { name: "Anarcho-Collectivism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Socialists","Left-Wing Anarchists"] },
+  { name: "Anarcho-Communism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Communists","Socialists","Internationalists","Left-Wing Anarchists"] },
+  { name: "Anarcho-Conservatism", zones: ["Libertarian Unity","Libertarian Right","Culturally Right"], categories: ["Anarchists","Conservatives","Right-Wing Anarchists"] },
+  { name: "Anarcho-Distributism", zones: ["Libertarian Unity","Libertarian Left","Cultural Center"], categories: ["Anarchists","Distributists","Feminists","Religious"] },
+  { name: "Anarcho-Egoism", zones: ["Off The Compass","Libertarian Unity"], categories: ["Egoists","Post-Leftists"] },
+  { name: "Anarcho-Fascism", zones: ["Libertarian Unity","Libertarian Right","Culturally Far-Right"], categories: ["Nationalists","Ethnonationalists","Revolutionary Nationalists","Fascists","Right-Wing Anarchists","Anarchists"] },
+  { name: "Anarcho-Frontierism", fictional: true, zones: ["Libertarian Unity","Cultural Center"], categories: ["Anarchists","Transhumanists"] },
+  { name: "Anarcho-Individualism", zones: ["Libertarian Unity"], categories: ["Culturally Variable","Anarchists","Post-Leftists","Egoists"] },
+  { name: "Anarcho-Jazzism", zones: ["Off The Compass","Libertarian Left","Culturally Left"], categories: ["Left-Wing Anarchists"] },
+  { name: "Anarcho-Monarchism", zones: ["Libertarian Unity","Libertarian Right","Culturally Right"], categories: ["Anarchists","Monarchists","Right-Wing Anarchists"] },
+  { name: "Anarcho-Naturism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Environmentalists","Left-Wing Anarchists"] },
+  { name: "Anarcho-Nihilism", zones: ["Off The Compass","Libertarian Unity"], categories: ["Anarchists","Egoists","Primitivists","Post-Leftists"] },
+  { name: "Anarcho-Pacifism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Religious","Socialists","Left-Wing Anarchists"] },
+  { name: "Anarcho-Primitivism", zones: ["Libertarian Left","Libertarian Unity","Cultural Center"], categories: ["Anarchists","Environmentalists","Post-Left Anarchists","Primitivists"] },
+  { name: "Anarcho-Syndicalism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Socialists","Syndicalists","Left-Wing Anarchists"] },
+  { name: "Anarcho-Totalitarianism", fictional: true, zones: ["Opposite Unity","Authoritarian Unity","Libertarian Unity"], categories: ["Anarchists","Quasi-Fascists","Totalitarians"] },
+  { name: "Anarcho-Transhumanism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Transhumanists","Feminists","Left-Wing Anarchists","Post-Leftists"] },
+  { name: "Anationalism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Globalists","Internationalists","Socialists"] },
+  { name: "Anti-Authoritarianism", zones: ["Libertarian Unity","Cultural Center","Syncretic"], categories: ["Democratic","Libertarians","Anarchists"] },
+  { name: "Anti-Centrism", fictional: true, zones: ["Opposite Unity","Authoritarian Left","Authoritarian Right","Libertarian Left","Libertarian Right"], categories: [] },
+  { name: "Anti-Fascism", zones: ["Non-Quadrant","Left Unity","Libertarian Left","Culturally Left"], categories: ["Anarchists","Socialists","Communists","Capitalists"] },
+  { name: "Anti-Japaneseism", zones: ["Non-Quadrant"], categories: ["Anti-Colonial","Nationalists"] },
+  { name: "Anti-Realism", fictional: true, zones: ["Off The Compass"], categories: [] },
+  { name: "Apoliticism", zones: [], categories: ["Apolitical"] },
+  { name: "Arab Socialism", zones: ["Authoritarian Left","Cultural Center"], categories: ["Nationalists","Populists","Revolutionary Nationalists","Socialists"] },
+  { name: "Archeofuturism", zones: ["Opposite Unity"], categories: ["Primitivists","Transhumanists"] },
+  { name: "Aristocracy", zones: ["Non-Quadrant"], categories: ["Monarchists"] },
+  { name: "Asocialism", fictional: true, zones: ["Culturally Left","Left Unity"], categories: ["Socialists"] },
+  { name: "Athenian Democracy", zones: ["Right Unity","Culturally Center-Left"], categories: ["Democratic","Culturally Ultra-Reactionary"] },
+  { name: "Austrian School", zones: ["Libertarian Right","Cultural Center","Cultural Center-Right"], categories: ["Liberals","Libertarians","Capitalists","Right-Wing Liberals"] },
+  { name: "Austrofascism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Corporatists","Fascists","Nationalists","Religious","Third Position","Quasi-Fascists"] },
+  { name: "Austromarxism", zones: ["Left Unity","Libertarian Left"], categories: ["Socialists","Communists","Democratic","Nationalists"] },
+  { name: "Autarchy", zones: ["Libertarian Unity"], categories: ["Libertarians"] },
+  { name: "Authoritarian Capitalism", zones: ["Authoritarian Right"], categories: ["Culturally Variable","Capitalists","Diplomatically Variable"] },
+  { name: "Authoritarian Conservatism", zones: ["Authoritarian Unity","Authoritarian Right","Culturally Right"], categories: ["Capitalists","Conservatives","Nationalists","Quasi-Fascists"] },
+  { name: "Authoritarianism", zones: ["Authoritarian Unity"], categories: [] },
+  { name: "Autocracy", zones: ["Authoritarian Unity"], categories: ["Culturally Variable"] },
+  { name: "Autonomism", zones: ["Libertarian Left","Culturally Far-Left"], categories: ["Internationalists","Feminists","Environmentalists","Socialists","Communists","Libertarians"] },
+  { name: "Avaritionism", fictional: true, zones: ["Off The Compass","Libertarian Right"], categories: ["Culturally Variable","Diplomatically Variable","Anarchists","Capitalists","Egoists","Right-Wing Anarchists"] },
+];
+
+// Known one-off shorthand that doesn't fit a general pattern.
+const ZONE_ALIASES = {
+  "Off Compass": "Off The Compass",
+};
+
+// Tunable — placeholder blend, not final.
+const ZONE_WEIGHT = 0.4;
+const CATEGORY_WEIGHT = 0.6;
+const MAX_GUESSES = 15;
+
+// Fill this in once the game is actually hosted somewhere, e.g.
+// 'https://ideologle.example' — it'll get appended to shared results.
+const SITE_URL = '';
+
+// ============================================================
+// END EDIT ZONE
+// ============================================================
+
+// ---- daily puzzle: deterministic per calendar date, no lock ----
+// Uses the player's LOCAL date, not UTC, so "today" matches what
+// they'd expect. Note: since the dataset is still growing, the
+// daily pick for a given date can shift if entries are added later
+// that same day (the index is `hash(date) % current entry count`) —
+// this settles down once the dataset stops changing day-to-day.
+const DAILY_EPOCH = new Date(2026, 6, 24); // the day this feature shipped = puzzle #1
+
+function getLocalDateString(d = new Date()) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+function hashString(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+function getPuzzleNumber(d = new Date()) {
+  const today = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const epoch = new Date(DAILY_EPOCH.getFullYear(), DAILY_EPOCH.getMonth(), DAILY_EPOCH.getDate());
+  return Math.round((today - epoch) / 86400000) + 1;
+}
+function pickDailyAnswer() {
+  return IDEOLOGIES[hashString(getLocalDateString()) % IDEOLOGIES.length];
+}
+
+// ---- share: native share sheet if available, clipboard otherwise ----
+function flashBtn(btn, msg) {
+  if (!btn) return;
+  const orig = btn.textContent;
+  btn.textContent = msg;
+  setTimeout(() => { btn.textContent = orig; }, 1500);
+}
+async function shareText(text, btn) {
+  if (navigator.share) {
+    try {
+      await navigator.share({ text });
+      return;
+    } catch (e) {
+      // Only a genuine user cancel stops here. Anything else (permission
+      // denied, unsupported in this iframe/context, etc.) falls through
+      // to the fallbacks below instead of silently doing nothing.
+      if (e && e.name === 'AbortError') return;
+    }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(text);
+      flashBtn(btn, 'Copied!');
+      return;
+    } catch (e) { /* fall through */ }
+  }
+  if (legacyCopy(text)) {
+    flashBtn(btn, 'Copied!');
+    return;
+  }
+  showManualCopyBox(text, btn);
+}
+function legacyCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  document.body.removeChild(ta);
+  return ok;
+}
+function showManualCopyBox(text, anchorBtn) {
+  const existing = document.getElementById('manualCopyBox');
+  if (existing) existing.remove();
+  const wrap = document.createElement('div');
+  wrap.id = 'manualCopyBox';
+  wrap.className = 'manual-copy-box';
+  wrap.innerHTML = `<div class="rules-p" style="margin-bottom:6px">Couldn't copy automatically — tap the box below, then copy manually.</div><textarea readonly class="manual-copy-ta"></textarea>`;
+  anchorBtn.insertAdjacentElement('afterend', wrap);
+  const ta = wrap.querySelector('textarea');
+  ta.value = text;
+  ta.focus();
+  ta.select();
+}
+function pctEmoji(pct) {
+  if (pct >= 70) return '🟩';
+  if (pct >= 35) return '🟨';
+  return '🟥';
+}
+function buildShareText() {
+  const grid = guessHistory.map(g => pctEmoji(g.pct)).join('');
+  const result = won ? `${guessCount}/${MAX_GUESSES}` : `X/${MAX_GUESSES}`;
+  let text = `Ideologle #${currentPuzzleNumber} ${result}\n${grid}`;
+  if (SITE_URL) text += `\n${SITE_URL}`;
+  return text;
+}
+
+// ---- stats: localStorage, daily rounds only ----
+// Note for anyone testing this inside a Claude.ai chat: artifact
+// previews sandbox localStorage, so saves may not persist between
+// reloads there. Once this file is actually hosted (as planned),
+// localStorage works normally and persists per-visitor as expected.
+const STATS_KEY = 'ideologle_stats_v1';
+function loadStats() {
+  try {
+    const raw = localStorage.getItem(STATS_KEY);
+    return raw ? JSON.parse(raw) : { history: [] };
+  } catch (e) {
+    return { history: [] };
+  }
+}
+function saveStats(stats) {
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch (e) { /* storage unavailable */ }
+}
+function recordDailyResult(didWin, guesses) {
+  const stats = loadStats();
+  const dateStr = getLocalDateString();
+  if (stats.history.some(h => h.date === dateStr)) return; // one record per calendar day
+  stats.history.push({ date: dateStr, puzzleNumber: currentPuzzleNumber, won: didWin, guesses: didWin ? guesses : null });
+  saveStats(stats);
+  renderStats();
+}
+function computeStreaks(sortedHistory) {
+  let running = 0, maxStreak = 0, prevPuzzleNum = null;
+  sortedHistory.forEach(h => {
+    const consecutive = prevPuzzleNum !== null && h.puzzleNumber === prevPuzzleNum + 1;
+    running = h.won ? (consecutive ? running + 1 : 1) : 0;
+    maxStreak = Math.max(maxStreak, running);
+    prevPuzzleNum = h.puzzleNumber;
+  });
+  const last = sortedHistory[sortedHistory.length - 1];
+  const currentStreak = last && last.won ? running : 0;
+  return { currentStreak, maxStreak };
+}
+function getGuessBucket(n) {
+  if (n <= 3) return '1-3';
+  if (n <= 6) return '4-6';
+  if (n <= 9) return '7-9';
+  if (n <= 12) return '10-12';
+  return '13-15';
+}
+function renderStats() {
+  const stats = loadStats();
+  const summaryEl = document.getElementById('statsSummaryCount');
+  const emptyEl = document.getElementById('statsEmpty');
+  const filledEl = document.getElementById('statsFilled');
+
+  if (!stats.history.length) {
+    summaryEl.textContent = 'no games yet';
+    emptyEl.style.display = 'block';
+    filledEl.style.display = 'none';
+    return;
+  }
+  emptyEl.style.display = 'none';
+  filledEl.style.display = 'block';
+
+  const sorted = [...stats.history].sort((a, b) => a.puzzleNumber - b.puzzleNumber);
+  const played = sorted.length;
+  const wins = sorted.filter(h => h.won).length;
+  const winPct = played ? Math.round((wins / played) * 100) : 0;
+  const { currentStreak, maxStreak } = computeStreaks(sorted);
+
+  summaryEl.textContent = `${played} played`;
+  document.getElementById('statPlayed').textContent = played;
+  document.getElementById('statWinPct').textContent = winPct + '%';
+  document.getElementById('statCurrent').textContent = currentStreak;
+  document.getElementById('statMax').textContent = maxStreak;
+
+  const buckets = { '1-3': 0, '4-6': 0, '7-9': 0, '10-12': 0, '13-15': 0, 'X': 0 };
+  sorted.forEach(h => { buckets[h.won ? getGuessBucket(h.guesses) : 'X']++; });
+  const maxCount = Math.max(1, ...Object.values(buckets));
+  document.getElementById('statsDist').innerHTML = Object.entries(buckets).map(([label, count]) => {
+    const pct = Math.max(count ? 10 : 0, Math.round((count / maxCount) * 100));
+    return `<div class="dist-row"><span class="dist-label">${label}</span><div class="dist-bar-wrap"><div class="dist-bar" style="width:${pct}%">${count || ''}</div></div></div>`;
+  }).join('');
+}
+function buildStatsShareText() {
+  const stats = loadStats();
+  const sorted = [...stats.history].sort((a, b) => a.puzzleNumber - b.puzzleNumber);
+  const played = sorted.length;
+  const wins = sorted.filter(h => h.won).length;
+  const winPct = played ? Math.round((wins / played) * 100) : 0;
+  const { currentStreak, maxStreak } = computeStreaks(sorted);
+  let text = `My Ideologle stats\nPlayed ${played} · Win rate ${winPct}%\nStreak ${currentStreak} (best ${maxStreak})`;
+  if (SITE_URL) text += `\n${SITE_URL}`;
+  return text;
+}
+
+let answer, guessCount, won, guessedNames, confirmedZones, confirmedCats, fictionConfirmed, hintTimer;
+let currentSuggestions = [], activeSuggestionIndex = -1;
+let isDailyRound = true, currentPuzzleNumber = null, guessHistory = [];
+
+// Fixes: concatenation ("RightUnity" -> "Right Unity"), hyphenated
+// shorthand ("Lib-Left" -> "Libertarian Left"), abbreviated first
+// word ("AuthLeft" -> "Authoritarian Left"), Cultural/Culturally
+// mixups, a dropped qualifier word ("Center-Right" -> "Cultural
+// Center-Right"), and known one-off aliases (ZONE_ALIASES) — but
+// only when exactly one canonical zone could match, so genuinely
+// ambiguous shorthand is left alone.
+const ZONE_PREFIX_MAP = { "Auth": "Authoritarian", "Lib": "Libertarian", "Leftist": "Left", "Rightist": "Right" };
+const ZONES_LOWER = {};
+ZONES.forEach(z => { ZONES_LOWER[z.toLowerCase()] = z; });
+function splitCamel(s) { return s.replace(/([a-z])([A-Z])/g, '$1 $2'); }
+function normalizeZone(raw) {
+  const z = raw.trim();
+  if (ZONES.includes(z)) return z;
+
+  const split = splitCamel(z);
+  const dehyphen = z.replace(/-/g, ' ').replace(/\s+/g, ' ').trim();
+  const candidates = [...new Set([z, split, dehyphen, splitCamel(dehyphen)])];
+
+  for (const cand of candidates) {
+    if (ZONES.includes(cand)) return cand;
+    if (ZONE_ALIASES[cand]) return ZONE_ALIASES[cand];
+    if (ZONES_LOWER[cand.toLowerCase()]) return ZONES_LOWER[cand.toLowerCase()];
+  }
+
+  for (const cand of candidates) {
+    if (cand.startsWith("Culturally ")) {
+      const swapped = cand.replace("Culturally ", "Cultural ");
+      if (ZONES.includes(swapped)) return swapped;
+    } else if (cand.startsWith("Cultural ")) {
+      const swapped = cand.replace("Cultural ", "Culturally ");
+      if (ZONES.includes(swapped)) return swapped;
+    }
+  }
+
+  for (const cand of candidates) {
+    for (const [from, to] of Object.entries(ZONE_PREFIX_MAP)) {
+      if (cand.startsWith(from + " ")) {
+        const expanded = to + cand.slice(from.length);
+        if (ZONES.includes(expanded)) return expanded;
+      }
+    }
+  }
+
+  const suffixMatches = ZONES.filter(zn => zn.endsWith(" " + z));
+  if (suffixMatches.length === 1) return suffixMatches[0];
+
+  return z;
+}
+IDEOLOGIES.forEach(e => { e.zones = e.zones.map(normalizeZone); });
+
+function computeWeights() {
+  const freq = {};
+  IDEOLOGIES.forEach(e => e.categories.forEach(t => freq[t] = (freq[t] || 0) + 1));
+  const N = IDEOLOGIES.length;
+  const weights = {};
+  Object.keys(freq).forEach(t => { weights[t] = Math.log((N + 1) / freq[t]); });
+  return weights;
+}
+// Computed once — IDEOLOGIES doesn't change during a page load, so
+// this (and the rule-screen examples drawn from it) is always in
+// sync with whatever's currently in the EDIT ZONE.
+const tagWeights = computeWeights();
+
+// Catches future risks the build spec flagged:
+// 1) a zone that isn't canonical even after normalizeZone()
+// 2) two category tags that are probably the same tag typed two
+//    ways, including the Cultural/Culturally mixup pattern
+function validateData() {
+  const problems = [];
+  IDEOLOGIES.forEach(e => {
+    e.zones.forEach(z => {
+      if (!ZONES.includes(z)) problems.push(`"${e.name}" uses a zone not in the list: "${z}"`);
+    });
+  });
+  const norm = s => s.toLowerCase().replace(/culturally/g, 'cultural').replace(/[^a-z0-9]/g, '');
+  const groups = {};
+  IDEOLOGIES.forEach(e => e.categories.forEach(c => {
+    const k = norm(c);
+    (groups[k] = groups[k] || new Set()).add(c);
+  }));
+  Object.values(groups).forEach(set => {
+    if (set.size > 1) problems.push(`Possible spelling mismatch: ${[...set].join(' / ')}`);
+  });
+  return problems;
+}
+
+function renderWarnings() {
+  const problems = validateData();
+  const el = document.getElementById('warnings');
+  if (!problems.length) { el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  el.innerHTML = `<strong>Data check — ${problems.length} flagged</strong><ul>${problems.map(p => `<li>${p}</li>`).join('')}</ul>`;
+}
+
+function maxWeight() { return Math.max(...Object.values(tagWeights)); }
+
+function catChipStyle(weight, mw) {
+  const t = Math.min(1, weight / mw);
+  const hue = 45 + t * (12 - 45);
+  const light = 82 - t * 40;
+  const text = light > 58 ? '#3a2c14' : '#fbeee0';
+  return `background:hsl(${hue},62%,${light}%);border-color:hsl(${hue},50%,${Math.max(light-18,20)}%);color:${text}`;
+}
+
+// Fills the rule-screen legend examples from the live dataset —
+// nothing here is hardcoded, so it can't go out of sync as entries
+// are added.
+function renderLegend() {
+  document.querySelectorAll('.js-zone-hit-ex').forEach(el => { el.textContent = ZONES[0]; });
+  document.querySelectorAll('.js-zone-miss-ex').forEach(el => { el.textContent = ZONES[1]; });
+
+  const entries = Object.entries(tagWeights).sort((a, b) => b[1] - a[1]);
+  const rare = entries[0];
+  const common = entries[entries.length - 1];
+  const missCat = entries.length > 2 ? entries[Math.floor(entries.length / 2)][0] : common[0];
+  const mw = maxWeight();
+
+  document.querySelectorAll('.js-cat-rare-ex').forEach(el => {
+    el.innerHTML = `${rare[0]} <span class="rarity-label">${rare[1].toFixed(2)}</span>`;
+    el.setAttribute('style', catChipStyle(rare[1], mw));
+  });
+  document.querySelectorAll('.js-cat-common-ex').forEach(el => {
+    el.innerHTML = `${common[0]} <span class="rarity-label">${common[1].toFixed(2)}</span>`;
+    el.setAttribute('style', catChipStyle(common[1], mw));
+  });
+  document.querySelectorAll('.js-cat-miss-ex').forEach(el => { el.textContent = missCat; });
+}
+
+function renderReference() {
+  const countsEl = document.getElementById('refCounts');
+  const emptyEl = document.getElementById('refEmpty');
+  const filledEl = document.getElementById('refFilled');
+  const zonesBlock = document.getElementById('refZonesBlock');
+  const catsBlock = document.getElementById('refCatsBlock');
+
+  if (confirmedZones.size === 0 && confirmedCats.size === 0 && !fictionConfirmed) {
+    countsEl.textContent = 'nothing yet';
+    emptyEl.style.display = 'block';
+    filledEl.style.display = 'none';
+    return;
+  }
+  emptyEl.style.display = 'none';
+  filledEl.style.display = 'block';
+
+  if (confirmedZones.size > 0) {
+    zonesBlock.style.display = 'block';
+    document.getElementById('refZones').innerHTML = [...confirmedZones].sort((a, b) => a.localeCompare(b)).map(z => `<span class="chip zone-hit">${z}</span>`).join('');
+  } else {
+    zonesBlock.style.display = 'none';
+  }
+
+  if (confirmedCats.size > 0) {
+    catsBlock.style.display = 'block';
+    const mw = maxWeight();
+    document.getElementById('refCats').innerHTML = [...confirmedCats].sort((a, b) => tagWeights[b] - tagWeights[a]).map(c => {
+      const w = tagWeights[c];
+      return `<span class="chip" style="${catChipStyle(w, mw)}">${c} <span class="rarity-label">${w.toFixed(2)}</span></span>`;
+    }).join('');
+  } else {
+    catsBlock.style.display = 'none';
+  }
+
+  const fictionBlock = document.getElementById('refFictionBlock');
+  if (fictionConfirmed) {
+    fictionBlock.style.display = 'block';
+    document.getElementById('refFiction').innerHTML = '<span class="fiction-badge hit">✦ Confirmed fictional</span>';
+  } else {
+    fictionBlock.style.display = 'none';
+  }
+
+  countsEl.textContent = `${confirmedZones.size} zone${confirmedZones.size === 1 ? '' : 's'} confirmed · ${confirmedCats.size} tag${confirmedCats.size === 1 ? '' : 's'} confirmed`;
+}
+
+function showHint(msg, tone) {
+  const el = document.getElementById('inputHint');
+  const input = document.getElementById('guessInput');
+  el.textContent = msg;
+  el.className = 'input-hint ' + tone;
+  input.style.borderColor = tone === 'err' ? 'var(--stamp-brick)' : 'var(--stamp-gold)';
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(() => {
+    el.textContent = '';
+    el.className = 'input-hint';
+    input.style.borderColor = 'var(--line)';
+  }, 2200);
+}
+
+// ---- custom dropdown search ----
+function highlightMatch(name, query) {
+  const idx = name.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return name;
+  return name.slice(0, idx) + '<mark>' + name.slice(idx, idx + query.length) + '</mark>' + name.slice(idx + query.length);
+}
+
+function hideSuggestions() {
+  const box = document.getElementById('suggestions');
+  box.classList.remove('open');
+  box.innerHTML = '';
+  currentSuggestions = [];
+  activeSuggestionIndex = -1;
+}
+
+function renderSuggestions(query) {
+  const box = document.getElementById('suggestions');
+  const q = query.trim().toLowerCase();
+  if (!q) { hideSuggestions(); return; }
+
+  const starts = [], contains = [];
+  IDEOLOGIES.forEach(e => {
+    const idx = e.name.toLowerCase().indexOf(q);
+    if (idx === 0) starts.push(e);
+    else if (idx > 0) contains.push(e);
+  });
+  const all = [...starts, ...contains];
+  currentSuggestions = all.slice(0, 8);
+  activeSuggestionIndex = -1;
+
+  if (!all.length) {
+    box.innerHTML = '<div class="suggestion-empty">No match on file yet.</div>';
+    box.classList.add('open');
+    return;
+  }
+
+  const itemsHtml = currentSuggestions.map((e, i) => {
+    const logged = guessedNames && guessedNames.has(e.name) ? '<span class="sugg-badge">logged</span>' : '';
+    return `<div class="suggestion-item" role="option" data-index="${i}">${highlightMatch(e.name, q)}${logged}</div>`;
+  }).join('');
+  const moreHtml = all.length > 8 ? `<div class="suggestion-empty">+${all.length - 8} more — keep typing</div>` : '';
+  box.innerHTML = itemsHtml + moreHtml;
+  box.classList.add('open');
+}
+
+function updateActiveSuggestion() {
+  const items = document.querySelectorAll('.suggestion-item');
+  items.forEach((el, i) => el.classList.toggle('active', i === activeSuggestionIndex));
+  const activeEl = items[activeSuggestionIndex];
+  if (activeEl) activeEl.scrollIntoView({ block: 'nearest' });
+}
+
+function selectSuggestion(entry) {
+  const input = document.getElementById('guessInput');
+  input.value = entry.name;
+  hideSuggestions();
+  submitGuess(entry.name);
+}
+
+// ---- core guess handling (shared by form submit + dropdown pick) ----
+function submitGuess(rawValue) {
+  if (won) return;
+  const input = document.getElementById('guessInput');
+  const val = rawValue.trim().toLowerCase();
+  const entry = IDEOLOGIES.find(w => w.name.toLowerCase() === val);
+
+  if (!entry) {
+    showHint('Not on file — check the spelling.', 'err');
+    return;
+  }
+
+  if (guessedNames.has(entry.name)) {
+    showHint(`Already logged — see "${entry.name}" above.`, 'warn');
+    const existing = document.querySelector(`.guess-row[data-name="${CSS.escape(entry.name)}"]`);
+    if (existing) {
+      existing.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      existing.classList.remove('already-flash');
+      void existing.offsetWidth;
+      existing.classList.add('already-flash');
+    }
+    input.value = '';
+    return;
+  }
+
+  guessedNames.add(entry.name);
+  guessCount++;
+  const pctForHistory = renderGuess(entry);
+  guessHistory.push({ name: entry.name, pct: pctForHistory });
+  input.value = '';
+  updateStatus();
+
+  const winEl = document.getElementById('win');
+  const shareBtnHtml = isDailyRound ? '<button id="shareBtn" type="button">Share result</button>' : '';
+  if (entry.name === answer.name) {
+    won = true;
+    winEl.style.display = 'block';
+    winEl.innerHTML = `<span class="stamp-word">Identified</span><span class="stamp-detail">Filed correctly on entry ${guessCount}. It was "${answer.name}".</span>${shareBtnHtml}`;
+    document.getElementById('newGame').style.display = 'inline-block';
+    document.getElementById('guessInput').disabled = true;
+    document.querySelector('#guessForm button').disabled = true;
+    if (isDailyRound) recordDailyResult(true, guessCount);
+  } else if (guessCount >= MAX_GUESSES) {
+    winEl.style.display = 'block';
+    winEl.classList.add('lose');
+    winEl.innerHTML = `<span class="stamp-word">Case closed</span><span class="stamp-detail">Log full at ${MAX_GUESSES}, unidentified. It was "${answer.name}".</span>${shareBtnHtml}`;
+    document.getElementById('newGame').style.display = 'inline-block';
+    document.getElementById('guessInput').disabled = true;
+    document.querySelector('#guessForm button').disabled = true;
+    if (isDailyRound) recordDailyResult(false, null);
+  }
+}
+
+function pickAnswer() { return IDEOLOGIES[Math.floor(Math.random() * IDEOLOGIES.length)]; }
+
+function updateModeLabel() {
+  const el = document.getElementById('modeLabel');
+  el.innerHTML = isDailyRound
+    ? `Today's Ideologle #${currentPuzzleNumber}`
+    : `Practice round · <a href="#" id="backToDaily">back to today's puzzle</a>`;
+}
+
+function startGame(daily = true) {
+  isDailyRound = daily;
+  if (daily) {
+    currentPuzzleNumber = getPuzzleNumber();
+    answer = pickDailyAnswer();
+  } else {
+    answer = pickAnswer();
+  }
+  guessCount = 0;
+  won = false;
+  guessedNames = new Set();
+  confirmedZones = new Set();
+  confirmedCats = new Set();
+  fictionConfirmed = false;
+  guessHistory = [];
+  document.getElementById('guesses').innerHTML = '';
+  document.getElementById('win').style.display = 'none';
+  document.getElementById('win').classList.remove('lose');
+  document.getElementById('newGame').style.display = 'none';
+  document.getElementById('guessInput').disabled = false;
+  document.querySelector('#guessForm button').disabled = false;
+  document.getElementById('howtoBox').removeAttribute('open');
+  hideSuggestions();
+  updateModeLabel();
+  updateStatus();
+  renderWarnings();
+  renderReference();
+  console.log('Answer (debug):', answer.name);
+}
+
+function updateStatus() {
+  document.getElementById('status').textContent = `Entry ${guessCount} / ${MAX_GUESSES}`;
+}
+
+function stampColor(pct) {
+  if (pct >= 70) return 'var(--moss)';
+  if (pct >= 35) return 'var(--stamp-gold)';
+  return 'var(--stamp-brick)';
+}
+
+function renderGuess(entry) {
+  const row = document.createElement('div');
+  row.className = 'guess-row';
+  row.dataset.name = entry.name;
+
+  const sharedZones = entry.zones.filter(z => answer.zones.includes(z));
+  const missZones = entry.zones.filter(z => !answer.zones.includes(z));
+  const sharedCats = entry.categories.filter(c => answer.categories.includes(c));
+  const missCats = entry.categories.filter(c => !answer.categories.includes(c));
+
+  // Overlap, not one-sided precision: if we only measured how much of the
+  // GUESSED entry's own traits appear in the answer, an entry whose zones/tags
+  // are a pure subset of the answer's would hit 100% even when the answer has
+  // extra traits the guess doesn't cover. Using weighted Jaccard (shared over
+  // union) instead means 100% is only possible on a true exact match.
+  const sharedCatWeight = sharedCats.reduce((s, c) => s + tagWeights[c], 0);
+  const entryCatWeight = entry.categories.reduce((s, c) => s + tagWeights[c], 0);
+  const answerCatWeight = answer.categories.reduce((s, c) => s + tagWeights[c], 0);
+  const catUnionWeight = entryCatWeight + answerCatWeight - sharedCatWeight;
+  const catScore = catUnionWeight > 0 ? sharedCatWeight / catUnionWeight : 0;
+
+  const zoneUnionCount = entry.zones.length + answer.zones.length - sharedZones.length;
+  const zoneScore = zoneUnionCount > 0 ? sharedZones.length / zoneUnionCount : 0;
+
+  const overallPct = Math.round((catScore * CATEGORY_WEIGHT + zoneScore * ZONE_WEIGHT) * 100);
+
+  const mw = maxWeight();
+  const catsSorted = [...sharedCats].sort((a, b) => tagWeights[b] - tagWeights[a]);
+  const rotation = (entry.name.length * 37 % 13) - 6;
+
+  let fictionBadgeHtml = '';
+  if (entry.fictional) {
+    const fictionHit = !!answer.fictional;
+    fictionBadgeHtml = `<div class="fiction-badge ${fictionHit ? 'hit' : 'miss'}">✦ Fictional — ${fictionHit ? 'matches the answer' : "doesn't match"}</div>`;
+    if (fictionHit) fictionConfirmed = true;
+  }
+
+  let i = 0;
+  const zoneChips = sharedZones.map(z => `<span class="chip zone-hit" style="--i:${i++}">${z}</span>`).join('')
+                   + missZones.map(z => `<span class="chip zone-miss" style="--i:${i++}">${z}</span>`).join('');
+
+  const catChips = catsSorted.map(c => {
+    const w = tagWeights[c];
+    return `<span class="chip" style="--i:${i++};${catChipStyle(w, mw)}">${c} <span class="rarity-label">${w.toFixed(2)}</span></span>`;
+  }).join('') + missCats.map(c => `<span class="chip miss" style="--i:${i++}">${c}</span>`).join('');
+
+  // A handful of entries genuinely have no zone or no category —
+  // skip that section entirely rather than show an empty one.
+  const zoneSectionHtml = entry.zones.length > 0
+    ? `<div class="section-label">Compass zone</div><div class="tagrow">${zoneChips}</div>` : '';
+  const catSectionHtml = entry.categories.length > 0
+    ? `<div class="section-label">Category tags</div><div class="tagrow">${catChips}</div>` : '';
+
+  row.innerHTML = `
+    <div class="entry-no">Entry ${String(guessCount).padStart(3,'0')}</div>
+    <div class="word">${entry.name}</div>
+    ${fictionBadgeHtml}
+    <div class="stamp" style="color:${stampColor(overallPct)};transform:rotate(${rotation}deg)">${overallPct}%<br>match</div>
+    ${zoneSectionHtml}
+    ${catSectionHtml}
+  `;
+  document.getElementById('guesses').prepend(row);
+
+  sharedZones.forEach(z => confirmedZones.add(z));
+  sharedCats.forEach(c => confirmedCats.add(c));
+  renderReference();
+  return overallPct;
+}
+
+const guessInput = document.getElementById('guessInput');
+const suggestionsBox = document.getElementById('suggestions');
+
+guessInput.addEventListener('input', () => renderSuggestions(guessInput.value));
+guessInput.addEventListener('focus', () => { if (guessInput.value.trim()) renderSuggestions(guessInput.value); });
+guessInput.addEventListener('blur', () => hideSuggestions());
+guessInput.addEventListener('keydown', (e) => {
+  if (!currentSuggestions.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    activeSuggestionIndex = Math.min(activeSuggestionIndex + 1, currentSuggestions.length - 1);
+    updateActiveSuggestion();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    activeSuggestionIndex = Math.max(activeSuggestionIndex - 1, 0);
+    updateActiveSuggestion();
+  } else if (e.key === 'Enter') {
+    if (activeSuggestionIndex >= 0 && currentSuggestions[activeSuggestionIndex]) {
+      e.preventDefault();
+      selectSuggestion(currentSuggestions[activeSuggestionIndex]);
+    }
+  } else if (e.key === 'Escape') {
+    hideSuggestions();
+  }
+});
+
+suggestionsBox.addEventListener('mousedown', (e) => e.preventDefault());
+suggestionsBox.addEventListener('click', (e) => {
+  const item = e.target.closest('.suggestion-item');
+  if (!item) return;
+  const idx = parseInt(item.dataset.index, 10);
+  const entry = currentSuggestions[idx];
+  if (entry) selectSuggestion(entry);
+});
+
+document.getElementById('guessForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  submitGuess(guessInput.value);
+  hideSuggestions();
+});
+
+document.getElementById('newGame').addEventListener('click', () => startGame(false));
+document.getElementById('startBtn').addEventListener('click', () => {
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display = 'block';
+  startGame(true);
+});
+
+document.getElementById('modeLabel').addEventListener('click', (e) => {
+  if (e.target.id === 'backToDaily') {
+    e.preventDefault();
+    startGame(true);
+  }
+});
+
+document.getElementById('win').addEventListener('click', (e) => {
+  if (e.target.closest('#shareBtn')) shareText(buildShareText(), document.getElementById('shareBtn'));
+});
+
+document.getElementById('statsShareBtn').addEventListener('click', () => {
+  shareText(buildStatsShareText(), document.getElementById('statsShareBtn'));
+});
+document.getElementById('statsClearBtn').addEventListener('click', () => {
+  if (confirm("Clear all saved Ideologle stats? This can't be undone.")) {
+    localStorage.removeItem(STATS_KEY);
+    renderStats();
+  }
+});
+
+renderLegend();
+renderStats();
+</script>
+
+</body>
+</html>
