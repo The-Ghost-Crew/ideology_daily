@@ -3,26 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#EDE6D3">
+<script>
+(function() {
+  try {
+    var saved = localStorage.getItem('ideologle_theme');
+    var theme = (saved === 'light' || saved === 'dark') ? saved : 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
+<meta name="theme-color" content="#1C1815">
 <title>Ideologle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* ===== tokens: color ===== */
-    --paper: #EDE6D3;
-    --paper-alt: #E3DAC0;
-    --card: #F5F0E1;
-    --ink: #2B2A25;
-    --ink-soft: #6B6455;
-    --line: #C9BFA0;
-    --stamp-blue: #35618F;
-    --stamp-blue-bg: #D9E4EC;
-    --stamp-gold: #B8892C;
-    --stamp-brick: #A13D2B;
-    --stamp-brick-bg: #EBD9D3;
-    --moss: #4C7A57;
-    --moss-bg: #DCE9DE;
+    /* ===== tokens: color (dark — default) ===== */
+    --paper: #1C1815;
+    --paper-alt: #262019;
+    --card: #2B241C;
+    --ink: #E8E1D0;
+    --ink-soft: #A89C85;
+    --line: #4A4030;
+    --stamp-blue: #7FADDD;
+    --stamp-blue-bg: #223A52;
+    --stamp-blue-hover: #8FBBE8;
+    --stamp-gold: #E3B75A;
+    --stamp-brick: #E37F62;
+    --stamp-brick-bg: #452420;
+    --moss: #83C293;
+    --moss-bg: #24362A;
+    --texture-line: rgba(255,255,255,0.028);
 
     /* ===== tokens: shape / space ===== */
     --radius-tag: 7px;
@@ -35,6 +48,25 @@
     --fs-h1: 1.55rem; --fs-body: 1rem; --fs-small: 0.85rem; --fs-tiny: 0.7rem;
   }
 
+  [data-theme="light"] {
+    /* ===== tokens: color (light — opt-in) ===== */
+    --paper: #EDE6D3;
+    --paper-alt: #E3DAC0;
+    --card: #F5F0E1;
+    --ink: #2B2A25;
+    --ink-soft: #6B6455;
+    --line: #C9BFA0;
+    --stamp-blue: #35618F;
+    --stamp-blue-bg: #D9E4EC;
+    --stamp-blue-hover: #2C5279;
+    --stamp-gold: #B8892C;
+    --stamp-brick: #A13D2B;
+    --stamp-brick-bg: #EBD9D3;
+    --moss: #4C7A57;
+    --moss-bg: #DCE9DE;
+    --texture-line: rgba(43,42,37,0.035);
+  }
+
   * { box-sizing: border-box; }
   html, body { height: 100%; }
   body {
@@ -42,7 +74,7 @@
     min-height: 100vh;
     font-family: var(--font-body);
     background: var(--paper);
-    background-image: repeating-linear-gradient(180deg, rgba(43,42,37,0.035) 0px, rgba(43,42,37,0.035) 1px, transparent 1px, transparent 29px);
+    background-image: repeating-linear-gradient(180deg, var(--texture-line) 0px, var(--texture-line) 1px, transparent 1px, transparent 29px);
     color: var(--ink);
   }
   .page {
@@ -56,6 +88,12 @@
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
     margin-bottom: var(--sp-1);
   }
+  .header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); }
+  .theme-toggle {
+    flex-shrink: 0; padding: 7px 11px; font-size: 0.65rem; letter-spacing: 0.03em;
+    background: transparent; border-color: var(--line); color: var(--ink-soft); white-space: nowrap;
+  }
+  .theme-toggle:hover { background: var(--paper-alt); color: var(--ink); border-color: var(--ink-soft); }
   h1 {
     font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 700;
     letter-spacing: 0.01em; margin: 0 0 var(--sp-1);
@@ -147,7 +185,7 @@
     background: var(--stamp-blue); color: var(--paper); cursor: pointer;
     transition: transform 0.08s ease;
   }
-  button:hover { background: #2c5279; }
+  button:hover { background: var(--stamp-blue-hover); }
   button:active { transform: translateY(1px) scale(0.97); }
   button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
   button:disabled { opacity: 0.45; cursor: default; }
@@ -257,8 +295,13 @@
 <body>
 <div class="page">
 
-<div class="eyebrow">Field log — mystery ideology</div>
-<h1>Ideologle <span class="wt">(working title)</span></h1>
+<div class="header-row">
+  <div>
+    <div class="eyebrow">Dossier — mystery ideology</div>
+    <h1>Ideologle <span class="wt">(working title)</span></h1>
+  </div>
+  <button id="themeToggle" type="button" class="theme-toggle" aria-label="Toggle dark or light mode">☀ Light</button>
+</div>
 <div class="sub">One ideology is on file. Each guess logs its compass-zone overlap and category-tag overlap separately — no lineage, no tree, just the record.</div>
 
 <!-- ================= INTRO / RULES ================= -->
@@ -1184,6 +1227,22 @@ document.getElementById('statsClearBtn').addEventListener('click', () => {
     renderStats();
   }
 });
+
+// ---- dark/light toggle (dark by default; the head script already
+// set data-theme before first paint to avoid a flash of the wrong theme) ----
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  try { localStorage.setItem('ideologle_theme', theme); } catch (e) { /* storage unavailable */ }
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀ Light' : '🌙 Dark';
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#1C1815' : '#EDE6D3');
+}
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  setTheme(current === 'dark' ? 'light' : 'dark');
+});
+setTheme(document.documentElement.getAttribute('data-theme') || 'dark');
 
 renderLegend();
 renderStats();
