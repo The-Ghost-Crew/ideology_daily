@@ -216,6 +216,7 @@
   .danger-btn:hover { background: var(--stamp-brick); color: var(--paper); }
 
   #shareBtn { display: block; margin-top: var(--sp-3); background: transparent; border-color: currentColor; color: inherit; }
+  .next-timer { font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--ink-soft); margin-top: var(--sp-2); letter-spacing: 0.03em; }
   .manual-copy-box { margin-top: var(--sp-2); }
   .manual-copy-ta {
     width: 100%; min-height: 76px; padding: 8px; border-radius: var(--radius-tag);
@@ -306,7 +307,7 @@
 
 <!-- ================= INTRO / RULES ================= -->
 <div id="introScreen">
-  <div class="disclaimer">Early build — 57 entries on file, heading toward ~200.</div>
+  <div class="disclaimer">Early build — 73 entries on file, heading toward ~200.</div>
 
   <div class="section-label">How this works</div>
   <p class="rules-p">An ideology is filed as the mystery answer. Type any ideology you know into the box — a dropdown will narrow it down as you type — and press Guess. You'll get back an entry card showing how <em>that</em> ideology's own compass zone(s) and category tags line up against the one that's actually filed. Identify the filed ideology in 15 entries or fewer.</p>
@@ -452,7 +453,7 @@
 const ZONES = [
   "Authoritarian Left","Authoritarian Right","Authoritarian Unity",
   "Centrists","Cultural Center","Cultural Center-Left","Cultural Center-Right",
-  "Culturally Far-Left","Culturally Far-Right","Culturally Left","Culturally Right","Left Unity",
+  "Culturally Far-Left","Culturally Far-Right","Culturally Left","Culturally Reactionary","Culturally Right","Culturally Traditional Progressive","Left Unity",
   "Libertarian Left","Libertarian Right","Libertarian Unity",
   "Non-Quadrant","Off The Compass","Opposite Unity","Right Unity","Syncretic"
 ];
@@ -527,6 +528,22 @@ const IDEOLOGIES = [
   { name: "Autocracy", zones: ["Authoritarian Unity"], categories: ["Culturally Variable"] },
   { name: "Autonomism", zones: ["Libertarian Left","Culturally Far-Left"], categories: ["Internationalists","Feminists","Environmentalists","Socialists","Communists","Libertarians"] },
   { name: "Avaritionism", fictional: true, zones: ["Off The Compass","Libertarian Right"], categories: ["Culturally Variable","Diplomatically Variable","Anarchists","Capitalists","Egoists","Right-Wing Anarchists"] },
+  { name: "Ba'athism", zones: ["Authoritarian Left","Authoritarian Unity"], categories: ["Culturally Variable","Nationalists","Ethnonationalists","Revolutionary Nationalists","Welfarists","Totalitarians","Quasi-Fascists"] },
+  { name: "Babouvism", zones: ["Left Unity","Authoritarian Left","Culturally Far-Left"], categories: ["Socialists","Communists","Populists","First French Republic"] },
+  { name: "Banana Republicanism", zones: ["Authoritarian Right"], categories: ["Culturally Variable","Capitalists"] },
+  { name: "Barracks Communism", zones: ["Authoritarian Left","Culturally Far-Left"], categories: ["Socialists","Communists","Totalitarians"] },
+  { name: "Benefactorism", fictional: true, zones: ["Off The Compass","Authoritarian Left"], categories: ["Communists","Totalitarians","Transhumanists"] },
+  { name: "Bibism", zones: ["Authoritarian Right","Culturally Far-Right"], categories: ["Liberals","Nationalists","Ethnonationalists","Zionists","Criminals","Conservatives"] },
+  { name: "Big Tent Liberalism", zones: ["Centrists","Cultural Center-Left","Syncretic"], categories: ["Democratic","Capitalists","Liberals"] },
+  { name: "Bio-Posadism", fictional: true, zones: ["Off The Compass","Authoritarian Left"], categories: ["Communists","Socialists","Progressives","Globalists","Internationalists"] },
+  { name: "Bioregionalism", zones: ["Non-Quadrant","Left Unity"], categories: ["Environmentalists"] },
+  { name: "Bismarckism", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Capitalists","Conservatives","Corporatists","Monarchists","Nationalists","Welfarists"] },
+  { name: "Black Anarchism", zones: ["Libertarian Left","Culturally Traditional Progressive"], categories: ["Esoteric","Anarchists","Anti-Colonial","Socialists","Communists","Revolutionary Nationalists","Left-Wing Anarchists"] },
+  { name: "Black-Hundredism", zones: ["Authoritarian Right","Authoritarian Unity","Culturally Reactionary"], categories: ["Religious","Monarchists","Reactionaries","Nationalists","Ethnonationalists","Ultranationalists"] },
+  { name: "Black Islamism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Fascists","Nationalists","Ethnonationalists","Ultranationalists","Revolutionary Nationalists","Reactionaries","Religious","Welfarists"] },
+  { name: "Black Nationalism", zones: ["Non-Quadrant"], categories: ["Culturally Variable","Anti-Colonial","Nationalists","Ethnonationalists","Revolutionary Nationalists"] },
+  { name: "Black Zionism", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Ethnonationalists","Nationalists","Religious","Zionists"] },
+  { name: "Blanquism", zones: ["Authoritarian Left","Culturally Left"], categories: ["Feminists","Socialists"] },
 ];
 
 // Known one-off shorthand that doesn't fit a general pattern.
@@ -644,6 +661,40 @@ function buildShareText() {
   let text = `Ideologle #${currentPuzzleNumber} ${result}\n${grid}`;
   if (SITE_URL) text += `\n${SITE_URL}`;
   return text;
+}
+
+// ---- countdown to the next daily puzzle (informational only — there's
+// no lock, "New ideology" already gives unlimited practice any time) ----
+let dailyCountdownInterval = null;
+function nextLocalMidnight() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+}
+function formatCountdown(ms) {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const h = String(Math.floor(total / 3600)).padStart(2, '0');
+  const m = String(Math.floor((total % 3600) / 60)).padStart(2, '0');
+  const s = String(total % 60).padStart(2, '0');
+  return `${h}h ${m}m ${s}s`;
+}
+function stopDailyCountdown() {
+  if (dailyCountdownInterval) { clearInterval(dailyCountdownInterval); dailyCountdownInterval = null; }
+}
+function startDailyCountdown() {
+  stopDailyCountdown();
+  const el = document.getElementById('nextDailyTimer');
+  if (!el) return;
+  const tick = () => {
+    const ms = nextLocalMidnight() - new Date();
+    if (ms <= 0) {
+      el.textContent = 'A new Ideologle is ready — reload to play it.';
+      stopDailyCountdown();
+      return;
+    }
+    el.textContent = `Next daily in ${formatCountdown(ms)}`;
+  };
+  tick();
+  dailyCountdownInterval = setInterval(tick, 1000);
 }
 
 // ---- stats: localStorage, daily rounds only ----
@@ -1021,7 +1072,7 @@ function submitGuess(rawValue) {
   updateStatus();
 
   const winEl = document.getElementById('win');
-  const shareBtnHtml = isDailyRound ? '<button id="shareBtn" type="button">Share result</button>' : '';
+  const shareBtnHtml = isDailyRound ? '<button id="shareBtn" type="button">Share result</button><div id="nextDailyTimer" class="next-timer"></div>' : '';
   if (entry.name === answer.name) {
     won = true;
     winEl.style.display = 'block';
@@ -1029,7 +1080,7 @@ function submitGuess(rawValue) {
     document.getElementById('newGame').style.display = 'inline-block';
     document.getElementById('guessInput').disabled = true;
     document.querySelector('#guessForm button').disabled = true;
-    if (isDailyRound) recordDailyResult(true, guessCount);
+    if (isDailyRound) { recordDailyResult(true, guessCount); startDailyCountdown(); }
   } else if (guessCount >= MAX_GUESSES) {
     winEl.style.display = 'block';
     winEl.classList.add('lose');
@@ -1037,7 +1088,7 @@ function submitGuess(rawValue) {
     document.getElementById('newGame').style.display = 'inline-block';
     document.getElementById('guessInput').disabled = true;
     document.querySelector('#guessForm button').disabled = true;
-    if (isDailyRound) recordDailyResult(false, null);
+    if (isDailyRound) { recordDailyResult(false, null); startDailyCountdown(); }
   }
 }
 
@@ -1051,6 +1102,7 @@ function updateModeLabel() {
 }
 
 function startGame(daily = true) {
+  stopDailyCountdown();
   isDailyRound = daily;
   if (daily) {
     currentPuzzleNumber = getPuzzleNumber();
