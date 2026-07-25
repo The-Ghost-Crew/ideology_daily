@@ -224,6 +224,55 @@
   #shareBtn { display: block; margin-top: var(--sp-3); background: transparent; border-color: currentColor; color: inherit; }
   .next-timer { font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--ink-soft); margin-top: var(--sp-2); letter-spacing: 0.03em; }
 
+  .ismism-quote { font-style: italic; border-left: 3px solid #9D00FF; padding-left: 10px; }
+
+  .ismism-btn {
+    display: block; width: 100%; margin: 0 0 var(--sp-3);
+    background-image: repeating-linear-gradient(90deg,
+      #141414 0px, #2FB28F 30px, #9D00FF 60px, #002EFF 90px, #007716 120px, #01FF33 150px,
+      #FFFF00 180px, #FF6E00 210px, #FF0300 240px, #FFFFFF 270px, #CECECE 300px, #166796 330px, #141414 360px);
+    color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    border: none; animation: ismism-shift 6s linear infinite;
+  }
+  .ismism-btn:hover {
+    animation-duration: 2s;
+    background-image: repeating-linear-gradient(90deg,
+      #141414 0px, #2FB28F 30px, #9D00FF 60px, #002EFF 90px, #007716 120px, #01FF33 150px,
+      #FFFF00 180px, #FF6E00 210px, #FF0300 240px, #FFFFFF 270px, #CECECE 300px, #166796 330px, #141414 360px);
+  }
+  @keyframes ismism-shift { from { background-position-x: 0px; } to { background-position-x: -360px; } }
+
+  .ismism-card { animation: stampIn 0.32s cubic-bezier(.2,1.4,.4,1) both, ismism-border-cycle 3s linear infinite; border-width: 2px; }
+  @keyframes ismism-border-cycle {
+    0% { border-color: #141414; } 9% { border-color: #2FB28F; } 18% { border-color: #9D00FF; }
+    27% { border-color: #002EFF; } 36% { border-color: #007716; } 45% { border-color: #01FF33; }
+    55% { border-color: #FFFF00; } 64% { border-color: #FF6E00; } 73% { border-color: #FF0300; }
+    82% { border-color: #FFFFFF; } 91% { border-color: #CECECE; } 100% { border-color: #166796; }
+  }
+  .ismism-stamp {
+    position: absolute; top: var(--sp-3); right: var(--sp-3);
+    width: 54px; height: 54px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 0.68rem;
+    color: #fff; text-align: center; line-height: 1.05; text-shadow: 0 1px 3px rgba(0,0,0,0.85);
+    background:
+      radial-gradient(circle at 32% 28%, rgba(255,255,255,0.4), rgba(255,255,255,0) 55%),
+      conic-gradient(from 0deg, #141414, #2FB28F, #9D00FF, #002EFF, #007716, #01FF33, #FFFF00, #FF6E00, #FF0300, #FFFFFF, #CECECE, #166796, #141414);
+  }
+  .ismism-scroll { max-height: 260px; overflow-y: auto; }
+  .suggestion-item.ismism-suggestion,
+  .suggestion-item.ismism-suggestion:hover,
+  .suggestion-item.ismism-suggestion.active {
+    background-image: repeating-linear-gradient(90deg,
+      #141414 0px, #2FB28F 30px, #9D00FF 60px, #002EFF 90px, #007716 120px, #01FF33 150px,
+      #FFFF00 180px, #FF6E00 210px, #FF0300 240px, #FFFFFF 270px, #CECECE 300px, #166796 330px, #141414 360px);
+    animation: ismism-shift 6s linear infinite;
+    color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+  }
+  .suggestion-item.ismism-suggestion mark { background: rgba(255,255,255,0.3); color: #fff; }
+  .suggestion-item.ismism-suggestion .sugg-badge { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
+  .chip.ismism-hit { color: #fff; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
   .archive-list { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
   .archive-item {
     display: flex; justify-content: space-between; align-items: center; width: 100%;
@@ -340,7 +389,7 @@
 
 <!-- ================= INTRO / RULES ================= -->
 <div id="introScreen">
-  <div class="disclaimer">Early build — 114 entries on file, heading toward ~200.</div>
+  <div class="disclaimer">Early build — 167 entries on file, heading toward ~200. Includes Ismism, the wildcard — it can occasionally be the answer itself.</div>
 
   <div class="section-label">How this works</div>
   <p class="rules-p">An ideology is filed as the mystery answer. Type any ideology you know into the box — a dropdown will narrow it down as you type — and press Guess. You'll get back an entry card showing how <em>that</em> ideology's own compass zone(s) and category tags line up against the one that's actually filed. Identify the filed ideology in 15 entries or fewer.</p>
@@ -369,6 +418,10 @@
     <span class="fiction-badge hit">✦ Fictional — matches the answer</span>
     <span class="fiction-badge miss">✦ Fictional — doesn't match</span>
   </div>
+
+  <div class="section-label">Ismism</div>
+  <p class="rules-p ismism-quote">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p>
+  <p class="rules-p">Ismism is a wildcard guess, always available — and yes, it can occasionally be the actual filed answer too, since it's built to represent every zone and every tag at once. Guess it against a different answer and it reveals a random slice of zones and tags checked against the real one instead, plus sometimes whether it's fictional. How much it shows depends on timing and a little luck: early in the game it's barely a sliver; late in the game it can lay out almost everything — in Easy, it ramps up faster and is basically maxed out by entry 12. There's a dedicated button for it next to the guess form.</p>
 
   <div class="section-label">A couple of extras</div>
   <p class="rules-p">Guessing the same ideology twice won't burn an entry — it points you back to the card instead. The Confirmed box below collects every zone and tag a guess has proven true about the answer, so you don't have to scroll back through every card to remember.</p>
@@ -407,6 +460,8 @@
         <span class="fiction-badge miss">✦ Fictional — doesn't match</span>
       </div>
       <p class="rules-p">Only shows when the guessed entry is itself fictional.</p>
+      <div class="section-label">Ismism</div>
+      <p class="rules-p">A wildcard guess that can occasionally BE the answer too — otherwise reveals a random slice of zones/tags checked against the real one. Reveals more the later you use it (faster in Easy), plus some luck.</p>
       <p class="rules-p" style="margin-bottom:0">40% zone overlap + 60% rarity-weighted category overlap. Repeat guesses don't cost an entry.</p>
     </div>
   </details>
@@ -494,6 +549,7 @@
     <button type="submit">Guess</button>
   </form>
   <div id="inputHint" class="input-hint"></div>
+  <button type="button" id="ismismBtn" class="ismism-btn">✦ ISMISM ✦</button>
 
   <div class="track-tabs" id="trackTabs">
     <button type="button" class="track-tab" data-track="normal">Normal</button>
@@ -523,11 +579,11 @@
 // left untouched and shows up in the Data check panel instead of
 // silently breaking a match.
 const ZONES = [
-  "Authoritarian Left","Authoritarian Right","Authoritarian Unity",
+  "Authoritarian Left","Authoritarian Right","Authoritarian Unity","Center-Authoritarian Left",
   "Centrists","Cultural Center","Cultural Center-Left","Cultural Center-Right",
-  "Culturally Alternate Modernist","Culturally Far-Left","Culturally Far-Right","Culturally Left","Culturally Reactionary","Culturally Right","Culturally Traditional Progressive","Culturally Ultra-Reactionary","Left Unity",
+  "Culturally Alternate Modernist","Culturally Far-Left","Culturally Far-Right","Culturally Left","Culturally Reactionary","Culturally Right","Culturally Traditional Progressive","Culturally Ultra-Reactionary","Culturally Ultraprogressive Reactionary","Left Unity",
   "Libertarian Left","Libertarian Right","Libertarian Unity",
-  "Non-Quadrant","Off The Compass","Old Left","Old Right","Opposite Unity","Right Unity","Syncretic"
+  "Non-Anarchist","Non-Quadrant","Off The Compass","Old Left","Old Right","Opposite Unity","Right Unity","Syncretic"
 ];
 
 // categories: flat, unranked tags — no hierarchy.
@@ -657,6 +713,64 @@ const IDEOLOGIES = [
   { name: "Clerical Fascism", zones: ["Syncretic","Authoritarian Unity","Culturally Far-Right"], categories: ["Conservatives","Totalitarians","Corporatists","Ethnonationalists","Fascists","Nationalists","Quasi-Fascists","Religious","Reactionaries","Theocracies","Third Position","Ultranationalists"] },
   { name: "Climate Skepticism", zones: ["Non-Quadrant"], categories: [] },
   { name: "Combatocracy", fictional: true, zones: ["Non-Quadrant"], categories: [] },
+  { name: "Communalism", zones: ["Off The Compass","Left Unity"], categories: ["Socialists","Communists"] },
+  { name: "Communitarianism", zones: ["Non-Quadrant"], categories: [] },
+  { name: "Communization Theory", zones: ["Libertarian Left","Culturally Far-Left"], categories: ["Culturally Variable","Socialists","Communists","Internationalists","Libertarians","Anarchists","Egoists"] },
+  { name: "Confederalism", zones: ["Non-Quadrant","Centrists"], categories: [] },
+  { name: "Confessionalism", zones: ["Non-Quadrant","Centrists","Culturally Right"], categories: ["Democratic","Religious"] },
+  { name: "Conservatism", zones: ["Cultural Center-Right","Non-Quadrant","Right Unity"], categories: ["Capitalists","Conservatives","Nationalists"] },
+  { name: "Conservative Feminism", zones: ["Non-Quadrant","Cultural Center-Right"], categories: ["Conservatives","Feminists"] },
+  { name: "Conservative Liberalism", zones: ["Cultural Center-Right","Right Unity","Culturally Right"], categories: ["Capitalists","Conservatives","Democratic","Liberals","Right-Wing Liberals"] },
+  { name: "Conservative Socialism", zones: ["Left Unity","Culturally Right"], categories: ["Conservatives","Internationalists","Nationalists","Religious","Socialists","Communists"] },
+  { name: "Constitutional Monarchism", zones: ["Non-Quadrant"], categories: ["Monarchists","Democratic"] },
+  { name: "Constitutionalism", zones: ["Non-Quadrant"], categories: ["Democratic"] },
+  { name: "Contrarianism", zones: ["Non-Quadrant","Opposite Unity","Syncretic"], categories: [] },
+  { name: "Corporatism", zones: ["Authoritarian Unity","Cultural Center-Right"], categories: ["Corporatists","Nationalists","Third Position","Quasi-Fascists"] },
+  { name: "Corporatocracy", zones: ["Authoritarian Unity","Authoritarian Right"], categories: ["Capitalists","Culturally Variable"] },
+  { name: "Cosmicism", zones: ["Authoritarian Unity","Center-AuthLeft","Culturally Right"], categories: ["Nationalists","Ethnonationalists","Syndicalists","Welfarists","Quasi-Fascists"] },
+  { name: "Cosmopolitanism", zones: ["Non-Quadrant","Cultural Center","Culturally Left"], categories: ["Internationalists"] },
+  { name: "Council Communism", zones: ["Libertarian Left","Culturally Far-Left"], categories: ["Socialists","Communists","Democratic","Internationalists"] },
+  { name: "Counter-Enlightenment", zones: ["Non-Quadrant","Culturally Reactionary"], categories: ["Conservatives","Reactionaries"] },
+  { name: "Crusadism", zones: ["Authoritarian Right","Culturally Reactionary"], categories: ["Internationalists","Religious","Conservatives","Reactionaries","Monarchists","Quasi-Fascists"] },
+  { name: "Cultism", zones: ["Authoritarian Unity"], categories: ["Religious","Totalitarians","Esoteric"] },
+  { name: "Cultural Nationalism", zones: ["Non-Quadrant","Cultural Center","Culturally Right"], categories: ["Nationalists"] },
+  { name: "Cybercommunism", zones: ["Left Unity","Cultural Center"], categories: ["Socialists","Communists","Post-Humanists"] },
+  { name: "Cyberfeminism", zones: ["Non-Quadrant","Culturally Left"], categories: ["Feminists","Post-Humanists","Transhumanists"] },
+  { name: "Cyberocracy", zones: ["Non-Anarchist","Culturally Left","Culturally Far-Left"], categories: ["Post-Humanists"] },
+  { name: "De Francism", zones: ["Authoritarian Left","Culturally Far-Left"], categories: ["Socialists","Welfarists","Populists","Anti-Colonial","Nationalists","Corporatists","Revolutionary Nationalists","Quasi-Fascists"] },
+  { name: "De Leonism", zones: ["Left Unity","Culturally Far-Left"], categories: ["Communists","Socialists"] },
+  { name: "Dead Centrism", fictional: true, zones: ["Centrists"], categories: [] },
+  { name: "Death Worship", fictional: true, zones: ["Off The Compass","Authoritarian Unity"], categories: ["Religious","Esoteric","Totalitarians"] },
+  { name: "Deep Ecology", zones: ["Cultural Center-Left","Left Unity","Culturally Left"], categories: ["Environmentalists"] },
+  { name: "Demarchy", zones: ["Non-Quadrant"], categories: ["Democratic"] },
+  { name: "Democracy", zones: ["Non-Quadrant"], categories: ["Democratic"] },
+  { name: "Democratic Confederalism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anti-Colonial","Democratic","Environmentalists","Feminists","Internationalists","Libertarians","Socialists","Communists"] },
+  { name: "Democratic Socialism", zones: ["Left Unity","Culturally Left"], categories: ["Culturally Variable","Communists","Socialists","Welfarists","Democratic","Internationalists"] },
+  { name: "Dengism", zones: ["Syncretic","Authoritarian Left","Authoritarian Unity","Cultural Center","Cultural Center-Right"], categories: ["Capitalists","Socialists","Communists","Quasi-Fascists"] },
+  { name: "Diarchy", zones: ["Non-Quadrant"], categories: [] },
+  { name: "Diggerism", zones: ["Libertarian Left","Culturally Ultraprogressive Reactionary"], categories: ["Anarchists","Socialists","Communists","Georgists","Religious"] },
+  { name: "Distributism", zones: ["Non-Quadrant","Center-Authoritarian Left","Culturally Right"], categories: ["Distributists","Religious","Third Position"] },
+  // Ismism CAN be picked as the actual answer now — it gets every zone and
+  // every category as its real profile (fitting, since it's "every ideology
+  // combined"), computed fresh below so normal guesses compare against it
+  // exactly like any other entry. The random wildcard-reveal mechanic only
+  // kicks in when you guess Ismism itself against a DIFFERENT real answer.
+  { name: "Ismism", ismism: true, zones: [], categories: [] },
+  { name: "E-Democracy", zones: ["Non-Quadrant"], categories: ["Democratic","Technologically Progressive"] },
+  { name: "Eco-Anarchism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Environmentalists","Communists","Socialists","Left-Wing Anarchists","Post-Left Anarchists"] },
+  { name: "Eco-Authoritarianism", zones: ["Authoritarian Unity"], categories: ["Culturally Variable","Environmentalists","Welfarists"] },
+  { name: "Eco-Capitalism", zones: ["Right Unity"], categories: ["Capitalists","Environmentalists"] },
+  { name: "Eco-Conservatism", zones: ["Cultural Center-Right","Culturally Right"], categories: ["Capitalists","Conservatives","Environmentalists"] },
+  { name: "Eco-Fascism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Environmentalists","Esoteric","Fascists","Nationalists","Ethnonationalists","Ultranationalists","Revolutionary Nationalists","Totalitarians"] },
+  { name: "Eco-Nationalism", zones: ["Non-Quadrant"], categories: ["Environmentalists","Nationalists"] },
+  { name: "Eco-Socialism", zones: ["Left Unity","Culturally Left"], categories: ["Environmentalists","Socialists"] },
+  { name: "Ecofeminism", zones: ["Left Unity","Culturally Left"], categories: ["Feminists","Environmentalists"] },
+  { name: "Ego-Communism", zones: ["Off The Compass","Libertarian Left","Culturally Far-Left"], categories: ["Anarchists","Egoists","Socialists","Communists","Post-Left Anarchists"] },
+  { name: "Elective Monarchism", zones: ["Non-Quadrant"], categories: ["Monarchists","Democratic"] },
+  { name: "Enlightened Absolutism", zones: ["Authoritarian Unity","Culturally Left","Cultural Center"], categories: ["Monarchists"] },
+  { name: "Enlightenment Thought", zones: ["Non-Quadrant","Culturally Left"], categories: [] },
+  { name: "Environmentalism", zones: ["Non-Quadrant"], categories: ["Environmentalists"] },
+  { name: "Ergatocracy", zones: ["Left Unity","Culturally Left"], categories: ["Socialists","Communists"] },
 ];
 
 // Known one-off shorthand that doesn't fit a general pattern.
@@ -1000,8 +1114,9 @@ function normalizeZone(raw) {
 
   for (const cand of candidates) {
     for (const [from, to] of Object.entries(ZONE_PREFIX_MAP)) {
-      if (cand.startsWith(from + " ")) {
-        const expanded = to + cand.slice(from.length);
+      const pattern = new RegExp('\\b' + from + '\\b');
+      if (pattern.test(cand)) {
+        const expanded = cand.replace(pattern, to);
         if (ZONES.includes(expanded)) return expanded;
       }
     }
@@ -1013,6 +1128,15 @@ function normalizeZone(raw) {
   return z;
 }
 IDEOLOGIES.forEach(e => { e.zones = e.zones.map(normalizeZone); });
+
+// Give Ismism its real "everything" profile now that normalization has run
+// and every other entry's categories are known.
+(function populateIsmism() {
+  const ismismEntry = IDEOLOGIES.find(e => e.ismism);
+  if (!ismismEntry) return;
+  ismismEntry.zones = [...ZONES];
+  ismismEntry.categories = [...new Set(IDEOLOGIES.flatMap(e => e.categories))];
+})();
 
 function computeWeights() {
   const freq = {};
@@ -1221,7 +1345,8 @@ function renderSuggestions(query) {
 
   const itemsHtml = currentSuggestions.map((e, i) => {
     const logged = guessedNames && guessedNames.has(e.name) ? '<span class="sugg-badge">logged</span>' : '';
-    return `<div class="suggestion-item" role="option" data-index="${i}">${highlightMatch(e.name, q)}${logged}</div>`;
+    const ismismClass = e.ismism ? ' ismism-suggestion' : '';
+    return `<div class="suggestion-item${ismismClass}" role="option" data-index="${i}">${highlightMatch(e.name, q)}${logged}</div>`;
   }).join('');
   const moreHtml = all.length > 8 ? `<div class="suggestion-empty">+${all.length - 8} more — keep typing</div>` : '';
   box.innerHTML = itemsHtml + moreHtml;
@@ -1255,6 +1380,7 @@ function showResultBanner(isWin) {
   document.getElementById('newGame').style.display = 'inline-block';
   document.getElementById('guessInput').disabled = true;
   document.querySelector('#guessForm button').disabled = true;
+  document.getElementById('ismismBtn').disabled = true;
   if (roundMode === 'daily') startDailyCountdown();
 }
 
@@ -1361,6 +1487,7 @@ function restoreDailyGameState(saved) {
   document.getElementById('newGame').style.display = 'none';
   document.getElementById('guessInput').disabled = false;
   document.querySelector('#guessForm button').disabled = false;
+  document.getElementById('ismismBtn').disabled = false;
   document.getElementById('howtoBox').removeAttribute('open');
   hideSuggestions();
 
@@ -1427,6 +1554,7 @@ function startGame(mode = 'daily', archiveDate = null, track = null) {
   document.getElementById('newGame').style.display = 'none';
   document.getElementById('guessInput').disabled = false;
   document.querySelector('#guessForm button').disabled = false;
+  document.getElementById('ismismBtn').disabled = false;
   document.getElementById('howtoBox').removeAttribute('open');
   hideSuggestions();
 
@@ -1453,7 +1581,88 @@ function stampColor(pct) {
   return 'var(--stamp-brick)';
 }
 
+const ISMISM_COLORS = ['#141414','#2FB28F','#9D00FF','#002EFF','#007716','#01FF33','#FFFF00','#FF6E00','#FF0300','#FFFFFF','#CECECE','#166796'];
+
+// Reveal fraction starts small and grows nonlinearly as the game goes on
+// (quadratic, not linear), plus randomness — an early guess is barely a
+// peek, a late one can lay out nearly everything, same result never
+// guaranteed twice at the same entry number.
+function computeIsmismReveal() {
+  const effectiveMax = isEasyAssist() ? 12 : MAX_GUESSES;
+  const progress = Math.min(1, guessCount / effectiveMax);
+  const jitter = (Math.random() - 0.5) * 0.25;
+  const revealFraction = Math.min(0.97, Math.max(0.02, progress * progress + jitter));
+
+  const shuffledZones = [...ZONES].sort(() => Math.random() - 0.5);
+  const zoneCount = Math.round(revealFraction * ZONES.length);
+  const revealedZones = shuffledZones.slice(0, zoneCount);
+
+  const allCats = [...new Set(IDEOLOGIES.flatMap(e => e.categories))];
+  const shuffledCats = allCats.sort(() => Math.random() - 0.5);
+  const catCount = Math.round(revealFraction * allCats.length);
+  const revealedCats = shuffledCats.slice(0, catCount);
+
+  const revealFiction = Math.random() < revealFraction;
+
+  return { revealFraction, revealedZones, revealedCats, revealFiction };
+}
+
+function renderIsmismGuess(entry) {
+  const row = document.createElement('div');
+  row.className = 'guess-row ismism-card';
+  row.dataset.name = entry.name;
+
+  const { revealFraction, revealedZones, revealedCats, revealFiction } = computeIsmismReveal();
+  const pct = Math.round(revealFraction * 100);
+  const mw = maxWeight();
+  let hitIndex = 0;
+
+  const zoneChips = revealedZones.map(z => {
+    const hit = answer.zones.includes(z);
+    if (!hit) return `<span class="chip zone-miss">${z}</span>`;
+    const color = ISMISM_COLORS[hitIndex++ % ISMISM_COLORS.length];
+    return `<span class="chip ismism-hit" style="background:${color};border-color:${color}">${z}</span>`;
+  }).join('');
+
+  const catChips = revealedCats.map(c => {
+    const hit = answer.categories.includes(c);
+    if (!hit) return `<span class="chip miss">${c}</span>`;
+    const color = ISMISM_COLORS[hitIndex++ % ISMISM_COLORS.length];
+    const w = tagWeights[c] || 0;
+    return `<span class="chip ismism-hit" style="background:${color};border-color:${color}">${c} <span class="rarity-label">${w.toFixed(2)}</span></span>`;
+  }).join('');
+
+  let fictionHtml = '';
+  if (revealFiction) {
+    const hit = !!answer.fictional;
+    fictionHtml = `<div class="fiction-badge ${hit ? 'hit' : 'miss'}">✦ Fictional — ${hit ? 'matches the answer' : "doesn't match"}</div>`;
+    if (hit) fictionConfirmed = true;
+  }
+
+  row.innerHTML = `
+    <div class="entry-no">Entry ${String(guessCount).padStart(3,'0')}</div>
+    <div class="word">Ismism</div>
+    ${fictionHtml}
+    <div class="ismism-stamp">${pct}%<br>revealed</div>
+    <div class="section-label">Zones glimpsed</div>
+    <div class="tagrow ismism-scroll">${zoneChips || '<span class="chip miss">none this time</span>'}</div>
+    <div class="section-label">Tags glimpsed</div>
+    <div class="tagrow ismism-scroll">${catChips || '<span class="chip miss">none this time</span>'}</div>
+  `;
+  document.getElementById('guesses').prepend(row);
+
+  // Genuinely true info about the real answer — feeds Confirmed/Candidates
+  // exactly like any other guess would.
+  revealedZones.forEach(z => { if (answer.zones.includes(z)) confirmedZones.add(z); else ruledOutZones.add(z); });
+  revealedCats.forEach(c => { if (answer.categories.includes(c)) confirmedCats.add(c); else ruledOutCats.add(c); });
+  renderReference();
+  renderCandidates();
+  return pct;
+}
+
 function renderGuess(entry) {
+  if (entry.ismism && entry.name !== answer.name) return renderIsmismGuess(entry);
+
   const row = document.createElement('div');
   row.className = 'guess-row';
   row.dataset.name = entry.name;
@@ -1565,6 +1774,11 @@ document.getElementById('guessForm').addEventListener('submit', (e) => {
   e.preventDefault();
   submitGuess(guessInput.value);
   hideSuggestions();
+});
+
+document.getElementById('ismismBtn').addEventListener('click', () => {
+  hideSuggestions();
+  submitGuess('Ismism');
 });
 
 document.getElementById('newGame').addEventListener('click', () => startGame('practice'));
