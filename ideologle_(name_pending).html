@@ -201,6 +201,11 @@
 
   .mode-label { font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--stamp-blue); letter-spacing: 0.05em; margin-bottom: 4px; }
   .mode-label a { color: var(--ink-soft); text-decoration: underline; cursor: pointer; }
+  .easy-hint {
+    font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--stamp-blue);
+    background: var(--stamp-blue-bg); border: 1px dashed var(--stamp-blue); border-radius: var(--radius-tag);
+    padding: 6px 10px; margin-bottom: var(--sp-3);
+  }
 
   .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: var(--sp-3); }
   .stat-box { text-align: center; }
@@ -217,6 +222,33 @@
 
   #shareBtn { display: block; margin-top: var(--sp-3); background: transparent; border-color: currentColor; color: inherit; }
   .next-timer { font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--ink-soft); margin-top: var(--sp-2); letter-spacing: 0.03em; }
+
+  .archive-list { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
+  .archive-item {
+    display: flex; justify-content: space-between; align-items: center; width: 100%;
+    background: var(--card); border: 1px solid var(--line); color: var(--ink);
+    text-transform: none; letter-spacing: normal; font-weight: 500; padding: 9px 11px;
+    font-family: var(--font-body); font-size: 0.85rem;
+  }
+  .archive-item:hover { background: var(--paper-alt); }
+  .archive-date { font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--ink-soft); }
+  .archive-check { color: var(--moss); font-weight: 700; margin-right: 4px; }
+
+  .easy-list { max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+  .easy-row {
+    padding: 8px 10px; border-radius: var(--radius-tag); border: 1px solid var(--line);
+    background: var(--card);
+  }
+  .easy-row .easy-name { font-family: var(--font-display); font-weight: 600; font-size: 0.82rem; display: flex; align-items: center; gap: 6px; }
+  .easy-row .easy-tagrow { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+  .easy-mini-badge { font-size: 0.6rem; padding: 1px 5px; }
+
+  .track-tabs { display: flex; gap: 6px; margin-bottom: 6px; }
+  .track-tab {
+    flex: 1; padding: 7px 10px; font-size: 0.65rem;
+    background: transparent; border-color: var(--line); color: var(--ink-soft);
+  }
+  .track-tab.active { background: var(--stamp-blue); color: var(--paper); border-color: var(--stamp-blue); }
   .manual-copy-box { margin-top: var(--sp-2); }
   .manual-copy-ta {
     width: 100%; min-height: 76px; padding: 8px; border-radius: var(--radius-tag);
@@ -341,7 +373,10 @@
   <p class="rules-p">Guessing the same ideology twice won't burn an entry — it points you back to the card instead. The Confirmed box below collects every zone and tag a guess has proven true about the answer, so you don't have to scroll back through every card to remember.</p>
 
   <div class="section-label">Daily puzzle</div>
-  <p class="rules-p">There's one filed ideology per calendar day, same for everyone — but nothing locks you out after you solve it. Hit "New ideology" any time for an unlimited random practice round, or head back to today's puzzle whenever you like. Solve the daily one and you can share your result as a row of colored squares (🟩🟨🟥, one per guess) without spoiling the answer. Your stats — games played, streak, guess distribution — save locally in your browser and are visible any time from the Stats box in-game.</p>
+  <p class="rules-p">There are two separate daily puzzles, Normal and Easy — pick with the tabs once you're in, like difficulty tiers in a daily crossword. Easy shows the answer's compass zones upfront as its own hint, separate from Confirmed and Candidates — those two still only reflect what your actual guesses have proven, so they correctly start empty even in Easy. Normal gets no hint. Each track has its own puzzle number and its own stats. Nothing locks you out after solving either — "New ideology" gives unlimited random practice any time, or head back to a daily whenever you like. Solve a daily and you can share your result as a row of colored squares (🟩🟨🟥, one per guess) without spoiling the answer. Stats and in-progress games save locally in your browser and survive a refresh, same as Wordle.</p>
+
+  <div class="section-label">Candidates</div>
+  <p class="rules-p">The Candidates box lists every ideology that could still be the answer given what's confirmed so far — it narrows on its own as you guess, nothing to tap. Full spoiler if you open it early, so it's entirely optional.</p>
 
   <button id="startBtn" type="button">Start Ideologle</button>
 </div>
@@ -396,6 +431,22 @@
     </div>
   </details>
 
+  <details class="reference" id="candidatesBox">
+    <summary>Candidates — <span id="candidatesCount">still possible</span></summary>
+    <div class="ref-block">
+      <p class="rules-p">Every ideology that could still be the answer, given what's confirmed so far — narrows automatically as you guess, no need to cross anything off yourself.</p>
+      <div id="candidatesList" class="easy-list"></div>
+    </div>
+  </details>
+
+  <details class="reference" id="archiveBox">
+    <summary>Archive — <span id="archiveCount">1 puzzle</span></summary>
+    <div class="ref-block">
+      <p class="rules-p">Every past daily puzzle, replayable any time. Doesn't touch your streak or stats — only today's actual daily counts for those.</p>
+      <div id="archiveList" class="archive-list"></div>
+    </div>
+  </details>
+
   <details class="reference" id="statsBox">
     <summary>Your stats — <span id="statsSummaryCount">no games yet</span></summary>
     <div class="ref-block">
@@ -428,7 +479,12 @@
   </form>
   <div id="inputHint" class="input-hint"></div>
 
+  <div class="track-tabs" id="trackTabs">
+    <button type="button" class="track-tab" data-track="normal">Normal</button>
+    <button type="button" class="track-tab" data-track="easy">Easy</button>
+  </div>
   <div id="modeLabel" class="mode-label"></div>
+  <div id="easyHint" class="easy-hint" style="display:none"></div>
   <div id="status">Entry 0 / 15</div>
   <div id="win"></div>
   <button id="newGame">New ideology</button>
@@ -588,8 +644,37 @@ function getPuzzleNumber(d = new Date()) {
   const epoch = new Date(DAILY_EPOCH.getFullYear(), DAILY_EPOCH.getMonth(), DAILY_EPOCH.getDate());
   return Math.round((today - epoch) / 86400000) + 1;
 }
-function pickDailyAnswer() {
-  return IDEOLOGIES[hashString(getLocalDateString()) % IDEOLOGIES.length];
+function pickAnswerForDate(d, track = 'normal') {
+  const dateStr = getLocalDateString(d);
+  const normalIdx = hashString(dateStr) % IDEOLOGIES.length;
+  if (track !== 'easy') return IDEOLOGIES[normalIdx];
+  let easyIdx = hashString(dateStr + '::easy') % IDEOLOGIES.length;
+  if (easyIdx === normalIdx) easyIdx = (easyIdx + 1) % IDEOLOGIES.length; // force distinct, don't just hope
+  return IDEOLOGIES[easyIdx];
+}
+function pickDailyAnswer(track = 'normal') {
+  return pickAnswerForDate(new Date(), track);
+}
+
+// Nothing here is "saved" — every past puzzle number is just recomputed
+// from its date on the fly, so there's nothing for a data wipe to lose.
+// One caveat while the dataset is still growing: the index is `hash(date)
+// % current entry count`, so which ideology a given past puzzle number
+// maps to can shift if entries are added later. Once the dataset settles
+// near its target size this stops moving.
+function renderArchive() {
+  const total = getPuzzleNumber();
+  document.getElementById('archiveCount').textContent = `${total} puzzle${total === 1 ? '' : 's'}`;
+  const stats = loadStats();
+  const completed = new Set(stats.history.filter(h => h.won).map(h => h.puzzleNumber));
+  let html = '';
+  for (let n = total; n >= 1; n--) {
+    const d = new Date(DAILY_EPOCH.getFullYear(), DAILY_EPOCH.getMonth(), DAILY_EPOCH.getDate() + (n - 1));
+    const label = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    const check = completed.has(n) ? '<span class="archive-check">✓</span>' : '';
+    html += `<button type="button" class="archive-item" data-puzzle="${n}">${check}#${n}<span class="archive-date">${label}</span></button>`;
+  }
+  document.getElementById('archiveList').innerHTML = html;
 }
 
 // ---- share: native share sheet if available, clipboard otherwise ----
@@ -702,25 +787,26 @@ function startDailyCountdown() {
 // previews sandbox localStorage, so saves may not persist between
 // reloads there. Once this file is actually hosted (as planned),
 // localStorage works normally and persists per-visitor as expected.
-const STATS_KEY = 'ideologle_stats_v1';
-function loadStats() {
+function statsKeyFor(track) { return track === 'easy' ? 'ideologle_easy_stats_v1' : 'ideologle_stats_v1'; }
+function loadStats(track = 'normal') {
   try {
-    const raw = localStorage.getItem(STATS_KEY);
+    const raw = localStorage.getItem(statsKeyFor(track));
     return raw ? JSON.parse(raw) : { history: [] };
   } catch (e) {
     return { history: [] };
   }
 }
-function saveStats(stats) {
-  try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch (e) { /* storage unavailable */ }
+function saveStats(stats, track = 'normal') {
+  try { localStorage.setItem(statsKeyFor(track), JSON.stringify(stats)); } catch (e) { /* storage unavailable */ }
 }
-function recordDailyResult(didWin, guesses) {
-  const stats = loadStats();
+function recordDailyResult(didWin, guesses, track) {
+  const stats = loadStats(track);
   const dateStr = getLocalDateString();
   if (stats.history.some(h => h.date === dateStr)) return; // one record per calendar day
   stats.history.push({ date: dateStr, puzzleNumber: currentPuzzleNumber, won: didWin, guesses: didWin ? guesses : null });
-  saveStats(stats);
+  saveStats(stats, track);
   renderStats();
+  if (track === 'normal') renderArchive();
 }
 function computeStreaks(sortedHistory) {
   let running = 0, maxStreak = 0, prevPuzzleNum = null;
@@ -741,14 +827,15 @@ function getGuessBucket(n) {
   if (n <= 12) return '10-12';
   return '13-15';
 }
-function renderStats() {
-  const stats = loadStats();
+function renderStats(track = dailyTrack) {
+  const stats = loadStats(track);
   const summaryEl = document.getElementById('statsSummaryCount');
   const emptyEl = document.getElementById('statsEmpty');
   const filledEl = document.getElementById('statsFilled');
+  const label = track === 'easy' ? 'Easy' : 'Normal';
 
   if (!stats.history.length) {
-    summaryEl.textContent = 'no games yet';
+    summaryEl.textContent = `${label} — no games yet`;
     emptyEl.style.display = 'block';
     filledEl.style.display = 'none';
     return;
@@ -762,7 +849,7 @@ function renderStats() {
   const winPct = played ? Math.round((wins / played) * 100) : 0;
   const { currentStreak, maxStreak } = computeStreaks(sorted);
 
-  summaryEl.textContent = `${played} played`;
+  summaryEl.textContent = `${label} — ${played} played`;
   document.getElementById('statPlayed').textContent = played;
   document.getElementById('statWinPct').textContent = winPct + '%';
   document.getElementById('statCurrent').textContent = currentStreak;
@@ -771,26 +858,52 @@ function renderStats() {
   const buckets = { '1-3': 0, '4-6': 0, '7-9': 0, '10-12': 0, '13-15': 0, 'X': 0 };
   sorted.forEach(h => { buckets[h.won ? getGuessBucket(h.guesses) : 'X']++; });
   const maxCount = Math.max(1, ...Object.values(buckets));
-  document.getElementById('statsDist').innerHTML = Object.entries(buckets).map(([label, count]) => {
+  document.getElementById('statsDist').innerHTML = Object.entries(buckets).map(([bucketLabel, count]) => {
     const pct = Math.max(count ? 10 : 0, Math.round((count / maxCount) * 100));
-    return `<div class="dist-row"><span class="dist-label">${label}</span><div class="dist-bar-wrap"><div class="dist-bar" style="width:${pct}%">${count || ''}</div></div></div>`;
+    return `<div class="dist-row"><span class="dist-label">${bucketLabel}</span><div class="dist-bar-wrap"><div class="dist-bar" style="width:${pct}%">${count || ''}</div></div></div>`;
   }).join('');
 }
-function buildStatsShareText() {
-  const stats = loadStats();
+function buildStatsShareText(track = dailyTrack) {
+  const stats = loadStats(track);
   const sorted = [...stats.history].sort((a, b) => a.puzzleNumber - b.puzzleNumber);
   const played = sorted.length;
   const wins = sorted.filter(h => h.won).length;
   const winPct = played ? Math.round((wins / played) * 100) : 0;
   const { currentStreak, maxStreak } = computeStreaks(sorted);
-  let text = `My Ideologle stats\nPlayed ${played} · Win rate ${winPct}%\nStreak ${currentStreak} (best ${maxStreak})`;
+  const label = track === 'easy' ? 'Easy' : 'Normal';
+  let text = `My Ideologle stats (${label})\nPlayed ${played} · Win rate ${winPct}%\nStreak ${currentStreak} (best ${maxStreak})`;
   if (SITE_URL) text += `\n${SITE_URL}`;
   return text;
 }
 
+// ---- in-progress daily game persistence (survives refresh, like Wordle) ----
+// Only the official daily round is saved (per track) — practice and archive
+// rounds are meant to be freely restartable, so there's nothing to preserve.
+function gameStateKeyFor(track) { return track === 'easy' ? 'ideologle_easy_state_v1' : 'ideologle_daily_state_v1'; }
+function saveDailyGameState() {
+  if (roundMode !== 'daily') return;
+  try {
+    localStorage.setItem(gameStateKeyFor(dailyTrack), JSON.stringify({
+      dateStr: getLocalDateString(),
+      puzzleNumber: currentPuzzleNumber,
+      guessedOrder: [...guessedNames],
+      won: won,
+    }));
+  } catch (e) { /* storage unavailable — game just won't survive a refresh */ }
+}
+function loadDailyGameState(track) {
+  try {
+    const raw = localStorage.getItem(gameStateKeyFor(track));
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+
 let answer, guessCount, won, guessedNames, confirmedZones, confirmedCats, fictionConfirmed, hintTimer;
+let ruledOutZones = new Set(), ruledOutCats = new Set(), fictionStatus = null;
 let currentSuggestions = [], activeSuggestionIndex = -1;
-let isDailyRound = true, currentPuzzleNumber = null, guessHistory = [];
+let roundMode = 'daily', currentPuzzleNumber = null, guessHistory = [];
+let dailyTrack = 'normal'; // 'normal' | 'easy' — two separate daily puzzles, own stats, like difficulty tiers in NYT Sudoku
+const DEBUG_MODE = false; // flip to true locally if you want the answer logged to console for testing — stays off for the public build so it can't be cheesed via devtools
 
 // Fixes: concatenation ("RightUnity" -> "Right Unity"), hyphenated
 // shorthand ("Lib-Left" -> "Libertarian Left"), abbreviated first
@@ -966,6 +1079,38 @@ function renderReference() {
   countsEl.textContent = `${confirmedZones.size} zone${confirmedZones.size === 1 ? '' : 's'} confirmed · ${confirmedCats.size} tag${confirmedCats.size === 1 ? '' : 's'} confirmed`;
 }
 
+// Full-visibility assist: every entry's actual zones/tags, tap to strike
+// one off as ruled out. Purely a scratch pad — doesn't affect scoring.
+// Every entry that's still logically possible given what's been confirmed
+// or ruled out so far (including already-guessed misses and the fictional
+// axis) — narrows automatically, nothing to click.
+function getCandidates() {
+  return IDEOLOGIES.filter(e => {
+    if (guessedNames.has(e.name)) return false;
+    for (const z of confirmedZones) if (!e.zones.includes(z)) return false;
+    for (const z of ruledOutZones) if (e.zones.includes(z)) return false;
+    for (const c of confirmedCats) if (!e.categories.includes(c)) return false;
+    for (const c of ruledOutCats) if (e.categories.includes(c)) return false;
+    if (fictionStatus === true && !e.fictional) return false;
+    if (fictionStatus === false && e.fictional) return false;
+    return true;
+  });
+}
+function renderCandidates() {
+  const candidates = getCandidates().sort((a, b) => a.name.localeCompare(b.name));
+  document.getElementById('candidatesCount').textContent = `${candidates.length} / ${IDEOLOGIES.length} still possible`;
+  document.getElementById('candidatesList').innerHTML = candidates.map(e => {
+    const fictionTag = e.fictional ? '<span class="fiction-badge hit easy-mini-badge">✦</span>' : '';
+    const zoneChips = e.zones.length ? e.zones.map(z => `<span class="chip ref">${z}</span>`).join('') : '<span class="chip ref">none</span>';
+    const catChips = e.categories.length ? e.categories.map(c => `<span class="chip ref">${c}</span>`).join('') : '<span class="chip ref">none</span>';
+    return `<div class="easy-row" data-name="${e.name}">
+      <div class="easy-name">${e.name}${fictionTag}</div>
+      <div class="easy-tagrow">${zoneChips}</div>
+      <div class="easy-tagrow">${catChips}</div>
+    </div>`;
+  }).join('');
+}
+
 function showHint(msg, tone) {
   const el = document.getElementById('inputHint');
   const input = document.getElementById('guessInput');
@@ -1040,6 +1185,21 @@ function selectSuggestion(entry) {
 }
 
 // ---- core guess handling (shared by form submit + dropdown pick) ----
+function showResultBanner(isWin) {
+  const winEl = document.getElementById('win');
+  const shareBtnHtml = roundMode !== 'practice'
+    ? '<button id="shareBtn" type="button">Share result</button><div id="nextDailyTimer" class="next-timer"></div>' : '';
+  winEl.style.display = 'block';
+  winEl.classList.toggle('lose', !isWin);
+  winEl.innerHTML = isWin
+    ? `<span class="stamp-word">Identified</span><span class="stamp-detail">Filed correctly on entry ${guessCount}. It was "${answer.name}".</span>${shareBtnHtml}`
+    : `<span class="stamp-word">Case closed</span><span class="stamp-detail">Log full at ${MAX_GUESSES}, unidentified. It was "${answer.name}".</span>${shareBtnHtml}`;
+  document.getElementById('newGame').style.display = 'inline-block';
+  document.getElementById('guessInput').disabled = true;
+  document.querySelector('#guessForm button').disabled = true;
+  if (roundMode === 'daily') startDailyCountdown();
+}
+
 function submitGuess(rawValue) {
   if (won) return;
   const input = document.getElementById('guessInput');
@@ -1071,51 +1231,71 @@ function submitGuess(rawValue) {
   input.value = '';
   updateStatus();
 
-  const winEl = document.getElementById('win');
-  const shareBtnHtml = isDailyRound ? '<button id="shareBtn" type="button">Share result</button><div id="nextDailyTimer" class="next-timer"></div>' : '';
   if (entry.name === answer.name) {
     won = true;
-    winEl.style.display = 'block';
-    winEl.innerHTML = `<span class="stamp-word">Identified</span><span class="stamp-detail">Filed correctly on entry ${guessCount}. It was "${answer.name}".</span>${shareBtnHtml}`;
-    document.getElementById('newGame').style.display = 'inline-block';
-    document.getElementById('guessInput').disabled = true;
-    document.querySelector('#guessForm button').disabled = true;
-    if (isDailyRound) { recordDailyResult(true, guessCount); startDailyCountdown(); }
+    showResultBanner(true);
+    if (roundMode === 'daily') recordDailyResult(true, guessCount, dailyTrack);
   } else if (guessCount >= MAX_GUESSES) {
-    winEl.style.display = 'block';
-    winEl.classList.add('lose');
-    winEl.innerHTML = `<span class="stamp-word">Case closed</span><span class="stamp-detail">Log full at ${MAX_GUESSES}, unidentified. It was "${answer.name}".</span>${shareBtnHtml}`;
-    document.getElementById('newGame').style.display = 'inline-block';
-    document.getElementById('guessInput').disabled = true;
-    document.querySelector('#guessForm button').disabled = true;
-    if (isDailyRound) { recordDailyResult(false, null); startDailyCountdown(); }
+    showResultBanner(false);
+    if (roundMode === 'daily') recordDailyResult(false, null, dailyTrack);
   }
+  saveDailyGameState();
 }
 
 function pickAnswer() { return IDEOLOGIES[Math.floor(Math.random() * IDEOLOGIES.length)]; }
 
+// Archive always replays the Normal track regardless of the current tab
+// selection, so it never gets the Easy assists — everywhere else (daily
+// and practice) follows whichever track is currently selected.
+function isEasyAssist() { return dailyTrack === 'easy' && roundMode !== 'archive'; }
+
 function updateModeLabel() {
   const el = document.getElementById('modeLabel');
-  el.innerHTML = isDailyRound
-    ? `Today's Ideologle #${currentPuzzleNumber}`
-    : `Practice round · <a href="#" id="backToDaily">back to today's puzzle</a>`;
+  const trackTag = dailyTrack === 'easy' ? ' (Easy)' : '';
+  if (roundMode === 'daily') {
+    el.innerHTML = `Today's Ideologle #${currentPuzzleNumber}${trackTag}`;
+  } else if (roundMode === 'archive') {
+    el.innerHTML = `Archived Ideologle #${currentPuzzleNumber} · <a href="#" id="backToDaily">back to today's puzzle</a>`;
+  } else {
+    el.innerHTML = `Practice round${trackTag} · <a href="#" id="backToDaily">back to today's puzzle</a>`;
+  }
+}
+function updateTrackTabs() {
+  document.querySelectorAll('.track-tab').forEach(b => {
+    b.classList.toggle('active', roundMode === 'daily' && b.dataset.track === dailyTrack);
+  });
+}
+function updateCandidatesVisibility() {
+  document.getElementById('candidatesBox').style.display = isEasyAssist() ? '' : 'none';
+}
+// Easy's hint is shown on its own, NOT folded into confirmedZones — the
+// Confirmed and Candidates panels should only ever reflect what's actually
+// been proven through guessing, so "nothing confirmed yet" stays true even
+// in Easy mode until you make your first guess.
+function renderEasyHint() {
+  const el = document.getElementById('easyHint');
+  if (!isEasyAssist()) {
+    el.style.display = 'none';
+    return;
+  }
+  el.style.display = 'block';
+  const zoneList = answer.zones.length ? answer.zones.join(', ') : 'none';
+  el.textContent = `✦ Easy hint — compass zone${answer.zones.length === 1 ? '' : 's'}: ${zoneList}`;
 }
 
-function startGame(daily = true) {
-  stopDailyCountdown();
-  isDailyRound = daily;
-  if (daily) {
-    currentPuzzleNumber = getPuzzleNumber();
-    answer = pickDailyAnswer();
-  } else {
-    answer = pickAnswer();
-  }
+// Replays a saved in-progress (or already-finished) daily game — reconstructs
+// every card and the Confirmed/Candidates state by re-running each past guess
+// through the normal render path, so nothing is duplicated or out of sync.
+function restoreDailyGameState(saved) {
   guessCount = 0;
   won = false;
   guessedNames = new Set();
   confirmedZones = new Set();
   confirmedCats = new Set();
+  ruledOutZones = new Set();
+  ruledOutCats = new Set();
   fictionConfirmed = false;
+  fictionStatus = null;
   guessHistory = [];
   document.getElementById('guesses').innerHTML = '';
   document.getElementById('win').style.display = 'none';
@@ -1125,11 +1305,84 @@ function startGame(daily = true) {
   document.querySelector('#guessForm button').disabled = false;
   document.getElementById('howtoBox').removeAttribute('open');
   hideSuggestions();
+
+  renderEasyHint();
+
+  (saved.guessedOrder || []).forEach(name => {
+    const entry = IDEOLOGIES.find(e => e.name === name);
+    if (!entry) return; // entry renamed/removed since this was saved — skip it gracefully
+    guessedNames.add(entry.name);
+    guessCount++;
+    const pct = renderGuess(entry);
+    guessHistory.push({ name: entry.name, pct });
+  });
+
   updateModeLabel();
+  updateTrackTabs();
+  updateCandidatesVisibility();
   updateStatus();
   renderWarnings();
   renderReference();
-  console.log('Answer (debug):', answer.name);
+  renderCandidates();
+
+  if (saved.won) {
+    won = true;
+    showResultBanner(true);
+  } else if (guessCount >= MAX_GUESSES) {
+    showResultBanner(false);
+  }
+}
+
+function startGame(mode = 'daily', archiveDate = null, track = null) {
+  stopDailyCountdown();
+  roundMode = mode;
+  if (mode === 'daily' && track) dailyTrack = track;
+
+  if (mode === 'daily') {
+    currentPuzzleNumber = getPuzzleNumber();
+    answer = pickDailyAnswer(dailyTrack);
+    const saved = loadDailyGameState(dailyTrack);
+    if (saved && saved.dateStr === getLocalDateString()) {
+      restoreDailyGameState(saved);
+      return;
+    }
+  } else if (mode === 'archive') {
+    currentPuzzleNumber = getPuzzleNumber(archiveDate);
+    answer = pickAnswerForDate(archiveDate); // archive always replays the Normal track
+  } else {
+    answer = pickAnswer();
+  }
+
+  guessCount = 0;
+  won = false;
+  guessedNames = new Set();
+  confirmedZones = new Set();
+  confirmedCats = new Set();
+  ruledOutZones = new Set();
+  ruledOutCats = new Set();
+  fictionConfirmed = false;
+  fictionStatus = null;
+  guessHistory = [];
+  document.getElementById('guesses').innerHTML = '';
+  document.getElementById('win').style.display = 'none';
+  document.getElementById('win').classList.remove('lose');
+  document.getElementById('newGame').style.display = 'none';
+  document.getElementById('guessInput').disabled = false;
+  document.querySelector('#guessForm button').disabled = false;
+  document.getElementById('howtoBox').removeAttribute('open');
+  hideSuggestions();
+
+  renderEasyHint(); // Easy track's hint: zones shown on their own, not folded into Confirmed
+
+  updateModeLabel();
+  updateTrackTabs();
+  updateCandidatesVisibility();
+  updateStatus();
+  renderWarnings();
+  renderReference();
+  renderCandidates();
+  if (mode === 'daily') saveDailyGameState();
+  if (DEBUG_MODE) console.log('Answer (debug):', answer.name);
 }
 
 function updateStatus() {
@@ -1176,6 +1429,7 @@ function renderGuess(entry) {
   if (entry.fictional) {
     const fictionHit = !!answer.fictional;
     fictionBadgeHtml = `<div class="fiction-badge ${fictionHit ? 'hit' : 'miss'}">✦ Fictional — ${fictionHit ? 'matches the answer' : "doesn't match"}</div>`;
+    fictionStatus = fictionHit; // true = answer confirmed fictional, false = confirmed real
     if (fictionHit) fictionConfirmed = true;
   }
 
@@ -1206,8 +1460,11 @@ function renderGuess(entry) {
   document.getElementById('guesses').prepend(row);
 
   sharedZones.forEach(z => confirmedZones.add(z));
+  missZones.forEach(z => ruledOutZones.add(z));
   sharedCats.forEach(c => confirmedCats.add(c));
+  missCats.forEach(c => ruledOutCats.add(c));
   renderReference();
+  renderCandidates();
   return overallPct;
 }
 
@@ -1252,18 +1509,32 @@ document.getElementById('guessForm').addEventListener('submit', (e) => {
   hideSuggestions();
 });
 
-document.getElementById('newGame').addEventListener('click', () => startGame(false));
+document.getElementById('newGame').addEventListener('click', () => startGame('practice'));
 document.getElementById('startBtn').addEventListener('click', () => {
   document.getElementById('introScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
-  startGame(true);
+  startGame('daily');
 });
 
 document.getElementById('modeLabel').addEventListener('click', (e) => {
   if (e.target.id === 'backToDaily') {
     e.preventDefault();
-    startGame(true);
+    startGame('daily');
   }
+});
+
+document.getElementById('archiveList').addEventListener('click', (e) => {
+  const item = e.target.closest('.archive-item');
+  if (!item) return;
+  const n = parseInt(item.dataset.puzzle, 10);
+  const d = new Date(DAILY_EPOCH.getFullYear(), DAILY_EPOCH.getMonth(), DAILY_EPOCH.getDate() + (n - 1));
+  startGame('archive', d);
+});
+
+document.getElementById('trackTabs').addEventListener('click', (e) => {
+  const btn = e.target.closest('.track-tab');
+  if (!btn) return;
+  startGame('daily', null, btn.dataset.track);
 });
 
 document.getElementById('win').addEventListener('click', (e) => {
@@ -1271,11 +1542,12 @@ document.getElementById('win').addEventListener('click', (e) => {
 });
 
 document.getElementById('statsShareBtn').addEventListener('click', () => {
-  shareText(buildStatsShareText(), document.getElementById('statsShareBtn'));
+  shareText(buildStatsShareText(dailyTrack), document.getElementById('statsShareBtn'));
 });
 document.getElementById('statsClearBtn').addEventListener('click', () => {
-  if (confirm("Clear all saved Ideologle stats? This can't be undone.")) {
-    localStorage.removeItem(STATS_KEY);
+  const label = dailyTrack === 'easy' ? 'Easy' : 'Normal';
+  if (confirm(`Clear saved ${label} Ideologle stats? This can't be undone.`)) {
+    localStorage.removeItem(statsKeyFor(dailyTrack));
     renderStats();
   }
 });
@@ -1298,6 +1570,7 @@ setTheme(document.documentElement.getAttribute('data-theme') || 'dark');
 
 renderLegend();
 renderStats();
+renderArchive();
 </script>
 
 </body>
