@@ -340,7 +340,7 @@
 
 <!-- ================= INTRO / RULES ================= -->
 <div id="introScreen">
-  <div class="disclaimer">Early build — 85 entries on file, heading toward ~200.</div>
+  <div class="disclaimer">Early build — 114 entries on file, heading toward ~200.</div>
 
   <div class="section-label">How this works</div>
   <p class="rules-p">An ideology is filed as the mystery answer. Type any ideology you know into the box — a dropdown will narrow it down as you type — and press Guess. You'll get back an entry card showing how <em>that</em> ideology's own compass zone(s) and category tags line up against the one that's actually filed. Identify the filed ideology in 15 entries or fewer.</p>
@@ -525,9 +525,9 @@
 const ZONES = [
   "Authoritarian Left","Authoritarian Right","Authoritarian Unity",
   "Centrists","Cultural Center","Cultural Center-Left","Cultural Center-Right",
-  "Culturally Alternate Modernist","Culturally Far-Left","Culturally Far-Right","Culturally Left","Culturally Reactionary","Culturally Right","Culturally Traditional Progressive","Left Unity",
+  "Culturally Alternate Modernist","Culturally Far-Left","Culturally Far-Right","Culturally Left","Culturally Reactionary","Culturally Right","Culturally Traditional Progressive","Culturally Ultra-Reactionary","Left Unity",
   "Libertarian Left","Libertarian Right","Libertarian Unity",
-  "Non-Quadrant","Off The Compass","Opposite Unity","Right Unity","Syncretic"
+  "Non-Quadrant","Off The Compass","Old Left","Old Right","Opposite Unity","Right Unity","Syncretic"
 ];
 
 // categories: flat, unranked tags — no hierarchy.
@@ -589,7 +589,7 @@ const IDEOLOGIES = [
   { name: "Archeofuturism", zones: ["Opposite Unity"], categories: ["Primitivists","Transhumanists"] },
   { name: "Aristocracy", zones: ["Non-Quadrant"], categories: ["Monarchists"] },
   { name: "Asocialism", fictional: true, zones: ["Culturally Left","Left Unity"], categories: ["Socialists"] },
-  { name: "Athenian Democracy", zones: ["Right Unity","Culturally Center-Left"], categories: ["Democratic","Culturally Ultra-Reactionary"] },
+  { name: "Athenian Democracy", zones: ["Right Unity","Cultural Center-Left","Culturally Ultra-Reactionary"], categories: ["Democratic"] },
   { name: "Austrian School", zones: ["Libertarian Right","Cultural Center","Cultural Center-Right"], categories: ["Liberals","Libertarians","Capitalists","Right-Wing Liberals"] },
   { name: "Austrofascism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Corporatists","Fascists","Nationalists","Religious","Third Position","Quasi-Fascists"] },
   { name: "Austromarxism", zones: ["Left Unity","Libertarian Left"], categories: ["Socialists","Communists","Democratic","Nationalists"] },
@@ -628,6 +628,35 @@ const IDEOLOGIES = [
   { name: "Bull Moose Progressivism", zones: ["Cultural Center","Authoritarian Unity","Cultural Center-Left"], categories: ["Environmentalists","Nationalists","Welfarists","Liberals","Left-Wing Liberals","Populists"] },
   { name: "Bundism", zones: ["Libertarian Left","Left Unity","Culturally Left"], categories: ["Feminists","Socialists","Diplomatic Center"] },
   { name: "Byzantine Model", zones: ["Authoritarian Unity","Culturally Reactionary"], categories: ["Monarchists","Religious","Reactionaries"] },
+  { name: "Caesarism", zones: ["Authoritarian Unity","Cultural Center-Right","Culturally Ultra-Reactionary"], categories: ["Monarchists","Ancient Rome","Agrarians","Quasi-Fascists"] },
+  { name: "Cameralism", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Corporatists","Monarchists"] },
+  { name: "Capitalism", zones: ["Right Unity"], categories: ["Capitalists"] },
+  { name: "Capitalist Communism", fictional: true, zones: ["Opposite Unity"], categories: ["Capitalists","Communists","Socialists"] },
+  { name: "Capitalist Transhumanism", zones: ["Right Unity"], categories: ["Culturally Variable","Capitalists","Transhumanists"] },
+  { name: "Carlism", zones: ["Authoritarian Right","Culturally Reactionary"], categories: ["Monarchists","Religious","Reactionaries"] },
+  { name: "Caste System", zones: ["Authoritarian Right","Culturally Right"], categories: ["Religious"] },
+  { name: "Catholic Theocracy", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Conservatives","Religious","Theocracies"] },
+  { name: "Catholic Workerism", zones: ["Libertarian Left","Cultural Center"], categories: ["Agrarians","Anarchists","Distributists","Religious","Socialists"] },
+  { name: "Caudillismo", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Nationalists","Populists"] },
+  { name: "Centralism", zones: ["Non-Quadrant","Authoritarian Unity"], categories: [] },
+  { name: "Ceremonial Monarchism", zones: ["Non-Quadrant"], categories: ["Monarchists"] },
+  { name: "Chavismo", zones: ["Authoritarian Left","Cultural Center"], categories: ["Nationalists","Populists","Revolutionary Nationalists","Religious","Socialists","Welfarists"] },
+  { name: "Chicago School", zones: ["Libertarian Right","Cultural Center"], categories: ["Capitalists","Liberals","Libertarians","Right-Wing Liberals"] },
+  { name: "Chinese Theocracy", zones: ["Authoritarian Unity","Culturally Right","Culturally Ultra-Reactionary"], categories: ["Monarchists","Religious","Theocracies"] },
+  { name: "Christian Anarchism", zones: ["Libertarian Left","Cultural Center"], categories: ["Anarchists","Religious","Left-Wing Anarchists"] },
+  { name: "Christian Democracy", zones: ["Syncretic","Authoritarian Unity","Cultural Center","Culturally Right","Centrists"], categories: ["Conservatives","Religious","Liberals","Diplomatically Variable","Democratic","Welfarists"] },
+  { name: "Christian Socialism", zones: ["Left Unity","Cultural Center"], categories: ["Socialists","Religious"] },
+  { name: "Christian Theocracy", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Conservatives","Religious","Theocracies"] },
+  { name: "Circulus Theory", zones: ["Left Unity"], categories: ["Socialists"] },
+  { name: "Civic Nationalism", zones: ["Centrists"], categories: ["Non-Center","Culturally Variable","Democratic","Liberals","Nationalists"] },
+  { name: "Civil Libertarianism", zones: ["Libertarian Unity"], categories: ["Liberals","Libertarians","Feminists","LGBT"] },
+  { name: "Class Dealignment", zones: ["Centrists"], categories: [] },
+  { name: "Classical Conservatism", zones: ["Authoritarian Unity","Authoritarian Right","Culturally Right","Old Right"], categories: ["Conservatives","Monarchists"] },
+  { name: "Classical Liberalism", zones: ["Cultural Center-Left","Right Unity","Libertarian Right","Cultural Center"], categories: ["Capitalists","Democratic","Liberals","Right-Wing Liberals","Quasi-Libertarians","Diplomatically Variable","Patriots"] },
+  { name: "Classical Social Democracy", zones: ["Left Unity","Authoritarian Left","Culturally Left"], categories: ["Democratic","Socialists","Communists","Internationalists"] },
+  { name: "Clerical Fascism", zones: ["Syncretic","Authoritarian Unity","Culturally Far-Right"], categories: ["Conservatives","Totalitarians","Corporatists","Ethnonationalists","Fascists","Nationalists","Quasi-Fascists","Religious","Reactionaries","Theocracies","Third Position","Ultranationalists"] },
+  { name: "Climate Skepticism", zones: ["Non-Quadrant"], categories: [] },
+  { name: "Combatocracy", fictional: true, zones: ["Non-Quadrant"], categories: [] },
 ];
 
 // Known one-off shorthand that doesn't fit a general pattern.
