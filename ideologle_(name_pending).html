@@ -159,6 +159,15 @@
   }
   #guessInput:focus-visible { outline: 2px solid var(--stamp-blue); outline-offset: 1px; }
 
+  #dbSearch {
+    width: 100%; padding: 11px 12px; border-radius: var(--radius-tag);
+    border: 1.5px solid var(--line); background: var(--card); color: var(--ink);
+    font-family: var(--font-body); font-size: 1rem; transition: border-color 0.15s ease;
+    margin-bottom: var(--sp-3);
+  }
+  #dbSearch:focus-visible { outline: 2px solid var(--stamp-blue); outline-offset: 1px; }
+  .db-no-match { color: var(--ink-soft); font-size: var(--fs-small); padding: 8px 10px; font-style: italic; }
+
   .suggestions {
     position: absolute; top: calc(100% + 4px); left: 0; right: 0;
     background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius-tag);
@@ -412,7 +421,7 @@
 
 <!-- ================= INTRO / RULES ================= -->
 <div id="introScreen">
-  <div class="disclaimer">Early build — 301 entries on file (past the ~200 mark!). Includes Ismism, the wildcard — it can occasionally be the answer itself.</div>
+  <div class="disclaimer">Early build — 337 entries on file (past the ~200 mark!). Includes Ismism, the wildcard — it can occasionally be the answer itself.</div>
 
   <div class="section-label">How this works</div>
   <p class="rules-p">An ideology is filed as the mystery answer. Type any ideology you know into the box — a dropdown will narrow it down as you type — and press Guess. You'll get back an entry card showing how <em>that</em> ideology's own compass zone(s) and category tags line up against the one that's actually filed. Identify the filed ideology in 15 entries or fewer.</p>
@@ -594,6 +603,8 @@
   <div class="eyebrow">Database — full reference</div>
   <p class="rules-p">A complete, unfiltered look at everything on file — total spoilers, meant for reviewing the dataset itself rather than playing. Nothing here is affected by game progress, and it always reflects what's currently in the edit zone.</p>
 
+  <input type="text" id="dbSearch" placeholder="Search zones, categories, or ideologies…" autocomplete="off">
+
   <details class="db-sub">
     <summary>Zones → Ideologies</summary>
     <div id="dbZones" class="db-list"></div>
@@ -726,10 +737,10 @@ const IDEOLOGIES = [
   { name: "Bioregionalism", zones: ["Non-Quadrant","Left Unity"], categories: ["Environmentalists"] },
   { name: "Bismarckism", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Capitalists","Conservatives","Corporatists","Monarchists","Nationalists","Welfarists"] },
   { name: "Black Anarchism", zones: ["Libertarian Left","Culturally Traditional Progressive"], categories: ["Esoteric","Anarchists","Anti-Colonial","Socialists","Communists","Revolutionary Nationalists","Left-Wing Anarchists"] },
-  { name: "Black Islamism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Fascists","Nationalists","Ethnonationalists","Ultranationalists","Revolutionary Nationalists","Reactionaries","Religious","Welfarists"] },
+  { name: "Black Islamism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Fascists","Nationalists","Ethnonationalists","Ultranationalists","Revolutionary Nationalists","Reactionary","Religious","Welfarists"] },
   { name: "Black Nationalism", zones: ["Non-Quadrant"], categories: ["Culturally Variable","Anti-Colonial","Nationalists","Ethnonationalists","Revolutionary Nationalists"] },
   { name: "Black Zionism", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Ethnonationalists","Nationalists","Religious","Zionists"] },
-  { name: "Black-Hundredism", zones: ["Authoritarian Right","Authoritarian Unity","Culturally Reactionary"], categories: ["Religious","Monarchists","Reactionaries","Nationalists","Ethnonationalists","Ultranationalists"] },
+  { name: "Black-Hundredism", zones: ["Authoritarian Right","Authoritarian Unity","Culturally Reactionary"], categories: ["Religious","Monarchists","Reactionary","Nationalists","Ethnonationalists","Ultranationalists"] },
   { name: "Blanquism", zones: ["Authoritarian Left","Culturally Left"], categories: ["Feminists","Socialists"] },
   { name: "Bleeding-Heart Libertarianism", zones: ["Libertarian Unity","Libertarian Right","Culturally Left"], categories: ["Liberals","Libertarians","Capitalists","Internationalists","Feminists","LGBT","Right-Wing Liberals"] },
   { name: "Blueshirtism", zones: ["Authoritarian Unity","Culturally Right","Syncretic"], categories: ["Fascists","Nationalists","Ultranationalists","Revolutionary Nationalists","Religious"] },
@@ -742,13 +753,13 @@ const IDEOLOGIES = [
   { name: "Buddhist Theocracy", zones: ["Authoritarian Unity","Culturally Right","Culturally Left"], categories: ["Environmentalists","Religious","Theocracies"] },
   { name: "Bull Moose Progressivism", zones: ["Cultural Center","Authoritarian Unity","Cultural Center-Left"], categories: ["Environmentalists","Nationalists","Welfarists","Liberals","Left-Wing Liberals","Populists"] },
   { name: "Bundism", zones: ["Libertarian Left","Left Unity","Culturally Left","Diplomatic Center"], categories: ["Feminists","Socialists"] },
-  { name: "Byzantine Model", zones: ["Authoritarian Unity","Culturally Reactionary"], categories: ["Monarchists","Religious","Reactionaries"] },
+  { name: "Byzantine Model", zones: ["Authoritarian Unity","Culturally Reactionary"], categories: ["Monarchists","Religious","Reactionary"] },
   { name: "Caesarism", zones: ["Authoritarian Unity","Cultural Center-Right","Culturally Ultra-Reactionary"], categories: ["Monarchists","Ancient Rome","Agrarians","Quasi-Fascists"] },
   { name: "Cameralism", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Corporatists","Monarchists"] },
   { name: "Capitalism", zones: ["Right Unity"], categories: ["Capitalists"] },
   { name: "Capitalist Communism", fictional: true, zones: ["Opposite Unity"], categories: ["Capitalists","Communists","Socialists"] },
   { name: "Capitalist Transhumanism", zones: ["Right Unity"], categories: ["Culturally Variable","Capitalists","Transhumanists"] },
-  { name: "Carlism", zones: ["Authoritarian Right","Culturally Reactionary"], categories: ["Monarchists","Religious","Reactionaries"] },
+  { name: "Carlism", zones: ["Authoritarian Right","Culturally Reactionary"], categories: ["Monarchists","Religious","Reactionary"] },
   { name: "Caste System", zones: ["Authoritarian Right","Culturally Right"], categories: ["Religious"] },
   { name: "Catholic Theocracy", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Conservatives","Religious","Theocracies"] },
   { name: "Catholic Workerism", zones: ["Libertarian Left","Cultural Center"], categories: ["Agrarians","Anarchists","Distributists","Religious","Socialists"] },
@@ -769,7 +780,7 @@ const IDEOLOGIES = [
   { name: "Classical Conservatism", zones: ["Authoritarian Unity","Authoritarian Right","Culturally Right","Old Right"], categories: ["Conservatives","Monarchists"] },
   { name: "Classical Liberalism", zones: ["Cultural Center-Left","Right Unity","Libertarian Right","Cultural Center"], categories: ["Capitalists","Democratic","Liberals","Right-Wing Liberals","Quasi-Libertarians","Diplomatically Variable","Patriots"] },
   { name: "Classical Social Democracy", zones: ["Left Unity","Authoritarian Left","Culturally Left"], categories: ["Democratic","Socialists","Communists","Internationalists"] },
-  { name: "Clerical Fascism", zones: ["Syncretic","Authoritarian Unity","Culturally Far-Right"], categories: ["Conservatives","Totalitarians","Corporatists","Ethnonationalists","Fascists","Nationalists","Quasi-Fascists","Religious","Reactionaries","Theocracies","Third Position","Ultranationalists"] },
+  { name: "Clerical Fascism", zones: ["Syncretic","Authoritarian Unity","Culturally Far-Right"], categories: ["Conservatives","Totalitarians","Corporatists","Ethnonationalists","Fascists","Nationalists","Quasi-Fascists","Religious","Reactionary","Theocracies","Third Position","Ultranationalists"] },
   { name: "Climate Skepticism", zones: ["Non-Quadrant"], categories: [] },
   { name: "Combatocracy", fictional: true, zones: ["Non-Quadrant"], categories: [] },
   { name: "Communalism", zones: ["Off The Compass","Left Unity"], categories: ["Socialists","Communists"] },
@@ -789,9 +800,9 @@ const IDEOLOGIES = [
   { name: "Cosmicism", zones: ["Authoritarian Unity","Center-AuthLeft","Culturally Right"], categories: ["Nationalists","Ethnonationalists","Syndicalists","Welfarists","Quasi-Fascists"] },
   { name: "Cosmopolitanism", zones: ["Non-Quadrant","Cultural Center","Culturally Left"], categories: ["Internationalists"] },
   { name: "Council Communism", zones: ["Libertarian Left","Culturally Far-Left"], categories: ["Socialists","Communists","Democratic","Internationalists"] },
-  { name: "Counter-Enlightenment", aliases: ["Anti-Enlightenment"], zones: ["Non-Quadrant","Culturally Reactionary"], categories: ["Conservatives","Reactionaries"] },
+  { name: "Counter-Enlightenment", aliases: ["Anti-Enlightenment"], zones: ["Non-Quadrant","Culturally Reactionary"], categories: ["Conservatives","Reactionary"] },
   { name: "Crusade of Romanianism", zones: ["Libertarian Left","Culturally Right","Syncretic"], categories: ["Libertarians","Nationalists","Ultranationalists","Revolutionary Nationalists","Socialists","Religious","Quasi-Fascists"] },
-  { name: "Crusadism", zones: ["Authoritarian Right","Culturally Reactionary"], categories: ["Internationalists","Religious","Conservatives","Reactionaries","Monarchists","Quasi-Fascists"] },
+  { name: "Crusadism", zones: ["Authoritarian Right","Culturally Reactionary"], categories: ["Internationalists","Religious","Conservatives","Reactionary","Monarchists","Quasi-Fascists"] },
   { name: "Cultism", zones: ["Authoritarian Unity"], categories: ["Religious","Totalitarians","Esoteric"] },
   { name: "Cultural Nationalism", zones: ["Non-Quadrant","Cultural Center","Culturally Right"], categories: ["Nationalists"] },
   { name: "Cybercommunism", zones: ["Left Unity","Cultural Center"], categories: ["Socialists","Communists","Post-Humanists"] },
@@ -841,13 +852,13 @@ const IDEOLOGIES = [
   { name: "Fascism", zones: ["Authoritarian Unity","Authoritarian Right","Culturally Right"], categories: ["Culturally Variable","Corporatists","Fascists","Syndicalists","Third Position","Totalitarians","Populists","Nationalists","Revolutionary Nationalists","Ultranationalists"] },
   { name: "Federalism", aliases: ["Federal System"], zones: ["Non-Quadrant"], categories: [] },
   { name: "Feminism", aliases: ["Womanism","Gyneism","Women's Rights Activism"], zones: ["Non-Quadrant","Culturally Left"], categories: ["Feminists"] },
-  { name: "Feudalism", aliases: ["Feudal System"], zones: ["Authoritarian Right","Culturally Far-Right"], categories: ["Reactionaries","Agrarians","Monarchists","Religious"] },
+  { name: "Feudalism", aliases: ["Feudal System"], zones: ["Authoritarian Right","Culturally Far-Right"], categories: ["Reactionary","Agrarians","Monarchists","Religious"] },
   { name: "Feuillantism", zones: ["Cultural Center-Right","Center-LibRight","Culturally Right"], categories: ["Conservatives","Liberals","Monarchists","Right-Wing Liberals","First French Republic"] },
   { name: "Financialism", aliases: ["Financial Government"], zones: ["Right Unity","Cultural Center-Right"], categories: ["Capitalists"] },
   { name: "Fiscal Conservatism", zones: ["Right Unity","Cultural Center"], categories: ["Capitalists","Conservatives","Liberals"] },
   { name: "Fordism", fictional: true, zones: ["Off The Compass","Authoritarian Right","Culturally Off-Left"], categories: ["Globalists","Capitalists","Totalitarians"] },
-  { name: "Fourth Theory", aliases: ["Fourth Political Theory"], zones: ["Authoritarian Unity","Culturally Far-Right","Diplomatic Center","Syncretic"], categories: ["Religious","Esoteric","Reactionaries","Revolutionary Nationalists","Third Position","Quasi-Fascists"] },
-  { name: "Francoism", aliases: ["Franquismo"], zones: ["Authoritarian Unity","Authoritarian Right","Culturally Far-Right","Syncretic"], categories: ["Capitalists","Conservatives","Corporatists","Monarchists","Nationalists","Quasi-Fascists","Reactionaries","Religious","Third Position","Totalitarians","Ultranationalists"] },
+  { name: "Fourth Theory", aliases: ["Fourth Political Theory"], zones: ["Authoritarian Unity","Culturally Far-Right","Diplomatic Center","Syncretic"], categories: ["Religious","Esoteric","Reactionary","Revolutionary Nationalists","Third Position","Quasi-Fascists"] },
+  { name: "Francoism", aliases: ["Franquismo"], zones: ["Authoritarian Unity","Authoritarian Right","Culturally Far-Right","Syncretic"], categories: ["Capitalists","Conservatives","Corporatists","Monarchists","Nationalists","Quasi-Fascists","Reactionary","Religious","Third Position","Totalitarians","Ultranationalists"] },
   { name: "Frankfurt School", aliases: ["Frankfurtianism"], zones: ["Left Unity","Culturally Left"], categories: ["Communists","Socialists","Feminists","Internationalists"] },
   { name: "French Fascism", zones: ["Authoritarian Unity","Authoritarian Right","Culturally Right"], categories: ["Conservatives","Corporatists","Fascists","Quasi-Fascists","Nationalists","Ethnonationalists","Totalitarians"] },
   { name: "Fully Automated Luxury Gay Space Communism", aliases: ["FALGSC"], fictional: true, zones: ["Off The Compass","Left Unity","Culturally Off-Left"], categories: ["LGBT","Socialists","Communists","Globalists","Transhumanists"] },
@@ -873,7 +884,7 @@ const IDEOLOGIES = [
   { name: "Helvetic Model", aliases: ["Helvetism"], zones: ["Libertarian Right","Right Unity"], categories: ["Capitalists","Democratic","Globalists","Liberals","Libertarians","Monarchists","Nationalists","Right-Wing Liberals"] },
   { name: "Hibernocracy", aliases: ["Hibernism","POG","Paddy Occupied Government"], fictional: true, zones: ["Non-Quadrant"], categories: ["Globalists"] },
   { name: "Hindu Theocracy", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Conservatives","Religious","Theocracies"] },
-  { name: "Hindutva", zones: ["Authoritarian Unity","Culturally Far-Right","Syncretic"], categories: ["Religious","Nationalists","Ultranationalists","Reactionaries","Theocracies","Fascists"] },
+  { name: "Hindutva", zones: ["Authoritarian Unity","Culturally Far-Right","Syncretic"], categories: ["Religious","Nationalists","Ultranationalists","Reactionary","Theocracies","Fascists"] },
   { name: "Hive-Mind Collectivism", fictional: true, zones: ["Off The Compass","Authoritarian Left"], categories: ["Socialists","Off-Compass Nationalists"] },
   { name: "Ho Chi Minh Thought", zones: ["Authoritarian Left","Authoritarian Unity","Cultural Center-Left"], categories: ["Anti-Colonial","Socialists","Communists","Capitalists","Nationalists","Revolutionary Nationalists"] },
   { name: "Homoconservatism", aliases: ["LGBT Conservatism"], zones: ["Right Unity","Cultural Center-Right"], categories: ["Conservatives","LGBT","Nationalists"] },
@@ -895,8 +906,8 @@ const IDEOLOGIES = [
   { name: "Industrialism", aliases: ["Industrial Society","Industrialization"], zones: ["Non-Quadrant"], categories: [] },
   { name: "Ingsoc", aliases: ["English Socialism","1984","Orwellianism"], fictional: true, zones: ["Off The Compass","Authoritarian Unity","Culturally Revolutionary Progressive Conservative","Syncretic"], categories: ["Quasi-Fascists","Socialists","Totalitarians"] },
   { name: "Insurrectionary Anarchism", zones: ["Libertarian Unity","Libertarian Left"], categories: ["Anarchists","Post-Leftists"] },
-  { name: "Integral Nationalism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Monarchists","Nationalists","Reactionaries","Religious","Quasi-Fascists"] },
-  { name: "Integralism", aliases: ["Integrism","Integrationism"], zones: ["Authoritarian Unity","Authoritarian Right","Culturally Far-Right"], categories: ["Religious","Conservatives","Corporatists","Reactionaries","Monarchists","Quasi-Fascists"] },
+  { name: "Integral Nationalism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Monarchists","Nationalists","Reactionary","Religious","Quasi-Fascists"] },
+  { name: "Integralism", aliases: ["Integrism","Integrationism"], zones: ["Authoritarian Unity","Authoritarian Right","Culturally Far-Right"], categories: ["Religious","Conservatives","Corporatists","Reactionary","Monarchists","Quasi-Fascists"] },
   { name: "Interculturalism", zones: ["Non-Quadrant","Diplomatic Center"], categories: [] },
   { name: "Internationalism", zones: ["Non-Quadrant"], categories: ["Internationalists"] },
   { name: "Irredentism", zones: ["Non-Quadrant","Authoritarian Unity"], categories: ["Anti-Colonial","Nationalists","Revolutionary Nationalists"] },
@@ -910,27 +921,27 @@ const IDEOLOGIES = [
   { name: "Italian Left Communism", zones: ["Authoritarian Left","Culturally Far-Left"], categories: ["Internationalists","Communists","Socialists"] },
   { name: "Jacksonian Democracy", aliases: ["Jacksonianism"], zones: ["Center-Authoritarian Right","Cultural Center","Culturally Far-Right"], categories: ["Democratic","Ethnonationalists","Agrarians","Liberals","Populists","Right-Wing Liberals"] },
   { name: "Jacobinism", aliases: ["Montagnardism"], zones: ["Authoritarian Left","Culturally Far-Left"], categories: ["Democratic","Liberals","Nationalists","Revolutionary Nationalists","Populists","Welfarists","Totalitarians","Left-Wing Liberals","First French Republic"] },
-  { name: "Jacobitism", zones: ["Authoritarian Right","Culturally Far-Right"], categories: ["Monarchists","Nationalists","Religious","Reactionaries"] },
+  { name: "Jacobitism", zones: ["Authoritarian Right","Culturally Far-Right"], categories: ["Monarchists","Nationalists","Religious","Reactionary"] },
   { name: "Jeffersonian Democracy", zones: ["Center-Libertarian Right","Culturally Left"], categories: ["Distributists","Agrarians","Democratic","Liberals","Nationalists","Populists","Right-Wing Liberals","Quasi-Libertarians"] },
   { name: "Jewish Anarchism", aliases: ["Anarcho-Judaism"], zones: ["Libertarian Left","Cultural Center"], categories: ["Anarchists","Religious","Left-Wing Anarchists"] },
   { name: "Jewish Theocracy", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Religious","Theocracies"] },
   { name: "Jewish-Nazism", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Fascists","Nationalists","Ethnonationalists","Third Position"] },
-  { name: "Jihadism", aliases: ["Mujahedeenism","Shahidism"], zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Diplomatically Variable","Internationalists","Reactionaries","Religious","Totalitarians","Quasi-Fascists"] },
+  { name: "Jihadism", aliases: ["Mujahedeenism","Shahidism"], zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Diplomatically Variable","Internationalists","Reactionary","Religious","Totalitarians","Quasi-Fascists"] },
   { name: "Jingoism", zones: ["Non-Quadrant"], categories: ["Nationalists","Ultranationalists","Quasi-Fascists"] },
   { name: "Juche", aliases: ["WPKism","North Korea Model"], zones: ["Authoritarian Left","Culturally Left"], categories: ["Socialists","Communists","Nationalists","Ethnonationalists","Ultranationalists","Totalitarians","Quasi-Fascists","Monarchists"] },
-  { name: "Kahanism", zones: ["Authoritarian Right","Culturally Far-Right"], categories: ["Capitalists","Conservatives","Nationalists","Populists","Ethnonationalists","Ultranationalists","Revolutionary Nationalists","Religious","Reactionaries","Zionists","Quasi-Fascists"] },
+  { name: "Kahanism", zones: ["Authoritarian Right","Culturally Far-Right"], categories: ["Capitalists","Conservatives","Nationalists","Populists","Ethnonationalists","Ultranationalists","Revolutionary Nationalists","Religious","Reactionary","Zionists","Quasi-Fascists"] },
   { name: "Kakistocracy", zones: ["Non-Quadrant"], categories: [] },
   { name: "Kemalism", aliases: ["Six Arrows","Kâmâlizm","Kamalizm"], zones: ["Center-Authoritarian Left","Culturally Left","Syncretic"], categories: ["Democratic","Feminists","Nationalists","Revolutionary Nationalists","Welfarists"] },
   { name: "Keynesian School", aliases: ["Keynesianism","John Maynard Keynes Thought"], zones: ["Cultural Center-Left"], categories: ["Capitalists","Liberals","Socialists","Welfarists","Left-Wing Liberals"] },
-  { name: "Khomeinism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Internationalists","Reactionaries","Populists","Religious","Third Position"] },
+  { name: "Khomeinism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Internationalists","Reactionary","Populists","Religious","Third Position"] },
   { name: "Khrushchevism", zones: ["Authoritarian Left","Cultural Center-Left"], categories: ["Communists","Socialists","Populists","Internationalists"] },
   { name: "Kleptocracy", aliases: ["Thievocracy"], zones: ["Non-Quadrant","Authoritarian Unity"], categories: [] },
-  { name: "Korwinism", aliases: ["Korwinian Philosophy"], zones: ["Right Unity","Libertarian Right","Culturally Far-Right"], categories: ["Capitalists","Libertarians","Minarchists","Monarchists","Masculists","Reactionaries"] },
+  { name: "Korwinism", aliases: ["Korwinian Philosophy"], zones: ["Right Unity","Libertarian Right","Culturally Far-Right"], categories: ["Capitalists","Libertarians","Minarchists","Monarchists","Masculists","Reactionary"] },
   { name: "Kraterocracy", fictional: true, zones: ["Off The Compass","Authoritarian Right","Culturally Far-Right"], categories: ["Authoritarians","Totalitarians"] },
   { name: "Kritarchy", aliases: ["Kritocracy","Juristocracy","Judocracy","Legalocracy","Nomocracy"], zones: ["Non-Quadrant"], categories: [] },
   { name: "La Plaineism", zones: ["Centrists"], categories: ["Democratic","Liberals","Nationalists","First French Republic"] },
   { name: "Labor Zionism", aliases: ["Labour Zionism"], zones: ["Left Unity","Cultural Center-Left","Cultural Center"], categories: ["Socialists","Democratic","Nationalists","Revolutionary Nationalists","Welfarists","Zionists"] },
-  { name: "Landian Accelerationism", zones: ["Off The Compass","Right Unity","Off-Compass Technology"], categories: ["Accelerationists","Capitalists","Libertarians","Post-Humanists","Reactionaries","Transhumanists"] },
+  { name: "Landian Accelerationism", zones: ["Off The Compass","Right Unity","Off-Compass Technology"], categories: ["Accelerationists","Capitalists","Libertarians","Post-Humanists","Reactionary","Transhumanists"] },
   { name: "Lawsonomy", zones: ["Center-Authoritarian Left"], categories: ["Religious","Populists","Welfarists"] },
   { name: "Left-Liberalism", zones: ["Cultural Center-Left","Center-Libertarian Left","Culturally Left"], categories: ["Capitalists","Democratic","Environmentalists","Feminists","Georgists","Internationalists","Liberals","Socialists","Welfarists"] },
   { name: "Left-Rothbardianism", zones: ["Libertarian Unity","Libertarian Right","Cultural Center","Syncretic"], categories: ["Anarchists","Libertarians"] },
@@ -958,7 +969,43 @@ const IDEOLOGIES = [
   { name: "Localism", zones: ["Non-Quadrant"], categories: [] },
   { name: "Longism", zones: ["Authoritarian Unity","Center-Authoritarian Left","Culturally Right"], categories: ["Conservatives","Distributists","Nationalists","Populists","Religious","Welfarists","Quasi-Fascists"] },
   { name: "Luddism", aliases: ["Ludditism"], zones: ["Left Unity"], categories: ["Syndicalists","Agrarians"] },
-  { name: "Lys Noir", aliases: ["Black Lily Movement","Black Lilyism"], zones: ["Libertarian Left","Culturally Far-Right","Syncretic"], categories: ["Agrarians","Anarchists","Monarchists","Nationalists","Distributists","Revolutionary Nationalists","Populists","Reactionaries","Communists","Socialists","Third Position"] },
+  { name: "Lys Noir", aliases: ["Black Lily Movement","Black Lilyism"], zones: ["Libertarian Left","Culturally Far-Right","Syncretic"], categories: ["Agrarians","Anarchists","Monarchists","Nationalists","Distributists","Revolutionary Nationalists","Populists","Reactionary","Communists","Socialists","Third Position"] },
+  { name: "Lysenkoism", zones: ["Authoritarian Left"], categories: ["Totalitarians","Communists","Socialists"] },
+  { name: "Machajskism", aliases: ["Makhaevism","Makhaiskyism","Jan Wacław Machajski Thought","Jan Waclaw Machajski Thought"], zones: ["Libertarian Left"], categories: ["Anarchists","Populists","Libertarians","Socialists","Communists"] },
+  { name: "Machiavellianism", aliases: ["Niccolò Machiavelli Thought","Niccolo Machiavelli Thought"], zones: ["Non-Quadrant"], categories: [] },
+  { name: "Manosphere", aliases: ["Androsphere","Meninism","Masculinism"], zones: ["Non-Quadrant","Culturally Right","Syncretic"], categories: ["Masculists"] },
+  { name: "Mao-Spontex", aliases: ["Spontaneism","Mao-Spontaneity"], zones: ["Libertarian Left","Culturally Far-Left"], categories: ["Socialists","Communists","Internationalists","Nationalists","Revolutionary Nationalists","Populists","Anarchists"] },
+  { name: "Maoism", aliases: ["Mao Zedong Thought","MZT"], zones: ["Authoritarian Left","Culturally Far-Left","Diplomatic Center"], categories: ["Socialists","Communists","Revolutionary Nationalists","Populists","Totalitarians"] },
+  { name: "Maoism-Third Worldism", aliases: ["Maoism-Third-Worldism","JDPON","Maoism in the Third World","Lin Biao Thought"], zones: ["Authoritarian Left","Culturally Left"], categories: ["Anti-Colonial","Internationalists","Communists","Socialists"] },
+  { name: "Mariateguism", aliases: ["Mariateguismo","José Carlos Mariátegui Thought","Jose Carlos Mariategui Thought"], zones: ["Authoritarian Left","Culturally Far-Left"], categories: ["Anti-Colonial","Revolutionary Nationalists","Communists","Socialists","Syndicalists"] },
+  { name: "Market Socialism", zones: ["Left Unity"], categories: ["Socialists"] },
+  { name: "Marxism", aliases: ["Karl Marx Thought"], zones: ["Left Unity","Culturally Far-Left"], categories: ["Democratic","Internationalists","Socialists","Communists"] },
+  { name: "Marxism-Leninism", aliases: ["Marxism–Leninism","ML","Leninist Marxism","Sovietism","Soviet Union Model"], zones: ["Authoritarian Left","Culturally Far-Left"], categories: ["Internationalists","Socialists","Communists","Democratic"] },
+  { name: "Marxism-Leninism-Maoism", aliases: ["MLM","Marxism–Leninism–Maoism"], zones: ["Authoritarian Left","Culturally Far-Left"], categories: ["Internationalists","Communists","Socialists"] },
+  { name: "Marxist Feminism", aliases: ["MarxFem","Marxism-Feminism"], zones: ["Left Unity","Culturally Far-Left"], categories: ["Feminists","Socialists","Communists"] },
+  { name: "Maternalism", aliases: ["Maternal Feminism","Complementarianism"], zones: ["Non-Quadrant","Culturally Right"], categories: ["Feminists"] },
+  { name: "Matriarchal Monarchism", aliases: ["Momarchy","Monarcha-Feminism","Princess Peach model"], zones: ["Non-Quadrant"], categories: ["Feminists","Monarchists"] },
+  { name: "Matriarchy", aliases: ["Gynecocracy","Rebecca Lolosoli Thought","Chiaki Nanami Thought"], zones: ["Non-Quadrant","Authoritarian Unity","Authoritarian Right","Culturally Right"], categories: ["Feminists","Culturally Variable"] },
+  { name: "Mediacracy", aliases: ["Journalism"], zones: ["Non-Quadrant"], categories: ["Culturally Variable"] },
+  { name: "Mediocracy", aliases: ["Normiecracy","Averagism"], zones: ["Non-Quadrant"], categories: [] },
+  { name: "Men's Liberation", aliases: ["Mens Liberation"], zones: ["Non-Quadrant","Culturally Left"], categories: ["Masculists","Feminists","LGBT"] },
+  { name: "Mercantilism", aliases: ["Merchant Economy"], zones: ["Right Unity","Authoritarian Right"], categories: [] },
+  { name: "Meritocracy", zones: ["Non-Quadrant"], categories: [] },
+  { name: "Metaxism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Conservatives","Corporatists","Welfarists","Fascists","Monarchists","Religious","Nationalists","Quasi-Fascists"] },
+  { name: "Mexican Fascism", zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Fascists","Monarchists","Distributists"] },
+  { name: "Minarchism", aliases: ["Minarchy"], zones: ["Libertarian Right"], categories: ["Capitalists","Liberals","Libertarians","Minarchists","Right-Wing Liberals"] },
+  { name: "Minarcho-Socialism", zones: ["Libertarian Left","Culturally Left"], categories: ["Socialists","Libertarians","Minarchists","Democratic"] },
+  { name: "Mladorossism", aliases: ["Red-Brown-Purpleshirtism","Kazembekism"], zones: ["Authoritarian Left","Culturally Far-Right","Syncretic"], categories: ["Monarchists","Socialists","Fascists","Religious"] },
+  { name: "Moderatism", aliases: ["Moderation Theory"], zones: ["Centrists"], categories: [] },
+  { name: "Monarchism", aliases: ["Monarchy"], zones: ["Non-Quadrant","Authoritarian Unity","Authoritarian Right","Culturally Right"], categories: ["Culturally Variable","Monarchists"] },
+  { name: "Monarcho-Capitalism", aliases: ["Monarcho-Plutocracy"], zones: ["Authoritarian Right"], categories: ["Culturally Variable","Capitalists","Monarchists"] },
+  { name: "Monarcho-Distributism", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Distributists","Monarchists"] },
+  { name: "Monarcho-Fascism", zones: ["Authoritarian Unity","Culturally Far-Right","Syncretic"], categories: ["Fascists","Monarchists","Nationalists","Quasi-Fascists"] },
+  { name: "Monarcho-Socialism", aliases: ["Monarchical Socialism","Socialist Monarchism"], zones: ["Authoritarian Left"], categories: ["Culturally Variable","Monarchists","Socialists"] },
+  { name: "Monarcho-Syndicalism", zones: ["Left Unity","Authoritarian Left","Culturally Right"], categories: ["Syndicalists","Socialists","Nationalists","Monarchists"] },
+  { name: "Monetarism", zones: ["Right Unity"], categories: ["Capitalists","Liberals"] },
+  { name: "Multiculturalism", zones: ["Non-Quadrant","Culturally Left"], categories: ["Democratic","Internationalists"] },
+  { name: "Mutualism", zones: ["Libertarian Unity","Culturally Left"], categories: ["Culturally Variable","Anarchists","Socialists"] },
   { name: "Right-Liberalism", zones: ["Cultural Center-Right","Libertarian Right","Cultural Center","Culturally Right"], categories: ["Capitalists","Conservatives","Democratic","Georgists","Liberals","Nationalists","Welfarists"] },
 ];
 
@@ -1487,35 +1534,62 @@ function renderCandidates() {
 // ---- Database: a full, always-complete reference — never affected by
 // game state. Ismism is excluded everywhere here since it artificially
 // carries every zone/category and would just be noise in every row.
-function renderDatabase() {
+function renderDatabase(searchTerm) {
   const realEntries = IDEOLOGIES.filter(e => !e.ismism);
+  const q = (searchTerm || '').trim().toLowerCase();
+  const noMatch = '<div class="db-no-match">No matches.</div>';
 
-  document.getElementById('dbZones').innerHTML = ZONES.map(zone => {
+  const zoneRows = ZONES.map(zone => {
     const matches = realEntries.filter(e => e.zones.includes(zone)).map(e => e.name);
+    if (q && !zone.toLowerCase().includes(q) && !matches.some(n => n.toLowerCase().includes(q))) return null;
     return `<div class="db-row"><div class="db-key">${zone} <span class="db-count">(${matches.length})</span></div><div class="db-values">${matches.length ? matches.join(', ') : '<em>none yet</em>'}</div></div>`;
-  }).join('');
+  }).filter(Boolean);
+  document.getElementById('dbZones').innerHTML = zoneRows.length ? zoneRows.join('') : noMatch;
 
   const allCats = [...new Set(realEntries.flatMap(e => e.categories))].sort((a, b) => a.localeCompare(b));
-  document.getElementById('dbCategories').innerHTML = allCats.map(cat => {
+  const catRows = allCats.map(cat => {
     const matches = realEntries.filter(e => e.categories.includes(cat)).map(e => e.name);
+    if (q && !cat.toLowerCase().includes(q) && !matches.some(n => n.toLowerCase().includes(q))) return null;
     return `<div class="db-row"><div class="db-key">${cat} <span class="db-count">(${matches.length})</span></div><div class="db-values">${matches.join(', ')}</div></div>`;
-  }).join('');
+  }).filter(Boolean);
+  document.getElementById('dbCategories').innerHTML = catRows.length ? catRows.join('') : noMatch;
 
   const sortedEntries = [...realEntries].sort((a, b) => a.name.localeCompare(b.name));
-  const ismismRow = `<div class="easy-row ismism-row">
+  const ismismEntry = IDEOLOGIES.find(e => e.ismism);
+  const ismismSearchable = ['ismism', 'wildcard', 'any and all combination of philosophical and political thought could be transformed into an ideology regardless of the seriousness or consistency of the statements in question']
+    .concat((ismismEntry.aliases || []).map(a => a.toLowerCase()))
+    .join(' | ');
+  const ismismRow = (!q || ismismSearchable.includes(q)) ? `<div class="easy-row ismism-row">
     <div class="easy-name">Ismism</div>
     <p class="rules-p ismism-quote" style="margin:6px 0 8px">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p>
     <p class="rules-p" style="margin-bottom:0">Its real profile is every zone and every category on file — it can occasionally be the actual daily answer. Guessed against a different answer, it instead reveals a random slice of zones/tags checked against the real one: a small sliver early in the game, nearly everything late (faster in Easy mode), plus some randomness. That's why it's left out of the Zones/Categories lookups below — it would otherwise show up in literally every single row.</p>
-  </div>`;
-  document.getElementById('dbAllIdeologies').innerHTML = ismismRow + sortedEntries.map(e => {
+  </div>` : '';
+  const ideologyRows = sortedEntries.filter(e => {
+    if (!q) return true;
+    const nameMatch = e.name.toLowerCase().includes(q) || (e.aliases || []).some(a => a.toLowerCase().includes(q));
+    const zoneMatch = e.zones.some(z => z.toLowerCase().includes(q));
+    const catMatch = e.categories.some(c => c.toLowerCase().includes(q));
+    return nameMatch || zoneMatch || catMatch;
+  }).map(e => {
     const fictionTag = e.fictional ? '<span class="fiction-badge hit easy-mini-badge">✦</span>' : '';
     const zoneChips = e.zones.length ? e.zones.map(z => `<span class="chip ref">${z}</span>`).join('') : '<span class="chip ref">none</span>';
     const catChips = e.categories.length ? e.categories.map(c => `<span class="chip ref">${c}</span>`).join('') : '<span class="chip ref">none</span>';
     return `<div class="easy-row"><div class="easy-name">${e.name}${fictionTag}</div><div class="easy-tagrow">${zoneChips}</div><div class="easy-tagrow">${catChips}</div></div>`;
-  }).join('');
+  });
+  const allIdeologiesHtml = ismismRow + ideologyRows.join('');
+  document.getElementById('dbAllIdeologies').innerHTML = allIdeologiesHtml || noMatch;
 
-  document.getElementById('dbZoneIndex').innerHTML = ZONES.map(z => `<span class="chip ref">${z}</span>`).join('');
-  document.getElementById('dbCategoryIndex').innerHTML = allCats.map(c => `<span class="chip ref">${c}</span>`).join('');
+  const filteredZoneIndex = ZONES.filter(z => !q || z.toLowerCase().includes(q));
+  document.getElementById('dbZoneIndex').innerHTML = filteredZoneIndex.length ? filteredZoneIndex.map(z => `<span class="chip ref">${z}</span>`).join('') : noMatch;
+
+  const filteredCatIndex = allCats.filter(c => !q || c.toLowerCase().includes(q));
+  document.getElementById('dbCategoryIndex').innerHTML = filteredCatIndex.length ? filteredCatIndex.map(c => `<span class="chip ref">${c}</span>`).join('') : noMatch;
+
+  // While actively searching, force every sub-panel open so filtered results
+  // are visible without needing to click each one — that's the whole point.
+  if (q) {
+    document.querySelectorAll('#databaseScreen .db-sub').forEach(d => { d.open = true; });
+  }
 }
 
 function showHint(msg, tone) {
@@ -2087,6 +2161,13 @@ setTheme(document.documentElement.getAttribute('data-theme') || 'dark');
 document.getElementById('openDatabaseBtn').addEventListener('click', () => {
   document.getElementById('gameScreen').style.display = 'none';
   document.getElementById('databaseScreen').style.display = 'block';
+  const dbSearchEl = document.getElementById('dbSearch');
+  dbSearchEl.value = '';
+  document.querySelectorAll('#databaseScreen .db-sub').forEach(d => { d.open = false; });
+  renderDatabase('');
+});
+document.getElementById('dbSearch').addEventListener('input', (e) => {
+  renderDatabase(e.target.value);
 });
 document.getElementById('backToGameBtn').addEventListener('click', () => {
   document.getElementById('databaseScreen').style.display = 'none';
