@@ -36,6 +36,19 @@
     --moss: #83C293;
     --moss-bg: #24362A;
     --texture-line: rgba(255,255,255,0.028);
+    --wash-auth-left: rgba(224,130,120,0.10); --wash-auth-right: rgba(127,173,221,0.10);
+    --wash-lib-left: rgba(131,194,147,0.10); --wash-lib-right: rgba(183,154,232,0.10);
+
+    /* ===== tokens: color (compass quadrants — dark) ===== */
+    --quad-auth-left: #E08278; --quad-auth-left-bg: #402420;
+    --quad-auth-right: #7FADDD; --quad-auth-right-bg: #223247;
+    --quad-lib-right: #B79AE8; --quad-lib-right-bg: #35294A;
+    --quad-lib-left: #83C293; --quad-lib-left-bg: #24362A;
+    --quad-auth: #DBA868; --quad-auth-bg: #3E2E1C;
+    --quad-lib: #7FC9BA; --quad-lib-bg: #1F3B36;
+    --quad-left: #ACC46E; --quad-left-bg: #333A1E;
+    --quad-right: #94A2E3; --quad-right-bg: #262B48;
+    --quad-neutral: var(--stamp-gold); --quad-neutral-bg: var(--paper-alt);
 
     /* ===== tokens: shape / space ===== */
     --radius-tag: 7px;
@@ -65,6 +78,19 @@
     --moss: #4C7A57;
     --moss-bg: #DCE9DE;
     --texture-line: rgba(43,42,37,0.035);
+    --wash-auth-left: rgba(176,57,43,0.08); --wash-auth-right: rgba(44,92,143,0.08);
+    --wash-lib-left: rgba(61,122,76,0.08); --wash-lib-right: rgba(107,74,153,0.08);
+
+    /* ===== tokens: color (compass quadrants — light) ===== */
+    --quad-auth-left: #B0392B; --quad-auth-left-bg: #F5DDD9;
+    --quad-auth-right: #2C5C8F; --quad-auth-right-bg: #DCE7F0;
+    --quad-lib-right: #6B4A99; --quad-lib-right-bg: #E7DCF2;
+    --quad-lib-left: #3D7A4C; --quad-lib-left-bg: #DCEEDF;
+    --quad-auth: #9C6A22; --quad-auth-bg: #F0E1C6;
+    --quad-lib: #2C7E70; --quad-lib-bg: #D7EDE8;
+    --quad-left: #69762C; --quad-left-bg: #E7ECCE;
+    --quad-right: #3E4998; --quad-right-bg: #DBE0F2;
+    --quad-neutral: var(--stamp-gold); --quad-neutral-bg: var(--paper-alt);
   }
 
   * { box-sizing: border-box; }
@@ -74,7 +100,14 @@
     min-height: 100vh;
     font-family: var(--font-body);
     background: var(--paper);
-    background-image: repeating-linear-gradient(180deg, var(--texture-line) 0px, var(--texture-line) 1px, transparent 1px, transparent 29px);
+    background-image:
+      radial-gradient(circle at 0% 0%, var(--wash-auth-left), transparent 45%),
+      radial-gradient(circle at 100% 0%, var(--wash-auth-right), transparent 45%),
+      radial-gradient(circle at 0% 100%, var(--wash-lib-left), transparent 45%),
+      radial-gradient(circle at 100% 100%, var(--wash-lib-right), transparent 45%),
+      repeating-linear-gradient(180deg, var(--texture-line) 0px, var(--texture-line) 1px, transparent 1px, transparent 24px),
+      repeating-linear-gradient(90deg, var(--texture-line) 0px, var(--texture-line) 1px, transparent 1px, transparent 24px);
+    background-attachment: fixed, fixed, fixed, fixed, scroll, scroll;
     color: var(--ink);
   }
   .page {
@@ -88,6 +121,72 @@
     letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
     margin-bottom: var(--sp-1);
   }
+
+  /* ===== corner-bracket framing — replaces dashed "notebook" borders with a
+     viewfinder/instrument-panel look. 8 gradient layers paint 4 L-shaped corners. */
+  .corner-frame {
+    position: relative;
+    background-image:
+      linear-gradient(var(--frame-color, var(--line)), var(--frame-color, var(--line))),
+      linear-gradient(var(--frame-color, var(--line)), var(--frame-color, var(--line))),
+      linear-gradient(var(--frame-color, var(--line)), var(--frame-color, var(--line))),
+      linear-gradient(var(--frame-color, var(--line)), var(--frame-color, var(--line))),
+      linear-gradient(var(--frame-color, var(--line)), var(--frame-color, var(--line))),
+      linear-gradient(var(--frame-color, var(--line)), var(--frame-color, var(--line))),
+      linear-gradient(var(--frame-color, var(--line)), var(--frame-color, var(--line))),
+      linear-gradient(var(--frame-color, var(--line)), var(--frame-color, var(--line)));
+    background-size: 13px 2px, 2px 13px, 13px 2px, 2px 13px, 13px 2px, 2px 13px, 13px 2px, 2px 13px;
+    background-position:
+      top 0 left 0, top 0 left 0,
+      top 0 right 0, top 0 right 0,
+      bottom 0 left 0, bottom 0 left 0,
+      bottom 0 right 0, bottom 0 right 0;
+    background-repeat: no-repeat;
+  }
+
+  /* ===== icon navigation row — replaces the old stacked accordions with
+     one-tap access, matching the Wordle-style header pattern ===== */
+  .icon-nav { display: flex; gap: 6px; flex-shrink: 0; }
+  .icon-btn {
+    width: 36px; height: 36px; padding: 0; border-radius: 50%;
+    background: var(--paper-alt); border: 1.5px solid var(--line); color: var(--ink-soft);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .icon-btn:hover { background: var(--card); color: var(--ink); border-color: var(--ink-soft); }
+  .icon-help { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; }
+  .icon-settings { font-size: 1.35rem; line-height: 1; }
+  .icon-stats, .icon-archive { display: flex; }
+  .icon-stats { align-items: flex-end; gap: 2.5px; height: 15px; }
+  .icon-stats i { display: block; width: 3.5px; background: currentColor; border-radius: 1px; }
+  .icon-stats i:nth-child(1) { height: 6px; }
+  .icon-stats i:nth-child(2) { height: 10px; }
+  .icon-stats i:nth-child(3) { height: 15px; }
+  .icon-archive { flex-direction: column; gap: 3px; align-items: flex-start; }
+  .icon-archive i { display: block; height: 2px; background: currentColor; border-radius: 1px; }
+  .icon-archive i:nth-child(1) { width: 16px; }
+  .icon-archive i:nth-child(2) { width: 12px; }
+  .icon-archive i:nth-child(3) { width: 8px; }
+  .icon-db-grid { display: grid; grid-template-columns: repeat(2, 6px); gap: 3px; }
+  .icon-db-grid i { display: block; width: 6px; height: 6px; background: currentColor; border-radius: 1.5px; }
+
+  /* ===== tutorial overlay ===== */
+  #tutorialOverlay {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,0.55); align-items: center; justify-content: center; padding: var(--sp-4);
+  }
+  .tutorial-card {
+    background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius-card);
+    max-width: 480px; width: 100%; padding: var(--sp-4); max-height: 80vh; overflow-y: auto;
+  }
+  .tutorial-dots { display: flex; gap: 6px; margin-bottom: var(--sp-3); }
+  .tutorial-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+  .tutorial-dot.active { background: var(--stamp-blue); }
+  .tutorial-title { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; margin-bottom: var(--sp-2); }
+  .tutorial-body { font-size: var(--fs-small); color: var(--ink-soft); line-height: 1.6; }
+  .tutorial-body .legend-row { margin: var(--sp-2) 0; }
+  .tutorial-actions { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-4); gap: var(--sp-2); }
+  .tutorial-skip { background: none; border: none; color: var(--ink-soft); text-decoration: underline; padding: 4px; font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-weight: 400; }
+  .tutorial-nav-btns { display: flex; gap: var(--sp-2); }
   .header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); }
   .theme-toggle {
     flex-shrink: 0; padding: 7px 11px; font-size: 0.65rem; letter-spacing: 0.03em;
@@ -103,7 +202,7 @@
 
   .disclaimer {
     font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--ink-soft);
-    background: var(--paper-alt); border: 1px dashed var(--line);
+    background: var(--paper-alt); border: 1px solid var(--line);
     padding: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-4); border-radius: var(--radius-tag);
     line-height: 1.6;
   }
@@ -112,7 +211,7 @@
   .legend-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size: var(--fs-small); color: var(--ink-soft); flex-wrap: wrap; }
   .stamp-mini {
     display:inline-flex; align-items:center; justify-content:center;
-    width:44px; height:44px; border-radius:50%; border:2px dashed currentColor;
+    width:44px; height:44px; border-radius:50%; border:2px solid currentColor;
     font-family: var(--font-display); font-weight:700; font-size:0.6rem; flex-shrink:0;
   }
   #startBtn { width:100%; padding:13px; font-size:0.9rem; margin-top: var(--sp-2); }
@@ -122,12 +221,12 @@
     font-family: var(--font-display); font-size: var(--fs-tiny); font-weight:700;
     letter-spacing:0.06em; text-transform:uppercase;
     padding: 3px 8px; border-radius: var(--radius-tag);
-    border-style: dashed; border-width: 1px; margin: 2px 0 8px;
+    border-style: solid; border-width: 1px; margin: 2px 0 8px;
   }
   .fiction-badge.hit { border-color: var(--moss); background: var(--moss-bg); color: var(--moss); }
   .fiction-badge.miss { border-color: var(--stamp-brick); background: var(--stamp-brick-bg); color: var(--stamp-brick); }
 
-  .reference { border: 1px dashed var(--line); background: var(--paper-alt); border-radius: var(--radius-tag); margin: 0 0 var(--sp-4); overflow: hidden; }
+  .reference { border: 1px solid var(--line); background: var(--paper-alt); border-radius: var(--radius-tag); margin: 0 0 var(--sp-4); overflow: hidden; }
   .reference summary {
     list-style: none; cursor: pointer; padding: var(--sp-2) var(--sp-3);
     font-family: var(--font-display); font-size: var(--fs-tiny); font-weight: 600;
@@ -144,7 +243,7 @@
   #warnings {
     display: none;
     font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--stamp-brick);
-    background: var(--stamp-brick-bg); border: 1px dashed var(--stamp-brick);
+    background: var(--stamp-brick-bg); border: 1px solid var(--stamp-brick);
     padding: var(--sp-3); margin: 0 0 var(--sp-4); border-radius: var(--radius-tag); line-height: 1.7;
   }
   #warnings strong { display:block; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
@@ -212,7 +311,7 @@
   .mode-label a { color: var(--ink-soft); text-decoration: underline; cursor: pointer; }
   .easy-hint {
     font-family: var(--font-display); font-size: var(--fs-tiny); color: var(--stamp-blue);
-    background: var(--stamp-blue-bg); border: 1px dashed var(--stamp-blue); border-radius: var(--radius-tag);
+    background: var(--stamp-blue-bg); border: 1px solid var(--stamp-blue); border-radius: var(--radius-tag);
     padding: 6px 10px; margin-bottom: var(--sp-3);
   }
 
@@ -303,11 +402,11 @@
   .easy-mini-badge { font-size: 0.6rem; padding: 1px 5px; }
 
   .db-open-btn {
-    background: var(--paper-alt); border: 1.5px dashed var(--line); color: var(--ink-soft);
+    background: var(--paper-alt); border: 1.5px solid var(--line); color: var(--ink-soft);
   }
   .db-open-btn:hover { background: var(--card); color: var(--ink); border-color: var(--ink-soft); }
 
-  .db-sub { border: 1px dashed var(--line); border-radius: var(--radius-tag); margin-bottom: var(--sp-2); background: var(--paper); }
+  .db-sub { border: 1px solid var(--line); border-radius: var(--radius-tag); margin-bottom: var(--sp-2); background: var(--paper); }
   .db-sub summary {
     list-style: none; cursor: pointer; padding: 8px 10px;
     font-family: var(--font-display); font-size: var(--fs-tiny); font-weight: 600;
@@ -341,7 +440,7 @@
 
   #win {
     display:none; margin-bottom: var(--sp-3); padding: var(--sp-4); border-radius: var(--radius-card);
-    border: 2px dashed var(--moss); background: var(--moss-bg); color: var(--ink);
+    border: 2px solid var(--moss); background: var(--moss-bg); color: var(--ink);
   }
   #win.lose { border-color: var(--stamp-brick); background: var(--stamp-brick-bg); }
   #win .stamp-word {
@@ -381,7 +480,7 @@
     width: 54px; height: 54px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-family: var(--font-display); font-weight: 700; font-size: 0.78rem;
-    border: 2px dashed currentColor; background: transparent;
+    border: 2px solid currentColor; background: transparent;
     line-height: 1.05; text-align: center;
   }
 
@@ -398,7 +497,15 @@
     animation-delay: calc(var(--i, 0) * 45ms);
   }
   @keyframes chipIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
-  .chip.zone-hit { background: var(--stamp-blue-bg); border-color: var(--stamp-blue); color: var(--stamp-blue); }
+  .chip.zone-hit { background: var(--quad-neutral-bg); border-color: var(--quad-neutral); color: var(--quad-neutral); }
+  .chip.zone-hit.quad-auth-left { background: var(--quad-auth-left-bg); border-color: var(--quad-auth-left); color: var(--quad-auth-left); }
+  .chip.zone-hit.quad-auth-right { background: var(--quad-auth-right-bg); border-color: var(--quad-auth-right); color: var(--quad-auth-right); }
+  .chip.zone-hit.quad-lib-right { background: var(--quad-lib-right-bg); border-color: var(--quad-lib-right); color: var(--quad-lib-right); }
+  .chip.zone-hit.quad-lib-left { background: var(--quad-lib-left-bg); border-color: var(--quad-lib-left); color: var(--quad-lib-left); }
+  .chip.zone-hit.quad-auth { background: var(--quad-auth-bg); border-color: var(--quad-auth); color: var(--quad-auth); }
+  .chip.zone-hit.quad-lib { background: var(--quad-lib-bg); border-color: var(--quad-lib); color: var(--quad-lib); }
+  .chip.zone-hit.quad-left { background: var(--quad-left-bg); border-color: var(--quad-left); color: var(--quad-left); }
+  .chip.zone-hit.quad-right { background: var(--quad-right-bg); border-color: var(--quad-right); color: var(--quad-right); }
   .chip.zone-miss, .chip.miss { background: var(--paper-alt); border-color: var(--line); color: var(--ink-soft); }
   .rarity-label { opacity: 0.7; font-weight: 500; }
 
@@ -415,90 +522,26 @@
     <div class="eyebrow">Dossier — mystery ideology</div>
     <h1>Ideologle <span class="wt">(working title)</span></h1>
   </div>
-  <button id="themeToggle" type="button" class="theme-toggle" aria-label="Toggle dark or light mode">☀ Light</button>
+  <div class="icon-nav" id="iconNav" style="display:none">
+    <button type="button" id="navHelpBtn" class="icon-btn" aria-label="How to play"><span class="icon-help">?</span></button>
+    <button type="button" id="navStatsBtn" class="icon-btn" aria-label="Stats"><span class="icon-stats"><i></i><i></i><i></i></span></button>
+    <button type="button" id="navArchiveBtn" class="icon-btn" aria-label="Archive"><span class="icon-archive"><i></i><i></i><i></i></span></button>
+    <button type="button" id="navDbBtn" class="icon-btn" aria-label="Database"><span class="icon-db-grid"><i></i><i></i><i></i><i></i></span></button>
+    <button type="button" id="navSettingsBtn" class="icon-btn" aria-label="Settings"><span class="icon-settings">⚙</span></button>
+  </div>
 </div>
 <div class="sub">One ideology is on file. Each guess logs its compass-zone overlap and category-tag overlap separately.</div>
 
 <!-- ================= INTRO / RULES ================= -->
 <div id="introScreen">
-  <div class="disclaimer">Early build — 337 entries on file (past the ~200 mark!). Includes Ismism, the wildcard — it can occasionally be the answer itself.</div>
-
-  <div class="section-label">How this works</div>
-  <p class="rules-p">An ideology is filed as the mystery answer. Type any ideology you know into the box — a dropdown will narrow it down as you type — and press Guess. You'll get back an entry card showing how <em>that</em> ideology's own compass zone(s) and category tags line up against the one that's actually filed. Identify the filed ideology in 15 entries or fewer.</p>
-
-  <div class="section-label">Compass zone colors</div>
-  <div class="legend-row"><span class="chip zone-hit js-zone-hit-ex"></span><span>shares this zone with the answer</span></div>
-  <div class="legend-row"><span class="chip zone-miss js-zone-miss-ex"></span><span>does not</span></div>
-
-  <div class="section-label">Category tag colors</div>
-  <div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared and rare — a strong signal, worth more toward your match %</span></div>
-  <div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared but common — worth less</span></div>
-  <div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div>
-  <p class="rules-p">The number on a tag is its rarity score, computed fresh from whatever's currently on file — log-weighted by how few entries carry it. Higher number, rarer tag, bigger boost when it's shared. These examples update automatically as entries are added, so they can't go stale.</p>
-
-  <div class="section-label">Match % stamp</div>
-  <div class="legend-row">
-    <span class="stamp-mini" style="color:var(--stamp-brick)">&lt;35%</span>
-    <span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span>
-    <span class="stamp-mini" style="color:var(--moss)">70%+</span>
-  </div>
-  <p class="rules-p">The stamp blends zone overlap (40% of the score) with rarity-weighted category overlap (60%) — matching one rare tag can outweigh matching several common ones.</p>
-
-  <div class="section-label">Fictional ideologies</div>
-  <p class="rules-p">A few entries are marked Fictional — no real-world basis, usually pulled from fiction (like IngSoc from Nineteen Eighty-Four). Guess one and you'll get a badge: green if the answer is fictional too, red if it isn't. It only shows up when the entry you guessed is itself fictional — guessing a real-world entry reveals nothing on this axis.</p>
-  <div class="legend-row">
-    <span class="fiction-badge hit">✦ Fictional — matches the answer</span>
-    <span class="fiction-badge miss">✦ Fictional — doesn't match</span>
-  </div>
-
-  <div class="section-label">Ismism</div>
-  <p class="rules-p ismism-quote">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p>
-  <p class="rules-p">Ismism is a wildcard guess, always available — and yes, it can occasionally be the actual filed answer too, since it's built to represent every zone and every tag at once. Guess it against a different answer and it reveals a random slice of zones and tags checked against the real one instead, plus sometimes whether it's fictional. How much it shows depends on timing and a little luck: early in the game it's barely a sliver; late in the game it can lay out almost everything — in Easy, it ramps up faster and is basically maxed out by entry 12. There's a dedicated button for it next to the guess form.</p>
-
-  <div class="section-label">A couple of extras</div>
-  <p class="rules-p">Guessing the same ideology twice won't burn an entry — it points you back to the card instead. The Confirmed box below collects every zone and tag a guess has proven true about the answer, so you don't have to scroll back through every card to remember.</p>
-
-  <div class="section-label">Daily puzzle</div>
-  <p class="rules-p">There are two separate daily puzzles, Normal and Easy — pick with the tabs once you're in, like difficulty tiers in a daily crossword. Easy shows the answer's compass zones upfront as its own hint, separate from Confirmed and Candidates — those two still only reflect what your actual guesses have proven, so they correctly start empty even in Easy. Normal gets no hint. Each track has its own puzzle number and its own stats. Nothing locks you out after solving either — "New ideology" gives unlimited random practice any time, or head back to a daily whenever you like. Solve a daily and you can share your result as a row of colored squares (🟩🟨🟥, one per guess) without spoiling the answer. Stats and in-progress games save locally in your browser and survive a refresh, same as Wordle.</p>
-
-  <div class="section-label">Candidates</div>
-  <p class="rules-p">The Candidates box lists every ideology that could still be the answer given what's confirmed so far — it narrows on its own as you guess, nothing to tap. Full spoiler if you open it early, so it's entirely optional.</p>
-
+  <p class="rules-p">An ideology is filed as the mystery answer. Guess ideologies to narrow it down by compass zone and category — a full walkthrough opens automatically the first time you start.</p>
   <button id="startBtn" type="button">Start Ideologle</button>
 </div>
 
 <!-- ================= GAME ================= -->
 <div id="gameScreen" style="display:none">
 
-  <details class="reference" id="howtoBox">
-    <summary>How to play</summary>
-    <div class="ref-block">
-      <div class="section-label">Compass zone colors</div>
-      <div class="legend-row"><span class="chip zone-hit js-zone-hit-ex"></span><span>shares this zone with the answer</span></div>
-      <div class="legend-row"><span class="chip zone-miss js-zone-miss-ex"></span><span>does not</span></div>
-      <div class="section-label">Category tag colors</div>
-      <div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared, rare — worth more</span></div>
-      <div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared, common — worth less</span></div>
-      <div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div>
-      <div class="section-label">Match % stamp</div>
-      <div class="legend-row">
-        <span class="stamp-mini" style="color:var(--stamp-brick)">&lt;35%</span>
-        <span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span>
-        <span class="stamp-mini" style="color:var(--moss)">70%+</span>
-      </div>
-      <div class="section-label">Fictional ideologies</div>
-      <div class="legend-row">
-        <span class="fiction-badge hit">✦ Fictional — matches</span>
-        <span class="fiction-badge miss">✦ Fictional — doesn't match</span>
-      </div>
-      <p class="rules-p">Only shows when the guessed entry is itself fictional.</p>
-      <div class="section-label">Ismism</div>
-      <p class="rules-p">A wildcard guess that can occasionally BE the answer too — otherwise reveals a random slice of zones/tags checked against the real one. Reveals more the later you use it (faster in Easy), plus some luck.</p>
-      <p class="rules-p" style="margin-bottom:0">40% zone overlap + 60% rarity-weighted category overlap. Repeat guesses don't cost an entry.</p>
-    </div>
-  </details>
-
-  <details class="reference" open>
+  <details class="reference corner-frame" open>
     <summary>Confirmed — <span id="refCounts">nothing yet</span></summary>
     <div class="ref-block">
       <div id="refEmpty" class="ref-empty">Nothing confirmed yet — make a guess, and anything it shares with the answer shows up here.</div>
@@ -519,59 +562,13 @@
     </div>
   </details>
 
-  <details class="reference" id="candidatesBox">
+  <details class="reference corner-frame" id="candidatesBox">
     <summary>Candidates — <span id="candidatesCount">still possible</span></summary>
     <div class="ref-block">
       <p class="rules-p">Every ideology that could still be the answer, given what's confirmed so far — narrows automatically as you guess, no need to cross anything off yourself.</p>
       <div id="candidatesList" class="easy-list"></div>
     </div>
   </details>
-
-  <details class="reference" id="archiveBox">
-    <summary>Archive — <span id="archiveCount">1 puzzle</span></summary>
-    <div class="ref-block">
-      <p class="rules-p">Every past daily puzzle, replayable any time. Doesn't touch your streak or stats — only today's actual daily counts for those.</p>
-      <div id="archiveList" class="archive-list"></div>
-    </div>
-  </details>
-
-  <details class="reference" id="statsBox">
-    <summary>Your stats — <span id="statsSummaryCount">no games yet</span></summary>
-    <div class="ref-block">
-      <p class="rules-p">Saved right in your browser (localStorage) — nothing sent anywhere. Normal and Easy are tracked separately since they're different puzzles; practice rounds don't count toward either.</p>
-
-      <div class="section-label">Normal</div>
-      <div id="statsEmptyNormal" class="ref-empty">No games yet.</div>
-      <div id="statsFilledNormal" style="display:none">
-        <div class="stats-grid">
-          <div class="stat-box"><div class="stat-num" id="statPlayedNormal">0</div><div class="stat-label">Played</div></div>
-          <div class="stat-box"><div class="stat-num" id="statWinPctNormal">0%</div><div class="stat-label">Win %</div></div>
-          <div class="stat-box"><div class="stat-num" id="statCurrentNormal">0</div><div class="stat-label">Streak</div></div>
-          <div class="stat-box"><div class="stat-num" id="statMaxNormal">0</div><div class="stat-label">Best streak</div></div>
-        </div>
-        <div id="statsDistNormal"></div>
-      </div>
-
-      <div class="section-label">Easy</div>
-      <div id="statsEmptyEasy" class="ref-empty">No games yet.</div>
-      <div id="statsFilledEasy" style="display:none">
-        <div class="stats-grid">
-          <div class="stat-box"><div class="stat-num" id="statPlayedEasy">0</div><div class="stat-label">Played</div></div>
-          <div class="stat-box"><div class="stat-num" id="statWinPctEasy">0%</div><div class="stat-label">Win %</div></div>
-          <div class="stat-box"><div class="stat-num" id="statCurrentEasy">0</div><div class="stat-label">Streak</div></div>
-          <div class="stat-box"><div class="stat-num" id="statMaxEasy">0</div><div class="stat-label">Best streak</div></div>
-        </div>
-        <div id="statsDistEasy"></div>
-      </div>
-
-      <div class="stats-actions">
-        <button id="statsShareBtn" type="button">Share stats</button>
-        <button id="statsClearBtn" type="button" class="danger-btn">Clear my stats</button>
-      </div>
-    </div>
-  </details>
-
-  <button type="button" id="openDatabaseBtn" class="db-open-btn" style="width:100%;margin-bottom:var(--sp-4)">Open Database (full reference)</button>
 
   <div id="warnings"></div>
 
@@ -599,36 +596,139 @@
 </div>
 
 <div id="databaseScreen" style="display:none">
-  <button type="button" id="backToGameBtn" class="theme-toggle" style="width:100%;margin-bottom:var(--sp-4)">← Back to game</button>
+  <button type="button" class="theme-toggle overlay-back-btn" data-screen="databaseScreen" style="width:100%;margin-bottom:var(--sp-4)">← Back to game</button>
   <div class="eyebrow">Database — full reference</div>
   <p class="rules-p">A complete, unfiltered look at everything on file — total spoilers, meant for reviewing the dataset itself rather than playing. Nothing here is affected by game progress, and it always reflects what's currently in the edit zone.</p>
 
   <input type="text" id="dbSearch" placeholder="Search zones, categories, or ideologies…" autocomplete="off">
 
-  <details class="db-sub">
+  <details class="db-sub corner-frame">
     <summary>Zones → Ideologies</summary>
     <div id="dbZones" class="db-list"></div>
   </details>
 
-  <details class="db-sub">
+  <details class="db-sub corner-frame">
     <summary>Categories → Ideologies</summary>
     <div id="dbCategories" class="db-list"></div>
   </details>
 
-  <details class="db-sub">
+  <details class="db-sub corner-frame">
     <summary>All Ideologies</summary>
     <div id="dbAllIdeologies" class="db-list easy-list"></div>
   </details>
 
-  <details class="db-sub">
+  <details class="db-sub corner-frame">
     <summary>All Zones (A–Z)</summary>
     <div id="dbZoneIndex" class="db-index"></div>
   </details>
 
-  <details class="db-sub">
+  <details class="db-sub corner-frame">
     <summary>All Categories (A–Z)</summary>
     <div id="dbCategoryIndex" class="db-index"></div>
   </details>
+</div>
+
+<div id="helpScreen" style="display:none">
+  <button type="button" class="theme-toggle overlay-back-btn" data-screen="helpScreen" style="width:100%;margin-bottom:var(--sp-4)">← Back to game</button>
+  <div class="eyebrow">How to play</div>
+  <div class="section-label">Compass zone colors</div>
+  <div class="legend-row"><span class="chip zone-hit js-zone-hit-ex"></span><span>shares this zone with the answer</span></div>
+  <div class="legend-row"><span class="chip zone-miss js-zone-miss-ex"></span><span>does not</span></div>
+  <p class="rules-p">Chip color is tied to the actual political quadrant that zone belongs to.</p>
+
+  <div class="section-label">Category tag colors</div>
+  <div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared, rare — worth more</span></div>
+  <div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared, common — worth less</span></div>
+  <div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div>
+  <p class="rules-p">The number is a rarity score, computed fresh from whatever's on file — rarer tag, bigger boost when shared.</p>
+
+  <div class="section-label">Match % stamp</div>
+  <div class="legend-row">
+    <span class="stamp-mini" style="color:var(--stamp-brick)">&lt;35%</span>
+    <span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span>
+    <span class="stamp-mini" style="color:var(--moss)">70%+</span>
+  </div>
+  <p class="rules-p">40% zone overlap + 60% rarity-weighted category overlap.</p>
+
+  <div class="section-label">Fictional ideologies</div>
+  <div class="legend-row">
+    <span class="fiction-badge hit">✦ Fictional — matches</span>
+    <span class="fiction-badge miss">✦ Fictional — doesn't match</span>
+  </div>
+  <p class="rules-p">Only shows when the guessed entry is itself fictional.</p>
+
+  <div class="section-label">Ismism</div>
+  <p class="rules-p ismism-quote">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p>
+  <p class="rules-p">A wildcard guess, always available — and yes, it can occasionally be the actual answer too. Guessed against a different answer, it reveals a random slice of zones/tags instead. Reveals more the later you use it (faster in Easy). Repeat guesses never cost an entry.</p>
+
+  <div class="section-label">Daily puzzle</div>
+  <p class="rules-p" style="margin-bottom:0">Two separate daily puzzles, Normal and Easy — Easy shows the answer's zones upfront as a hint. Each track has its own puzzle number and stats. "New ideology" gives unlimited random practice anytime. Solve a daily to share your result as colored squares without spoiling the answer. Everything saves locally in your browser, same as Wordle.</p>
+</div>
+
+<div id="statsScreen" style="display:none">
+  <button type="button" class="theme-toggle overlay-back-btn" data-screen="statsScreen" style="width:100%;margin-bottom:var(--sp-4)">← Back to game</button>
+  <div class="eyebrow">Your stats — <span id="statsSummaryCount">no games yet</span></div>
+  <p class="rules-p">Saved right in your browser (localStorage) — nothing sent anywhere. Normal and Easy are tracked separately since they're different puzzles; practice rounds don't count toward either.</p>
+
+  <div class="section-label">Normal</div>
+  <div id="statsEmptyNormal" class="ref-empty">No games yet.</div>
+  <div id="statsFilledNormal" style="display:none">
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-num" id="statPlayedNormal">0</div><div class="stat-label">Played</div></div>
+      <div class="stat-box"><div class="stat-num" id="statWinPctNormal">0%</div><div class="stat-label">Win %</div></div>
+      <div class="stat-box"><div class="stat-num" id="statCurrentNormal">0</div><div class="stat-label">Streak</div></div>
+      <div class="stat-box"><div class="stat-num" id="statMaxNormal">0</div><div class="stat-label">Best streak</div></div>
+    </div>
+    <div id="statsDistNormal"></div>
+  </div>
+
+  <div class="section-label">Easy</div>
+  <div id="statsEmptyEasy" class="ref-empty">No games yet.</div>
+  <div id="statsFilledEasy" style="display:none">
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-num" id="statPlayedEasy">0</div><div class="stat-label">Played</div></div>
+      <div class="stat-box"><div class="stat-num" id="statWinPctEasy">0%</div><div class="stat-label">Win %</div></div>
+      <div class="stat-box"><div class="stat-num" id="statCurrentEasy">0</div><div class="stat-label">Streak</div></div>
+      <div class="stat-box"><div class="stat-num" id="statMaxEasy">0</div><div class="stat-label">Best streak</div></div>
+    </div>
+    <div id="statsDistEasy"></div>
+  </div>
+
+  <div class="stats-actions">
+    <button id="statsShareBtn" type="button">Share stats</button>
+    <button id="statsClearBtn" type="button" class="danger-btn">Clear my stats</button>
+  </div>
+</div>
+
+<div id="archiveScreen" style="display:none">
+  <button type="button" class="theme-toggle overlay-back-btn" data-screen="archiveScreen" style="width:100%;margin-bottom:var(--sp-4)">← Back to game</button>
+  <div class="eyebrow">Archive — <span id="archiveCount">1 puzzle</span></div>
+  <p class="rules-p">Every past daily puzzle, replayable any time. Doesn't touch your streak or stats — only today's actual daily counts for those.</p>
+  <div id="archiveList" class="archive-list"></div>
+</div>
+
+<div id="settingsScreen" style="display:none">
+  <button type="button" class="theme-toggle overlay-back-btn" data-screen="settingsScreen" style="width:100%;margin-bottom:var(--sp-4)">← Back to game</button>
+  <div class="eyebrow">Settings</div>
+  <div class="section-label">Appearance</div>
+  <button id="themeToggle" type="button" class="theme-toggle" aria-label="Toggle dark or light mode" style="width:100%;margin-bottom:var(--sp-4)">☀ Light</button>
+  <div class="section-label">Help</div>
+  <button id="replayTutorialBtn" type="button" class="theme-toggle" style="width:100%">↺ Replay tutorial</button>
+</div>
+
+<div id="tutorialOverlay">
+  <div class="tutorial-card">
+    <div class="tutorial-dots" id="tutorialDots"></div>
+    <div class="tutorial-title" id="tutorialTitle"></div>
+    <div class="tutorial-body" id="tutorialBody"></div>
+    <div class="tutorial-actions">
+      <button type="button" class="tutorial-skip" id="tutorialSkipBtn">Skip</button>
+      <div class="tutorial-nav-btns">
+        <button type="button" class="theme-toggle" id="tutorialBackBtn">Back</button>
+        <button type="button" id="tutorialNextBtn">Next</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 </div>
@@ -1376,6 +1476,24 @@ IDEOLOGIES.forEach(e => { e.zones = e.zones.map(normalizeZone); });
   ismismEntry.categories = [...new Set(IDEOLOGIES.flatMap(e => e.categories))];
 })();
 
+// Derives a compass-quadrant class from a zone's name mechanically (not
+// hand-curated per zone), so it automatically covers any zone added later.
+function zoneQuadrantClass(zoneName) {
+  const hasAuth = /authoritarian/i.test(zoneName);
+  const hasLib = /libertarian/i.test(zoneName);
+  const hasLeft = /\bleft\b/i.test(zoneName);
+  const hasRight = /\bright\b/i.test(zoneName);
+  if (hasAuth && hasLeft) return 'quad-auth-left';
+  if (hasAuth && hasRight) return 'quad-auth-right';
+  if (hasLib && hasLeft) return 'quad-lib-left';
+  if (hasLib && hasRight) return 'quad-lib-right';
+  if (hasAuth) return 'quad-auth';
+  if (hasLib) return 'quad-lib';
+  if (hasLeft) return 'quad-left';
+  if (hasRight) return 'quad-right';
+  return 'quad-neutral';
+}
+
 function computeWeights() {
   const freq = {};
   IDEOLOGIES.forEach(e => e.categories.forEach(t => freq[t] = (freq[t] || 0) + 1));
@@ -1434,7 +1552,10 @@ function catChipStyle(weight, mw) {
 // nothing here is hardcoded, so it can't go out of sync as entries
 // are added.
 function renderLegend() {
-  document.querySelectorAll('.js-zone-hit-ex').forEach(el => { el.textContent = ZONES[0]; });
+  document.querySelectorAll('.js-zone-hit-ex').forEach(el => {
+    el.textContent = ZONES[0];
+    el.classList.add(zoneQuadrantClass(ZONES[0]));
+  });
   document.querySelectorAll('.js-zone-miss-ex').forEach(el => { el.textContent = ZONES[1]; });
 
   const entries = Object.entries(tagWeights).sort((a, b) => b[1] - a[1]);
@@ -1472,7 +1593,7 @@ function renderReference() {
 
   if (confirmedZones.size > 0) {
     zonesBlock.style.display = 'block';
-    document.getElementById('refZones').innerHTML = [...confirmedZones].sort((a, b) => a.localeCompare(b)).map(z => `<span class="chip zone-hit">${z}</span>`).join('');
+    document.getElementById('refZones').innerHTML = [...confirmedZones].sort((a, b) => a.localeCompare(b)).map(z => `<span class="chip zone-hit ${zoneQuadrantClass(z)}">${z}</span>`).join('');
   } else {
     zonesBlock.style.display = 'none';
   }
@@ -1554,30 +1675,32 @@ function renderDatabase(searchTerm) {
   }).filter(Boolean);
   document.getElementById('dbCategories').innerHTML = catRows.length ? catRows.join('') : noMatch;
 
-  const sortedEntries = [...realEntries].sort((a, b) => a.name.localeCompare(b.name));
+  const sortedEntries = [...IDEOLOGIES].sort((a, b) => a.name.localeCompare(b.name));
   const ismismEntry = IDEOLOGIES.find(e => e.ismism);
   const ismismSearchable = ['ismism', 'wildcard', 'any and all combination of philosophical and political thought could be transformed into an ideology regardless of the seriousness or consistency of the statements in question']
     .concat((ismismEntry.aliases || []).map(a => a.toLowerCase()))
     .join(' | ');
-  const ismismRow = (!q || ismismSearchable.includes(q)) ? `<div class="easy-row ismism-row">
-    <div class="easy-name">Ismism</div>
-    <p class="rules-p ismism-quote" style="margin:6px 0 8px">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p>
-    <p class="rules-p" style="margin-bottom:0">Its real profile is every zone and every category on file — it can occasionally be the actual daily answer. Guessed against a different answer, it instead reveals a random slice of zones/tags checked against the real one: a small sliver early in the game, nearly everything late (faster in Easy mode), plus some randomness. That's why it's left out of the Zones/Categories lookups below — it would otherwise show up in literally every single row.</p>
-  </div>` : '';
   const ideologyRows = sortedEntries.filter(e => {
     if (!q) return true;
+    if (e.ismism) return ismismSearchable.includes(q);
     const nameMatch = e.name.toLowerCase().includes(q) || (e.aliases || []).some(a => a.toLowerCase().includes(q));
     const zoneMatch = e.zones.some(z => z.toLowerCase().includes(q));
     const catMatch = e.categories.some(c => c.toLowerCase().includes(q));
     return nameMatch || zoneMatch || catMatch;
   }).map(e => {
+    if (e.ismism) {
+      return `<div class="easy-row ismism-row">
+    <div class="easy-name">Ismism</div>
+    <p class="rules-p ismism-quote" style="margin:6px 0 8px">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p>
+    <p class="rules-p" style="margin-bottom:0">Its real profile is every zone and every category on file — it can occasionally be the actual daily answer. Guessed against a different answer, it instead reveals a random slice of zones/tags checked against the real one: a small sliver early in the game, nearly everything late (faster in Easy mode), plus some randomness. That's why it's left out of the Zones/Categories lookups above — it would otherwise show up in literally every single row.</p>
+  </div>`;
+    }
     const fictionTag = e.fictional ? '<span class="fiction-badge hit easy-mini-badge">✦</span>' : '';
     const zoneChips = e.zones.length ? e.zones.map(z => `<span class="chip ref">${z}</span>`).join('') : '<span class="chip ref">none</span>';
     const catChips = e.categories.length ? e.categories.map(c => `<span class="chip ref">${c}</span>`).join('') : '<span class="chip ref">none</span>';
     return `<div class="easy-row"><div class="easy-name">${e.name}${fictionTag}</div><div class="easy-tagrow">${zoneChips}</div><div class="easy-tagrow">${catChips}</div></div>`;
   });
-  const allIdeologiesHtml = ismismRow + ideologyRows.join('');
-  document.getElementById('dbAllIdeologies').innerHTML = allIdeologiesHtml || noMatch;
+  document.getElementById('dbAllIdeologies').innerHTML = ideologyRows.length ? ideologyRows.join('') : noMatch;
 
   const filteredZoneIndex = ZONES.filter(z => !q || z.toLowerCase().includes(q));
   document.getElementById('dbZoneIndex').innerHTML = filteredZoneIndex.length ? filteredZoneIndex.map(z => `<span class="chip ref">${z}</span>`).join('') : noMatch;
@@ -1794,7 +1917,6 @@ function restoreDailyGameState(saved) {
   document.getElementById('guessInput').disabled = false;
   document.querySelector('#guessForm button').disabled = false;
   document.getElementById('ismismBtn').disabled = false;
-  document.getElementById('howtoBox').removeAttribute('open');
   hideSuggestions();
 
   renderEasyHint();
@@ -1861,7 +1983,6 @@ function startGame(mode = 'daily', archiveDate = null, track = null) {
   document.getElementById('guessInput').disabled = false;
   document.querySelector('#guessForm button').disabled = false;
   document.getElementById('ismismBtn').disabled = false;
-  document.getElementById('howtoBox').removeAttribute('open');
   hideSuggestions();
 
   renderEasyHint(); // Easy track's hint: zones shown on their own, not folded into Confirmed
@@ -2017,7 +2138,7 @@ function renderGuess(entry) {
   }
 
   let i = 0;
-  const zoneChips = sharedZones.map(z => `<span class="chip zone-hit" style="--i:${i++}">${z}</span>`).join('')
+  const zoneChips = sharedZones.map(z => `<span class="chip zone-hit ${zoneQuadrantClass(z)}" style="--i:${i++}">${z}</span>`).join('')
                    + missZones.map(z => `<span class="chip zone-miss" style="--i:${i++}">${z}</span>`).join('');
 
   const catChips = catsSorted.map(c => {
@@ -2103,7 +2224,11 @@ document.getElementById('newGame').addEventListener('click', () => startGame('pr
 document.getElementById('startBtn').addEventListener('click', () => {
   document.getElementById('introScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
+  document.getElementById('iconNav').style.display = 'flex';
   startGame('daily');
+  let seenTutorial = false;
+  try { seenTutorial = localStorage.getItem('ideologle_tutorial_seen') === '1'; } catch (e) { /* storage unavailable */ }
+  if (!seenTutorial) openTutorial();
 });
 
 document.getElementById('modeLabel').addEventListener('click', (e) => {
@@ -2158,9 +2283,39 @@ document.getElementById('themeToggle').addEventListener('click', () => {
 });
 setTheme(document.documentElement.getAttribute('data-theme') || 'dark');
 
-document.getElementById('openDatabaseBtn').addEventListener('click', () => {
-  document.getElementById('gameScreen').style.display = 'none';
-  document.getElementById('databaseScreen').style.display = 'block';
+// ---- screen manager: every top-level screen (intro, game, and all five
+// overlays) is hidden before the target is shown, so nothing can ever stack
+// on top of anything else no matter what was open before ----
+const ALL_SCREENS = ['introScreen', 'gameScreen', 'helpScreen', 'statsScreen', 'archiveScreen', 'databaseScreen', 'settingsScreen'];
+function showOnlyScreen(screenId) {
+  ALL_SCREENS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = (id === screenId) ? 'block' : 'none';
+  });
+}
+function isScreenOpen(screenId) {
+  const el = document.getElementById(screenId);
+  return !!el && el.style.display === 'block';
+}
+
+document.querySelectorAll('.overlay-back-btn').forEach(btn => {
+  btn.addEventListener('click', () => showOnlyScreen('gameScreen'));
+});
+
+// Each nav icon toggles: tap to open, tap again (while already open) to
+// close and return to the game — same as pressing the back button.
+function wireNavToggle(btnId, screenId, onOpen) {
+  document.getElementById(btnId).addEventListener('click', () => {
+    if (isScreenOpen(screenId)) { showOnlyScreen('gameScreen'); return; }
+    showOnlyScreen(screenId);
+    if (onOpen) onOpen();
+  });
+}
+wireNavToggle('navHelpBtn', 'helpScreen', renderLegend);
+wireNavToggle('navStatsBtn', 'statsScreen');
+wireNavToggle('navArchiveBtn', 'archiveScreen');
+wireNavToggle('navSettingsBtn', 'settingsScreen');
+wireNavToggle('navDbBtn', 'databaseScreen', () => {
   const dbSearchEl = document.getElementById('dbSearch');
   dbSearchEl.value = '';
   document.querySelectorAll('#databaseScreen .db-sub').forEach(d => { d.open = false; });
@@ -2169,9 +2324,50 @@ document.getElementById('openDatabaseBtn').addEventListener('click', () => {
 document.getElementById('dbSearch').addEventListener('input', (e) => {
   renderDatabase(e.target.value);
 });
-document.getElementById('backToGameBtn').addEventListener('click', () => {
-  document.getElementById('databaseScreen').style.display = 'none';
-  document.getElementById('gameScreen').style.display = 'block';
+
+// ---- tutorial: same content whether it auto-opens on first visit or gets
+// replayed from Settings — one source, two entry points ----
+const TUTORIAL_STEPS = [
+  { title: 'How it works', body: `<p>An ideology is filed as the mystery answer. Type any ideology you know — a dropdown narrows it as you type — and press Guess. You'll get back a card showing how <em>that</em> ideology's own zones and tags line up against the real one. Identify it in 15 entries or fewer.</p>` },
+  { title: 'Compass zone colors', body: `<div class="legend-row"><span class="chip zone-hit js-zone-hit-ex"></span><span>shares this zone with the answer</span></div><div class="legend-row"><span class="chip zone-miss js-zone-miss-ex"></span><span>does not</span></div><p>Chip color is tied to the actual political quadrant each zone belongs to.</p>` },
+  { title: 'Category tag colors', body: `<div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared and rare — worth more</span></div><div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared but common — worth less</span></div><div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div><p>The number is a rarity score — rarer tag, bigger boost when it's shared.</p>` },
+  { title: 'Match % stamp', body: `<div class="legend-row"><span class="stamp-mini" style="color:var(--stamp-brick)">&lt;35%</span><span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span><span class="stamp-mini" style="color:var(--moss)">70%+</span></div><p>40% zone overlap + 60% rarity-weighted category overlap. One rare shared tag can outweigh several common ones.</p>` },
+  { title: 'Fictional ideologies', body: `<div class="legend-row"><span class="fiction-badge hit">✦ Fictional — matches</span></div><div class="legend-row"><span class="fiction-badge miss">✦ Fictional — doesn't match</span></div><p>A few entries have no real-world basis (pulled from fiction, like IngSoc). This badge only shows when the guessed entry is itself fictional.</p>` },
+  { title: 'Ismism', body: `<p class="ismism-quote">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p><p>A wildcard guess, always available — and it can occasionally be the actual answer too. Guessed against a different answer, it reveals a random slice of zones/tags instead, more the later you use it. Repeat guesses never cost an entry.</p>` },
+  { title: 'Daily puzzle & sharing', body: `<p>Two separate daily puzzles, Normal and Easy — Easy shows the answer's zones upfront as a hint. Each track has its own puzzle number and stats. "New ideology" gives unlimited random practice anytime. Solve a daily to share your result as colored squares without spoiling the answer.</p>` },
+  { title: 'Where everything lives', body: `<p>The icons up top open How to Play, Stats, Archive, the full Database, and Settings — nothing's hidden, just tucked one tap away. Confirmed and Candidates stay on the main screen since they change as you actually play.</p>` }
+];
+let tutorialStep = 0;
+function renderTutorialStep() {
+  const step = TUTORIAL_STEPS[tutorialStep];
+  document.getElementById('tutorialTitle').textContent = step.title;
+  document.getElementById('tutorialBody').innerHTML = step.body;
+  document.getElementById('tutorialDots').innerHTML = TUTORIAL_STEPS.map((_, i) =>
+    `<span class="tutorial-dot${i === tutorialStep ? ' active' : ''}"></span>`).join('');
+  document.getElementById('tutorialBackBtn').style.visibility = tutorialStep === 0 ? 'hidden' : 'visible';
+  document.getElementById('tutorialNextBtn').textContent = tutorialStep === TUTORIAL_STEPS.length - 1 ? 'Done' : 'Next';
+  renderLegend();
+}
+function openTutorial() {
+  tutorialStep = 0;
+  renderTutorialStep();
+  document.getElementById('tutorialOverlay').style.display = 'flex';
+}
+function closeTutorial() {
+  document.getElementById('tutorialOverlay').style.display = 'none';
+  try { localStorage.setItem('ideologle_tutorial_seen', '1'); } catch (e) { /* storage unavailable */ }
+}
+document.getElementById('tutorialNextBtn').addEventListener('click', () => {
+  if (tutorialStep < TUTORIAL_STEPS.length - 1) { tutorialStep++; renderTutorialStep(); }
+  else closeTutorial();
+});
+document.getElementById('tutorialBackBtn').addEventListener('click', () => {
+  if (tutorialStep > 0) { tutorialStep--; renderTutorialStep(); }
+});
+document.getElementById('tutorialSkipBtn').addEventListener('click', closeTutorial);
+document.getElementById('replayTutorialBtn').addEventListener('click', () => {
+  showOnlyScreen('gameScreen');
+  openTutorial();
 });
 
 renderLegend();
