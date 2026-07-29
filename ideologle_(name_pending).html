@@ -655,7 +655,7 @@
     <span class="fiction-badge hit">✦ Fictional — matches</span>
     <span class="fiction-badge miss">✦ Fictional — doesn't match</span>
   </div>
-  <p class="rules-p">Only shows when the guessed entry is itself fictional.</p>
+  <p class="rules-p">Badge only shows when the guessed entry is itself fictional. A mismatch (real guessed against a fictional answer, or the reverse) also costs 15 points off the match %, even with perfect zone/category overlap.</p>
 
   <div class="section-label">Ismism</div>
   <p class="rules-p ismism-quote">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p>
@@ -748,7 +748,7 @@
 const ZONES = [
   "Authoritarian Left","Authoritarian Right","Authoritarian Unity","Center-Authoritarian Left","Center-Authoritarian Right","Center-Authoritarian Unity","Center-Libertarian Left","Center-Libertarian Right","Center-Libertarian Unity",
   "Centrists","Cultural Center","Cultural Center-Left","Cultural Center-Right",
-  "Culturally Alternate Modernist","Culturally Far-Left","Culturally Far-Right","Culturally Left","Culturally Off-Left","Culturally Reactionary","Culturally Revolutionary Progressive Conservative","Culturally Right","Culturally Traditional Progressive","Culturally Ultra-Reactionary","Culturally Ultraprogressive Reactionary",
+  "Culturally Alternate Modernist","Culturally Far-Left","Culturally Far-Right","Culturally Infinite Left","Culturally Left","Culturally Off-Left","Culturally Reactionary","Culturally Revolutionary Progressive Conservative","Culturally Right","Culturally Traditional Progressive","Culturally Ultra-Reactionary","Culturally Ultraprogressive Reactionary",
   "Diplomatic Center","Left Unity",
   "Libertarian Left","Libertarian Right","Libertarian Unity","New Left","New Right",
   "Non-Anarchist","Non-Quadrant","Off The Compass","Off-Compass Technology","Old Left","Old Right","Opposite Unity","Right Unity","Syncretic"
@@ -812,7 +812,7 @@ const IDEOLOGIES = [
   { name: "Anti-Realism", fictional: true, zones: ["Off The Compass"], categories: [] },
   { name: "Apoliticism", zones: [], categories: ["Apolitical"] },
   { name: "Arab Socialism", zones: ["Authoritarian Left","Cultural Center"], categories: ["Nationalists","Populists","Revolutionary Nationalists","Socialists"] },
-  { name: "Archeofuturism", zones: ["Opposite Unity"], categories: ["Primitivists","Transhumanists"] },
+  { name: "Archeofuturism", aliases: ["Archaeofuturism"], zones: ["Opposite Unity"], categories: ["Primitivists","Transhumanists"] },
   { name: "Aristocracy", zones: ["Non-Quadrant"], categories: ["Monarchists"] },
   { name: "Asocialism", fictional: true, zones: ["Culturally Left","Left Unity"], categories: ["Socialists"] },
   { name: "Athenian Democracy", zones: ["Right Unity","Cultural Center-Left","Culturally Ultra-Reactionary"], categories: ["Democratic"] },
@@ -885,7 +885,7 @@ const IDEOLOGIES = [
   { name: "Combatocracy", fictional: true, zones: ["Non-Quadrant"], categories: [] },
   { name: "Communalism", zones: ["Off The Compass","Left Unity"], categories: ["Socialists","Communists"] },
   { name: "Communitarianism", zones: ["Non-Quadrant"], categories: [] },
-  { name: "Communization Theory", zones: ["Libertarian Left","Culturally Far-Left"], categories: ["Culturally Variable","Socialists","Communists","Internationalists","Libertarians","Anarchists","Egoists"] },
+  { name: "Communization Theory", aliases: ["Communisation Theory"], zones: ["Libertarian Left","Culturally Far-Left"], categories: ["Culturally Variable","Socialists","Communists","Internationalists","Libertarians","Anarchists","Egoists"] },
   { name: "Confederalism", zones: ["Non-Quadrant","Centrists"], categories: [] },
   { name: "Confessionalism", zones: ["Non-Quadrant","Centrists","Culturally Right"], categories: ["Democratic","Religious"] },
   { name: "Conservatism", zones: ["Cultural Center-Right","Non-Quadrant","Right Unity"], categories: ["Capitalists","Conservatives","Nationalists"] },
@@ -1106,6 +1106,48 @@ const IDEOLOGIES = [
   { name: "Monetarism", zones: ["Right Unity"], categories: ["Capitalists","Liberals"] },
   { name: "Multiculturalism", zones: ["Non-Quadrant","Culturally Left"], categories: ["Democratic","Internationalists"] },
   { name: "Mutualism", zones: ["Libertarian Unity","Culturally Left"], categories: ["Culturally Variable","Anarchists","Socialists"] },
+  { name: "Nacionalismo", zones: ["Authoritarian Unity","Authoritarian Right","Culturally Reactionary"], categories: ["Capitalists","Fascists","Conservatives","Corporatists","Religious","Nationalists","Theocracies","Ultranationalists","Reactionary","Third Position","Welfarists"] },
+  { name: "National Agrarianism", aliases: ["Agrarian Nationalism"], zones: ["Non-Quadrant","Authoritarian Unity","Culturally Right"], categories: ["Culturally Variable","Agrarians","Nationalists","Ultranationalists"] },
+  { name: "National Anarchism", aliases: ["NAM","National-Anarchist Movement","National Anarchist Movement"], zones: ["Libertarian Unity","Culturally Right","Culturally Far-Right"], categories: ["Culturally Variable","Environmentalists","Ethnonationalists","Quasi-Fascists","Reactionary","Revolutionary Nationalists","Third Positionist Anarchists"] },
+  { name: "National Bolshevism", aliases: ["Nazbol"], zones: ["Authoritarian Left","Culturally Far-Right","Syncretic"], categories: ["Culturally Variable","Ethnonationalists","Nationalists","Quasi-Fascists","Socialists","Totalitarians","Ultranationalists"] },
+  { name: "National Capitalism", aliases: ["Nacism","Naciism","Nazi Capitalism","Capitalist Nazism","Capitalist Naziism","Nationalist Capitalism","Nationalkapitalismus","Yellow Nazism","Yellow Naziism"], zones: ["Authoritarian Right","Culturally Right","Syncretic"], categories: ["Capitalists","Ethnonationalists","Quasi-Fascists","Nationalists","Ultranationalists"] },
+  { name: "National Communism", aliases: ["Communist Nationalism"], zones: ["Authoritarian Left","Cultural Center"], categories: ["Nationalists","Communists","Socialists"] },
+  { name: "National Conservatism", zones: ["Non-Quadrant","Authoritarian Unity","Authoritarian Right","Culturally Right"], categories: ["Conservatives","Nationalists","Quasi-Fascists"] },
+  { name: "National Democracy", aliases: ["ND","Narodowa Demokracja"], zones: ["Authoritarian Unity","Authoritarian Right","Right Unity","Culturally Right"], categories: ["Capitalists","Conservatives","Democratic","Distributists","Nationalists","Religious"] },
+  { name: "National Feminism", aliases: ["Feminazism","Feminaziism"], fictional: true, zones: ["Authoritarian Unity","Culturally Far-Right","Culturally Alternate Modernist"], categories: ["Fascists","Feminists","Nationalists","Revolutionary Nationalists","Ethnonationalists","Ultranationalists","Totalitarians"] },
+  { name: "National Liberalism", aliases: ["Nationalist Liberalism"], zones: ["Cultural Center-Right","Right Unity","Cultural Center"], categories: ["Capitalists","Conservatives","Liberals","Nationalists","Right-Wing Liberals"] },
+  { name: "National Libertarianism", aliases: ["Grey Libertarianism"], zones: ["Libertarian Right","Culturally Right","New Right"], categories: ["Capitalists","Conservatives","Libertarians","Nationalists"] },
+  { name: "National Primitivism", fictional: true, zones: ["Authoritarian Unity","Culturally Ultra-Reactionary","Syncretic"], categories: ["Nationalists","National Socialists","Primitivists","Ethnonationalists","Fascists"] },
+  { name: "National Radicalism", aliases: ["NR"], zones: ["Authoritarian Unity","Culturally Far-Right"], categories: ["Nationalists","Ethnonationalists","Ultranationalists","Third Position"] },
+  { name: "National Syndicalism", zones: ["Authoritarian Left","Culturally Right"], categories: ["Religious","Syndicalists","Socialists","Corporatists","Third Position","Nationalists","Quasi-Fascists"] },
+  { name: "Nationalism", aliases: ["Stanistanism","Nation"], zones: ["Non-Quadrant"], categories: ["Nationalists"] },
+  { name: "Nazi Transhumanism", aliases: ["NazH+","卐+"], zones: ["Authoritarian Unity","Culturally Alternate Modernist"], categories: ["Nationalists","Transhumanists","Ethnonationalists","Ultranationalists","Fascists"] },
+  { name: "Nazism", aliases: ["Naziism","National Socialism","Nationalsozialismus","NSDAPism","National Socialist German Workers' Party","Third Reich Model"], zones: ["Authoritarian Unity","Culturally Far-Right","Culturally Alternate Modernist"], categories: ["Capitalists","Corporatists","Socialists","Third Position","Environmentalists","Fascists","Nationalists","Revolutionary Nationalists","Ethnonationalists","Ultranationalists","Masculists","Populists","Totalitarians"] },
+  { name: "Necrocracy", aliases: ["Thanatocracy","Post-Gerontocracy","King Boo Thought"], zones: ["Off The Compass","Non-Quadrant"], categories: [] },
+  { name: "Neo-Bolshevism", aliases: ["New Bolshevism"], zones: ["Off The Compass","Authoritarian Unity"], categories: ["Socialists","Communists"] },
+  { name: "Neo-Enlightenment", aliases: ["Neoiluminismo"], zones: ["Libertarian Right","Culturally Infinite Left"], categories: ["Culturally Variable","Capitalists","Internationalists","Globalists","Democratic","Liberals","Libertarians","Minarchists"] },
+  { name: "Neo-Libertarianism", zones: ["Right Unity","Libertarian Right","Cultural Center-Right","Culturally Right","New Right"], categories: ["Culturally Variable","Capitalists","Conservatives","Liberals","Libertarians","Internationalists","Globalists","Zionists"] },
+  { name: "Neo-Marxism", aliases: ["Neo-Marx"], zones: ["Left Unity","Cultural Center"], categories: ["Socialists","Communists","Internationalists"] },
+  { name: "Neo-Ottomanism", aliases: ["Ottoman Empire Revival","Ottoman Revivalism"], zones: ["Authoritarian Right","Culturally Right"], categories: ["Conservatives","Capitalists","Religious","Monarchists","Quasi-Fascists"] },
+  { name: "Neocameralism", zones: ["Authoritarian Right","Culturally Reactionary"], categories: ["Capitalists","Libertarians","Monarchists","Reactionary"] },
+  { name: "Neoconservatism", aliases: ["Neo-Conservatism"], zones: ["Center-Authoritarian Right","Cultural Center-Right","Syncretic","New Right"], categories: ["Culturally Variable","Capitalists","Conservatives","Democratic","Globalists","Internationalists","Liberals","Right-Wing Liberals","Zionists","Quasi-Fascists"] },
+  { name: "Neoliberalism", aliases: ["Neo-Liberalism"], zones: ["Cultural Center-Right","Cultural Center","Cultural Center-Left","Culturally Left"], categories: ["Capitalists","Democratic","Globalists","Internationalists","Liberals","Right-Wing Liberals"] },
+  { name: "Neoluddism", zones: ["Non-Quadrant"], categories: ["Agrarians","Environmentalists"] },
+  { name: "Neoreactionaryism", aliases: ["Neoreactionarism"], zones: ["Right Unity","Culturally Reactionary"], categories: ["Culturally Variable","Capitalists","Monarchists","Reactionary"] },
+  { name: "Neosocialism", aliases: ["Marcel Déat Thought","Marcel Deat Thought","Neo-Socialism"], zones: ["Authoritarian Left","Culturally Alternate Modernist"], categories: ["Corporatists","Fascists","Nationalists","Revolutionary Nationalists","Socialists","Syndicalists","Third Position","Esoteric"] },
+  { name: "Neozapatismo", aliases: ["Neozapatism","Zapatista Army of National Liberation","EZLN"], zones: ["Libertarian Left","Culturally Far-Left"], categories: ["Socialists","Communists","Feminists","Anti-Colonial"] },
+  { name: "Nomadology", aliases: ["Meta-Anarchy","Meta-Anarchism","M-A","Deleuzoguattarianism","Deleuzianism-Guattarianism"], zones: ["Off The Compass","Libertarian Unity","Culturally Left"], categories: ["Anarchists","Post-Leftists"] },
+  { name: "Noocracy", zones: ["Non-Quadrant"], categories: ["Monarchists"] },
+  { name: "Nordic Model", aliases: ["Scandinavian Model"], zones: ["Cultural Center","Cultural Center-Left","Culturally Left"], categories: ["Capitalists","Welfarists","Democratic","Liberals","Corporatists","Monarchists","Left-Wing Liberals"] },
+  { name: "Objectivism", aliases: ["Randianism","Ayn Rand Thought"], zones: ["Libertarian Right","Cultural Center-Right"], categories: ["Capitalists","Minarchists","Zionists","Quasi-Libertarians"] },
+  { name: "Occult Post-Humanism", aliases: ["Ccruism"], zones: ["Non-Quadrant"], categories: ["Post-Humanists","Post-Leftists"] },
+  { name: "Ochlocracy", aliases: ["Mobocracy","Cancel Culture","Riotocracy","Bandwagonism"], fictional: true, zones: ["Non-Quadrant","Off The Compass"], categories: ["Democratic"] },
+  { name: "Odalism", aliases: ["Othalaism","Vargism","Vikernesism","Burzumism"], zones: ["Libertarian Unity","Culturally Far-Right"], categories: ["Environmentalists","Primitivists","Fascists","Nationalists","Ethnonationalists","Ultranationalists","Esoteric","Third Position"] },
+  { name: "Oligarchy", aliases: ["Oligarchism"], zones: ["Authoritarian Unity"], categories: [] },
+  { name: "One-Nation Conservatism", aliases: ["One-Nationism"], zones: ["Center-Authoritarian Left","Cultural Center-Right","Syncretic"], categories: ["Conservatives","Welfarists","Capitalists","Nationalists"] },
+  { name: "Optimateism", zones: ["Authoritarian Right","Culturally Right"], categories: ["Culturally Antiquist","Conservatives","Ancient Rome"] },
+  { name: "Ordo-Liberalism", aliases: ["Orderliberalism"], zones: ["Cultural Center-Right"], categories: ["Culturally Variable","Capitalists","Democratic","Liberals","Welfarists","Right-Wing Liberals"] },
+  { name: "Orthodox Theocracy", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Conservatives","Religious","Theocracies"] },
   { name: "Right-Liberalism", zones: ["Cultural Center-Right","Libertarian Right","Cultural Center","Culturally Right"], categories: ["Capitalists","Conservatives","Democratic","Georgists","Liberals","Nationalists","Welfarists"] },
 ];
 
@@ -1115,9 +1157,9 @@ const ZONE_ALIASES = {
 };
 
 // Tunable — placeholder blend, not final.
-const ZONE_WEIGHT = 0.35;
-const CATEGORY_WEIGHT = 0.55;
-const FICTION_WEIGHT = 0.10;
+const ZONE_WEIGHT = 0.4;
+const CATEGORY_WEIGHT = 0.6;
+const FICTION_MISMATCH_PENALTY = 15; // percentage points subtracted only when fictional-status doesn't match — not a bonus for the common case of both being real
 const MAX_GUESSES = 15;
 
 // Fill this in once the game is actually hosted somewhere, e.g.
@@ -2113,12 +2155,13 @@ function renderGuess(entry) {
   const zoneUnionCount = entry.zones.length + answer.zones.length - sharedZones.length;
   const zoneScore = zoneUnionCount > 0 ? sharedZones.length / zoneUnionCount : 1;
 
-  // Fictional-vs-real is now a real scoring axis, not just a side badge —
-  // a mismatch here caps the score well short of 100% even with perfect
-  // zone/category overlap (e.g. a real entry vs. a fictional answer).
-  const fictionScore = (!!entry.fictional === !!answer.fictional) ? 1 : 0;
-
-  let overallPct = Math.round((catScore * CATEGORY_WEIGHT + zoneScore * ZONE_WEIGHT + fictionScore * FICTION_WEIGHT) * 100);
+  let overallPct = Math.round((catScore * CATEGORY_WEIGHT + zoneScore * ZONE_WEIGHT) * 100);
+  // Fictional-vs-real is a penalty, not a bonus — most entries are real, so
+  // "both non-fictional" is the default case and shouldn't earn free points.
+  // Only an actual mismatch (real guessed against a fictional answer, or the
+  // reverse) knocks points off, even with perfect zone/category overlap.
+  const fictionMismatch = !!entry.fictional !== !!answer.fictional;
+  if (fictionMismatch) overallPct = Math.max(0, overallPct - FICTION_MISMATCH_PENALTY);
   // 100% is reserved for the actual answer — anything else that happens to
   // score a perfect data match (same zones/tags/fiction-status, different
   // ideology) gets capped just under it, so seeing 100% always means "you
@@ -2332,7 +2375,7 @@ const TUTORIAL_STEPS = [
   { title: 'Compass zone colors', body: `<div class="legend-row"><span class="chip zone-hit js-zone-hit-ex"></span><span>shares this zone with the answer</span></div><div class="legend-row"><span class="chip zone-miss js-zone-miss-ex"></span><span>does not</span></div><p>Chip color is tied to the actual political quadrant each zone belongs to.</p>` },
   { title: 'Category tag colors', body: `<div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared and rare — worth more</span></div><div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared but common — worth less</span></div><div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div><p>The number is a rarity score — rarer tag, bigger boost when it's shared.</p>` },
   { title: 'Match % stamp', body: `<div class="legend-row"><span class="stamp-mini" style="color:var(--stamp-brick)">&lt;35%</span><span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span><span class="stamp-mini" style="color:var(--moss)">70%+</span></div><p>40% zone overlap + 60% rarity-weighted category overlap. One rare shared tag can outweigh several common ones.</p>` },
-  { title: 'Fictional ideologies', body: `<div class="legend-row"><span class="fiction-badge hit">✦ Fictional — matches</span></div><div class="legend-row"><span class="fiction-badge miss">✦ Fictional — doesn't match</span></div><p>A few entries have no real-world basis (pulled from fiction, like IngSoc). This badge only shows when the guessed entry is itself fictional.</p>` },
+  { title: 'Fictional ideologies', body: `<div class="legend-row"><span class="fiction-badge hit">✦ Fictional — matches</span></div><div class="legend-row"><span class="fiction-badge miss">✦ Fictional — doesn't match</span></div><p>A few entries have no real-world basis (pulled from fiction, like IngSoc). The badge only shows when the guessed entry is itself fictional — but a mismatch always costs 15 points off the match %, even with perfect zone/category overlap.</p>` },
   { title: 'Ismism', body: `<p class="ismism-quote">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p><p>A wildcard guess, always available — and it can occasionally be the actual answer too. Guessed against a different answer, it reveals a random slice of zones/tags instead, more the later you use it. Repeat guesses never cost an entry.</p>` },
   { title: 'Daily puzzle & sharing', body: `<p>Two separate daily puzzles, Normal and Easy — Easy shows the answer's zones upfront as a hint. Each track has its own puzzle number and stats. "New ideology" gives unlimited random practice anytime. Solve a daily to share your result as colored squares without spoiling the answer.</p>` },
   { title: 'Where everything lives', body: `<p>The icons up top open How to Play, Stats, Archive, the full Database, and Settings — nothing's hidden, just tucked one tap away. Confirmed and Candidates stay on the main screen since they change as you actually play.</p>` }
