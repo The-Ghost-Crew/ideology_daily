@@ -16,6 +16,18 @@
 </script>
 <meta name="theme-color" content="#1C1815">
 <title>Ideologle</title>
+<meta name="description" content="Guess the Ideology by PolComp Zone and Alignments — a new daily puzzle every day.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ideologle">
+<meta property="og:description" content="Guess the Ideology by PolComp Zone and Alignments — a new daily puzzle every day.">
+<meta property="og:image" content="https://the-ghost-crew.github.io/ideology_daily/ideologle-og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://the-ghost-crew.github.io/ideology_daily/ideologle_(name_pending).html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ideologle">
+<meta name="twitter:description" content="Guess the Ideology by PolComp Zone and Alignments — a new daily puzzle every day.">
+<meta name="twitter:image" content="https://the-ghost-crew.github.io/ideology_daily/ideologle-og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -532,11 +544,11 @@
   <button type="button" id="navSettingsBtn" class="icon-btn" aria-label="Settings"><span class="icon-settings">⚙</span></button>
   <button type="button" id="navAiBtn" class="icon-btn" aria-label="A note on AI"><span class="icon-ai">AI</span></button>
 </div>
-<div class="sub">One ideology is on file. Each guess logs its compass-zone overlap and category-tag overlap separately.</div>
+<div class="sub">One ideology is on file. Each guess logs its compass-zone overlap and Alignment-tag overlap separately.</div>
 
 <!-- ================= INTRO / RULES ================= -->
 <div id="introScreen">
-  <p class="rules-p">An ideology is filed as the mystery answer. Guess ideologies to narrow it down by compass zone and category — a full walkthrough opens automatically the first time you start.</p>
+  <p class="rules-p">An ideology is filed as the mystery answer. Guess ideologies to narrow it down by compass zone and Alignment — a full walkthrough opens automatically the first time you start.</p>
   <button id="startBtn" type="button">Start Ideologle</button>
 </div>
 
@@ -553,7 +565,7 @@
           <div class="tagrow" id="refZones"></div>
         </div>
         <div id="refCatsBlock" style="display:none">
-          <div class="section-label">Category tags</div>
+          <div class="section-label">Alignment tags</div>
           <div class="tagrow" id="refCats"></div>
         </div>
         <div id="refFictionBlock" style="display:none">
@@ -602,7 +614,7 @@
   <div class="eyebrow">Database — full reference</div>
   <p class="rules-p">A complete, unfiltered look at everything on file — total spoilers, meant for reviewing the dataset itself rather than playing. Nothing here is affected by game progress, and it always reflects what's currently in the edit zone.</p>
 
-  <input type="text" id="dbSearch" placeholder="Search zones, categories, or ideologies…" autocomplete="off">
+  <input type="text" id="dbSearch" placeholder="Search zones, Alignments, or ideologies…" autocomplete="off">
 
   <details class="db-sub corner-frame">
     <summary>Zones → Ideologies</summary>
@@ -610,7 +622,7 @@
   </details>
 
   <details class="db-sub corner-frame">
-    <summary>Categories → Ideologies</summary>
+    <summary>Alignments → Ideologies</summary>
     <div id="dbCategories" class="db-list"></div>
   </details>
 
@@ -625,7 +637,7 @@
   </details>
 
   <details class="db-sub corner-frame">
-    <summary>All Categories (A–Z)</summary>
+    <summary>All Alignments (A–Z)</summary>
     <div id="dbCategoryIndex" class="db-index"></div>
   </details>
 </div>
@@ -638,7 +650,7 @@
   <div class="legend-row"><span class="chip zone-miss js-zone-miss-ex"></span><span>does not</span></div>
   <p class="rules-p">Chip color is tied to the actual political quadrant that zone belongs to.</p>
 
-  <div class="section-label">Category tag colors</div>
+  <div class="section-label">Alignment tag colors</div>
   <div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared, rare — worth more</span></div>
   <div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared, common — worth less</span></div>
   <div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div>
@@ -650,14 +662,14 @@
     <span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span>
     <span class="stamp-mini" style="color:var(--moss)">70%+</span>
   </div>
-  <p class="rules-p">40% zone overlap + 60% rarity-weighted category overlap.</p>
+  <p class="rules-p">40% zone overlap + 60% rarity-weighted Alignment overlap.</p>
 
   <div class="section-label">Fictional ideologies</div>
   <div class="legend-row">
     <span class="fiction-badge hit">✦ Fictional — matches</span>
     <span class="fiction-badge miss">✦ Fictional — doesn't match</span>
   </div>
-  <p class="rules-p">Badge only shows when the guessed entry is itself fictional. A mismatch (real guessed against a fictional answer, or the reverse) also costs 15 points off the match %, even with perfect zone/category overlap.</p>
+  <p class="rules-p">Badge only shows when the guessed entry is itself fictional. A mismatch (real guessed against a fictional answer, or the reverse) also costs 15 points off the match %, even with perfect zone/Alignment overlap.</p>
 
   <div class="section-label">Ismism</div>
   <p class="rules-p ismism-quote">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p>
@@ -718,7 +730,7 @@
   <button id="replayTutorialBtn" type="button" class="theme-toggle" style="width:100%">↺ Replay tutorial</button>
 
   <div class="section-label">Data Notes</div>
-  <p class="rules-p">A few entries had missing or incomplete source material, so their zones and categories were filled in from general knowledge instead of the usual source. Logged here for transparency, with the reasoning behind each call.</p>
+  <p class="rules-p">A few entries had missing or incomplete source material, so their zones and Alignments were filled in from general knowledge instead of the usual source. Logged here for transparency, with the reasoning behind each call.</p>
 
   <div class="db-row">
     <div class="db-key">Lysenkoism</div>
@@ -727,7 +739,7 @@
 
   <div class="db-row">
     <div class="db-key">Unionism</div>
-    <div class="db-values">Source page existed but was a stub with no zone or category data. Read as the British/Ulster constitutional sense (support for Northern Ireland or Scotland remaining in the UK) rather than labor unionism, since that's the sense usually catalogued as a standalone ideology in compass-style references. Classified as Non-Quadrant + Culturally Right / Nationalists, Conservatives, Monarchists, Religious, reflecting its historical ties to British nationalism, the Crown, and Protestant identity in the Northern Ireland context.</div>
+    <div class="db-values">Source page existed but was a stub with no zone or Alignment data. Read as the British/Ulster constitutional sense (support for Northern Ireland or Scotland remaining in the UK) rather than labor unionism, since that's the sense usually catalogued as a standalone ideology in compass-style references. Classified as Non-Quadrant + Culturally Right / Nationalists, Conservatives, Monarchists, Religious, reflecting its historical ties to British nationalism, the Crown, and Protestant identity in the Northern Ireland context.</div>
   </div>
 
   <div class="db-row">
@@ -737,7 +749,7 @@
 
   <div class="db-row">
     <div class="db-key">Singapore Model</div>
-    <div class="db-values">Source page's info template failed to render, leaving only raw placeholder names instead of content: AuthRights, CultRights, Conservatives, Capitalists, Democratic, Nationalists, Confucians. Reconstructed from those names plus general knowledge of Lee Kuan Yew-era governance — Authoritarian Right / Culturally Right zones, and Conservatives, Capitalists, Democratic, Nationalists, Confucians as categories, the last reflecting Singapore's real Confucian-influenced "Asian values" governing philosophy.</div>
+    <div class="db-values">Source page's info template failed to render, leaving only raw placeholder names instead of content: AuthRights, CultRights, Conservatives, Capitalists, Democratic, Nationalists, Confucians. Reconstructed from those names plus general knowledge of Lee Kuan Yew-era governance — Authoritarian Right / Culturally Right zones, and Conservatives, Capitalists, Democratic, Nationalists, Confucians as Alignments, the last reflecting Singapore's real Confucian-influenced "Asian values" governing philosophy.</div>
   </div>
 
   <p class="rules-p" style="margin-top:var(--sp-3);margin-bottom:0">Have an opinion on any of these, or a change to request? Message Ghost (no_where.ghost_002) on Discord.</p>
@@ -749,9 +761,9 @@
 
   <p class="rules-p">I dislike a lot of what "AI-made" has come to mean online, and I want to say that before anything else. But I did use AI to help build this game, and I'd rather tell you directly than have you find out and feel misled. If that's a dealbreaker for you, I understand — you're free to close this tab. There are no ads here and I make no money from this project. This is honesty, not a pitch.</p>
 
-  <p class="rules-p">The way I used it isn't what you might assume. Ideologle started as an idea, not a prompt. It's inspired by Metazooa, built on the daily-puzzle foundation of games like Spotle, and every ideology in it is classified using the compass conventions from the PoliticalCompass meme community, cross-referenced with Wikipedia and other sources where a source was thin or missing. Every zone, every category, every call on where an obscure ideology belongs — that was me, entry by entry, across 533 hand-typed submissions. The graphics and the game loop are mine too.</p>
+  <p class="rules-p">The way I used it isn't what you might assume. Ideologle started as an idea, not a prompt. It's inspired by Metazooa, built on the daily-puzzle foundation of games like Spotle, and every ideology in it is classified using the compass conventions from the PoliticalCompass meme community, cross-referenced with Wikipedia and other sources where a source was thin or missing. Every zone, every Alignment, every call on where an obscure ideology belongs — that was me, entry by entry, across 533 hand-typed submissions. The graphics and the game loop are mine too.</p>
 
-  <p class="rules-p">What AI actually did: organization, and the equations. I don't mean that as a euphemism — the scoring formula, the data validation, the normalization that keeps hundreds of hand-typed entries consistent with each other, the code that turns something like "Authunity" into a zone the game can actually read: that's the part AI helped implement. A handful of entries also had missing or broken source material, and for those I used AI to find and organize other sources — Wikipedia and similar — and pull out the core details needed to narrow down the missing zones and categories, instead of guessing myself. Those cases are highlighted, by name, with the reasoning, in Settings → Data Notes, because I don't think that kind of thing should be quietly invisible.</p>
+  <p class="rules-p">What AI actually did: organization, and the equations. I don't mean that as a euphemism — the scoring formula, the data validation, the normalization that keeps hundreds of hand-typed entries consistent with each other, the code that turns something like "Authunity" into a zone the game can actually read: that's the part AI helped implement. A handful of entries also had missing or broken source material, and for those I used AI to find and organize other sources — Wikipedia and similar — and pull out the core details needed to narrow down the missing zones and Alignments, instead of guessing myself. Those cases are highlighted, by name, with the reasoning, in Settings → Data Notes, because I don't think that kind of thing should be quietly invisible.</p>
 
   <p class="rules-p" style="margin-bottom:0">If you have an issue with a project that uses AI this way, and you're not willing to take my word for how it was actually used here, that's completely fine — close the tab. But please don't harass me, or anyone else who's enjoying the game, over it.</p>
 </div>
@@ -1929,7 +1941,7 @@ function renderDatabase(searchTerm) {
       return `<div class="easy-row ismism-row">
     <div class="easy-name">Ismism</div>
     <p class="rules-p ismism-quote" style="margin:6px 0 8px">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p>
-    <p class="rules-p" style="margin-bottom:0">Its real profile is every zone and every category on file — it can occasionally be the actual daily answer. Guessed against a different answer, it instead reveals a random slice of zones/tags checked against the real one: a small sliver early in the game, nearly everything late (faster in Easy mode), plus some randomness. That's why it's left out of the Zones/Categories lookups above — it would otherwise show up in literally every single row.</p>
+    <p class="rules-p" style="margin-bottom:0">Its real profile is every zone and every Alignment on file — it can occasionally be the actual daily answer. Guessed against a different answer, it instead reveals a random slice of zones/tags checked against the real one: a small sliver early in the game, nearly everything late (faster in Easy mode), plus some randomness. That's why it's left out of the Zones/Alignments lookups above — it would otherwise show up in literally every single row.</p>
   </div>`;
     }
     const fictionTag = e.fictional ? '<span class="fiction-badge hit easy-mini-badge">✦</span>' : '';
@@ -2389,7 +2401,7 @@ function renderGuess(entry) {
   const zoneSectionHtml = entry.zones.length > 0
     ? `<div class="section-label">Compass zone</div><div class="tagrow">${zoneChips}</div>` : '';
   const catSectionHtml = entry.categories.length > 0
-    ? `<div class="section-label">Category tags</div><div class="tagrow">${catChips}</div>` : '';
+    ? `<div class="section-label">Alignment tags</div><div class="tagrow">${catChips}</div>` : '';
 
   row.innerHTML = `
     <div class="entry-no">Entry ${String(guessCount).padStart(3,'0')}</div>
@@ -2569,9 +2581,9 @@ document.getElementById('dbSearch').addEventListener('input', (e) => {
 const TUTORIAL_STEPS = [
   { title: 'How it works', body: `<p>An ideology is filed as the mystery answer. Type any ideology you know — a dropdown narrows it as you type — and press Guess. You'll get back a card showing how <em>that</em> ideology's own zones and tags line up against the real one. Identify it in 15 entries or fewer.</p>` },
   { title: 'Compass zone colors', body: `<div class="legend-row"><span class="chip zone-hit js-zone-hit-ex"></span><span>shares this zone with the answer</span></div><div class="legend-row"><span class="chip zone-miss js-zone-miss-ex"></span><span>does not</span></div><p>Chip color is tied to the actual political quadrant each zone belongs to.</p>` },
-  { title: 'Category tag colors', body: `<div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared and rare — worth more</span></div><div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared but common — worth less</span></div><div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div><p>The number is a rarity score — rarer tag, bigger boost when it's shared.</p>` },
-  { title: 'Match % stamp', body: `<div class="legend-row"><span class="stamp-mini" style="color:var(--stamp-brick)">&lt;35%</span><span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span><span class="stamp-mini" style="color:var(--moss)">70%+</span></div><p>40% zone overlap + 60% rarity-weighted category overlap. One rare shared tag can outweigh several common ones.</p>` },
-  { title: 'Fictional ideologies', body: `<div class="legend-row"><span class="fiction-badge hit">✦ Fictional — matches</span></div><div class="legend-row"><span class="fiction-badge miss">✦ Fictional — doesn't match</span></div><p>A few entries have no real-world basis (pulled from fiction, like IngSoc). The badge only shows when the guessed entry is itself fictional — but a mismatch always costs 15 points off the match %, even with perfect zone/category overlap.</p>` },
+  { title: 'Alignment tag colors', body: `<div class="legend-row"><span class="chip js-cat-rare-ex"></span><span>shared and rare — worth more</span></div><div class="legend-row"><span class="chip js-cat-common-ex"></span><span>shared but common — worth less</span></div><div class="legend-row"><span class="chip miss js-cat-miss-ex"></span><span>not shared</span></div><p>The number is a rarity score — rarer tag, bigger boost when it's shared.</p>` },
+  { title: 'Match % stamp', body: `<div class="legend-row"><span class="stamp-mini" style="color:var(--stamp-brick)">&lt;35%</span><span class="stamp-mini" style="color:var(--stamp-gold)">35–69%</span><span class="stamp-mini" style="color:var(--moss)">70%+</span></div><p>40% zone overlap + 60% rarity-weighted Alignment overlap. One rare shared tag can outweigh several common ones.</p>` },
+  { title: 'Fictional ideologies', body: `<div class="legend-row"><span class="fiction-badge hit">✦ Fictional — matches</span></div><div class="legend-row"><span class="fiction-badge miss">✦ Fictional — doesn't match</span></div><p>A few entries have no real-world basis (pulled from fiction, like IngSoc). The badge only shows when the guessed entry is itself fictional — but a mismatch always costs 15 points off the match %, even with perfect zone/Alignment overlap.</p>` },
   { title: 'Ismism', body: `<p class="ismism-quote">"Ismism believes that any and all combination of philosophical and political thought could be transformed into an ideology, regardless of the seriousness or consistency of the statements in question."</p><p>A wildcard guess, always available — and it can occasionally be the actual answer too. Guessed against a different answer, it reveals a random slice of zones/tags instead, more the later you use it. Repeat guesses never cost an entry.</p>` },
   { title: 'Daily puzzle & sharing', body: `<p>Two separate daily puzzles, Normal and Easy — Easy shows the answer's zones upfront as a hint. Each track has its own puzzle number and stats. "New ideology" gives unlimited random practice anytime. Solve a daily to share your result as colored squares without spoiling the answer.</p>` },
   { title: 'Where everything lives', body: `<p>The icons up top open How to Play, Stats, Archive, the full Database, and Settings — nothing's hidden, just tucked one tap away. Confirmed and Candidates stay on the main screen since they change as you actually play.</p>` }
