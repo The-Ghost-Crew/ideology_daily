@@ -145,8 +145,10 @@
   }
 
   /* ===== icon navigation row — replaces the old stacked accordions with
-     one-tap access, matching the Wordle-style header pattern ===== */
-  .icon-nav { display: flex; gap: 6px; flex-shrink: 0; }
+     one-tap access, matching the Wordle-style header pattern. Sits on its
+     own full-width row below the title so it never has to fight the title
+     text for space and never clips off-screen on narrow phones. ===== */
+  .icon-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: var(--sp-3) 0 var(--sp-2); }
   .icon-btn {
     width: 36px; height: 36px; padding: 0; border-radius: 50%;
     background: var(--paper-alt); border: 1.5px solid var(--line); color: var(--ink-soft);
@@ -155,6 +157,7 @@
   .icon-btn:hover { background: var(--card); color: var(--ink); border-color: var(--ink-soft); }
   .icon-help { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; }
   .icon-settings { font-size: 1.35rem; line-height: 1; }
+  .icon-ai { font-family: var(--font-display); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.02em; }
   .icon-stats, .icon-archive { display: flex; }
   .icon-stats { align-items: flex-end; gap: 2.5px; height: 15px; }
   .icon-stats i { display: block; width: 3.5px; background: currentColor; border-radius: 1px; }
@@ -187,7 +190,7 @@
   .tutorial-actions { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-4); gap: var(--sp-2); }
   .tutorial-skip { background: none; border: none; color: var(--ink-soft); text-decoration: underline; padding: 4px; font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-weight: 400; }
   .tutorial-nav-btns { display: flex; gap: var(--sp-2); }
-  .header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); }
+  .header-row { }
   .theme-toggle {
     flex-shrink: 0; padding: 7px 11px; font-size: 0.65rem; letter-spacing: 0.03em;
     background: transparent; border-color: var(--line); color: var(--ink-soft); white-space: nowrap;
@@ -518,17 +521,16 @@
 <div class="page">
 
 <div class="header-row">
-  <div>
-    <div class="eyebrow">Dossier — mystery ideology</div>
-    <h1>Ideologle <span class="wt">(working title)</span></h1>
-  </div>
-  <div class="icon-nav" id="iconNav" style="display:none">
-    <button type="button" id="navHelpBtn" class="icon-btn" aria-label="How to play"><span class="icon-help">?</span></button>
-    <button type="button" id="navStatsBtn" class="icon-btn" aria-label="Stats"><span class="icon-stats"><i></i><i></i><i></i></span></button>
-    <button type="button" id="navArchiveBtn" class="icon-btn" aria-label="Archive"><span class="icon-archive"><i></i><i></i><i></i></span></button>
-    <button type="button" id="navDbBtn" class="icon-btn" aria-label="Database"><span class="icon-db-grid"><i></i><i></i><i></i><i></i></span></button>
-    <button type="button" id="navSettingsBtn" class="icon-btn" aria-label="Settings"><span class="icon-settings">⚙</span></button>
-  </div>
+  <div class="eyebrow">Dossier — mystery ideology</div>
+  <h1>Ideologle <span class="wt">(working title)</span></h1>
+</div>
+<div class="icon-nav" id="iconNav" style="display:none">
+  <button type="button" id="navHelpBtn" class="icon-btn" aria-label="How to play"><span class="icon-help">?</span></button>
+  <button type="button" id="navStatsBtn" class="icon-btn" aria-label="Stats"><span class="icon-stats"><i></i><i></i><i></i></span></button>
+  <button type="button" id="navArchiveBtn" class="icon-btn" aria-label="Archive"><span class="icon-archive"><i></i><i></i><i></i></span></button>
+  <button type="button" id="navDbBtn" class="icon-btn" aria-label="Database"><span class="icon-db-grid"><i></i><i></i><i></i><i></i></span></button>
+  <button type="button" id="navSettingsBtn" class="icon-btn" aria-label="Settings"><span class="icon-settings">⚙</span></button>
+  <button type="button" id="navAiBtn" class="icon-btn" aria-label="A note on AI"><span class="icon-ai">AI</span></button>
 </div>
 <div class="sub">One ideology is on file. Each guess logs its compass-zone overlap and category-tag overlap separately.</div>
 
@@ -739,6 +741,19 @@
   </div>
 
   <p class="rules-p" style="margin-top:var(--sp-3);margin-bottom:0">Have an opinion on any of these, or a change to request? Message Ghost (no_where.ghost_002) on Discord.</p>
+</div>
+
+<div id="aiNoticeScreen" style="display:none">
+  <button type="button" class="theme-toggle overlay-back-btn" data-screen="aiNoticeScreen" style="width:100%;margin-bottom:var(--sp-4)">← Back to game</button>
+  <div class="eyebrow">A Note on AI</div>
+
+  <p class="rules-p">I dislike a lot of what "AI-made" has come to mean online, and I want to say that before anything else. But I did use AI to help build this game, and I'd rather tell you directly than have you find out and feel misled. If that's a dealbreaker for you, I understand — you're free to close this tab. There are no ads here and I make no money from this project. This is honesty, not a pitch.</p>
+
+  <p class="rules-p">The way I used it isn't what you might assume. Ideologle started as an idea, not a prompt. It's inspired by Metazooa, built on the daily-puzzle foundation of games like Spotle, and every ideology in it is classified using the compass conventions from the PoliticalCompass meme community, cross-referenced with Wikipedia and other sources where a source was thin or missing. Every zone, every category, every call on where an obscure ideology belongs — that was me, entry by entry, across 533 hand-typed submissions. The graphics and the game loop are mine too.</p>
+
+  <p class="rules-p">What AI actually did: organization, and the equations. I don't mean that as a euphemism — the scoring formula, the data validation, the normalization that keeps hundreds of hand-typed entries consistent with each other, the code that turns something like "Authunity" into a zone the game can actually read: that's the part AI helped implement. A handful of entries also had missing or broken source material, and for those I used AI to find and organize other sources — Wikipedia and similar — and pull out the core details needed to narrow down the missing zones and categories, instead of guessing myself. Those cases are highlighted, by name, with the reasoning, in Settings → Data Notes, because I don't think that kind of thing should be quietly invisible.</p>
+
+  <p class="rules-p" style="margin-bottom:0">If you have an issue with a project that uses AI this way, and you're not willing to take my word for how it was actually used here, that's completely fine — close the tab. But please don't harass me, or anyone else who's enjoying the game, over it.</p>
 </div>
 
 <div id="tutorialOverlay">
@@ -2509,7 +2524,7 @@ setTheme(document.documentElement.getAttribute('data-theme') || 'dark');
 // ---- screen manager: every top-level screen (intro, game, and all five
 // overlays) is hidden before the target is shown, so nothing can ever stack
 // on top of anything else no matter what was open before ----
-const ALL_SCREENS = ['introScreen', 'gameScreen', 'helpScreen', 'statsScreen', 'archiveScreen', 'databaseScreen', 'settingsScreen'];
+const ALL_SCREENS = ['introScreen', 'gameScreen', 'helpScreen', 'statsScreen', 'archiveScreen', 'databaseScreen', 'settingsScreen', 'aiNoticeScreen'];
 function showOnlyScreen(screenId) {
   ALL_SCREENS.forEach(id => {
     const el = document.getElementById(id);
@@ -2538,6 +2553,7 @@ wireNavToggle('navHelpBtn', 'helpScreen', renderLegend);
 wireNavToggle('navStatsBtn', 'statsScreen');
 wireNavToggle('navArchiveBtn', 'archiveScreen');
 wireNavToggle('navSettingsBtn', 'settingsScreen');
+wireNavToggle('navAiBtn', 'aiNoticeScreen');
 wireNavToggle('navDbBtn', 'databaseScreen', () => {
   const dbSearchEl = document.getElementById('dbSearch');
   dbSearchEl.value = '';
