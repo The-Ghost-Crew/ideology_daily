@@ -733,6 +733,11 @@
     <div class="db-values">Despite the name suggesting literal rule by the undead, this refers to the real political-science concept of governance shaped by reverence for the dead — deference to deceased leaders, "rule from beyond" in a ceremonial sense — not a fantastical zombie government. Classified as a real, if obscure, entry rather than fictional.</div>
   </div>
 
+  <div class="db-row">
+    <div class="db-key">Singapore Model</div>
+    <div class="db-values">Source page's info template failed to render, leaving only raw placeholder names instead of content: AuthRights, CultRights, Conservatives, Capitalists, Democratic, Nationalists, Confucians. Reconstructed from those names plus general knowledge of Lee Kuan Yew-era governance — Authoritarian Right / Culturally Right zones, and Conservatives, Capitalists, Democratic, Nationalists, Confucians as categories, the last reflecting Singapore's real Confucian-influenced "Asian values" governing philosophy.</div>
+  </div>
+
   <p class="rules-p" style="margin-top:var(--sp-3);margin-bottom:0">Have an opinion on any of these, or a change to request? Message Ghost (no_where.ghost_002) on Discord.</p>
 </div>
 
@@ -1247,6 +1252,47 @@ const IDEOLOGIES = [
   { name: "Right-Wing Populism", aliases: ["Right-Populism"], zones: ["Cultural Center-Right","Right Unity","Culturally Far-Right"], categories: ["Capitalists","Conservatives","Nationalists","Populists"] },
   { name: "Rockefeller Republicanism", aliases: ["Nelson Rockefeller Thought"], zones: ["Cultural Center","Cultural Center-Right"], categories: ["Culturally Variable","Liberals","Conservatives","Capitalists","Welfarists"] },
   { name: "Roman Republicanism", aliases: ["Senatus Populusque Romanus","SPQR","Romanism","Roman Model","Romophilia"], zones: ["Authoritarian Unity","Culturally Ultra-Reactionary"], categories: ["Culturally Variable","Ancient Rome"] },
+  { name: "Saadehism", zones: ["Authoritarian Unity","Cultural Center-Right","Syncretic"], categories: ["Feminists","Nationalists","Third Position","Welfarists","Quasi-Fascists"] },
+  { name: "Salazarism", zones: ["Authoritarian Unity","Culturally Right"], categories: ["Conservatives","Corporatists","Nationalists","Reactionary","Religious","Quasi-Fascists","Third Position"] },
+  { name: "Satanic Theocracy", aliases: ["Theistic Satanism","Luciferian Theocracy"], zones: ["Authoritarian Unity","Authoritarian Left","Authoritarian Right","Culturally Left","Culturally Right"], categories: ["Theocracies","Religious","Esoteric"] },
+  { name: "Satirism", aliases: ["Sarcasticism"], zones: ["Non-Quadrant","Syncretic"], categories: [] },
+  { name: "Scientocracy", aliases: ["Scientific Politics"], zones: ["Non-Quadrant"], categories: [] },
+  { name: "Secular Satanism", zones: ["Non-Quadrant"], categories: [] },
+  { name: "Secularism", zones: ["Non-Quadrant"], categories: [] },
+  { name: "Senatorialism", fictional: true, zones: ["Authoritarian Right","Off The Compass"], categories: [] },
+  { name: "Separatism", zones: ["Non-Quadrant"], categories: ["Nationalists","Anti-Colonial"] },
+  { name: "Sewer Socialism", zones: ["Left Unity","Culturally Left"], categories: ["Socialists","Populists"] },
+  { name: "Shia Theocracy", aliases: ["Shi'ah Theocracy","Shi'ite Theocracy","Shia Islamism"], zones: ["Authoritarian Unity","Culturally Right"], categories: ["Religious","Theocracies"] },
+  { name: "Showa Statism", aliases: ["Showaism","Kokkashugi","Emperor Showa Thought"], zones: ["Authoritarian Unity","Authoritarian Right","Culturally Far-Right","Syncretic"], categories: ["Ethnonationalists","Monarchists","Nationalists","Quasi-Fascists","Third Position","Totalitarians","Ultranationalists"] },
+  { name: "Sikh Theocracy", zones: ["Authoritarian Unity"], categories: ["Religious","Environmentalists"] },
+  { name: "Silver Legionism", zones: ["Authoritarian Unity","Authoritarian Left","Culturally Far-Right"], categories: ["Esoteric","Religious","Fascists","Nationalists","Ethnonationalists","Ultranationalists","Revolutionary Nationalists","Corporatists","Socialists","Third Position"] },
+  { name: "Singapore Model", aliases: ["Lee Kuan Yew Thought","Lee Hsien Loong Thought"], zones: ["Authoritarian Right","Culturally Right"], categories: ["Conservatives","Capitalists","Democratic","Nationalists","Confucians"] },
+  { name: "Situationism", zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Communists","Egoists","Libertarians","Socialists","Post-Left Anarchists"] },
+  { name: "Social Anarchism", aliases: ["Anarcho-Socialism"], zones: ["Libertarian Left","Culturally Left"], categories: ["Anarchists","Left-Wing Anarchists"] },
+  { name: "Social Authoritarianism", zones: ["Authoritarian Left","Authoritarian Unity"], categories: ["Culturally Variable","Nationalists","Authoritarians","Welfarists"] },
+  { name: "Social Capitalism", zones: ["Cultural Center"], categories: ["Culturally Variable","Capitalists","Welfarists"] },
+  { name: "Social Credit", zones: ["Non-Quadrant","Center-Authoritarian Unity"], categories: [] },
+  { name: "Social Darwinism", aliases: ["Violencism"], zones: ["Off The Compass","Right Unity","Non-Quadrant"], categories: ["Capitalists","Off-Compass Nationalists"] },
+  { name: "Social Democracy", zones: ["Cultural Center-Left","Left Unity","Culturally Left"], categories: ["Culturally Variable","Internationalists","Capitalists","Socialists","Communists","Democratic","Liberals","Welfarists","Left-Wing Liberals"] },
+  { name: "Social Georgism", aliases: ["Social Geoism"], zones: ["Cultural Center-Left","Left Unity","Culturally Left","Syncretic"], categories: ["Liberals","Georgists","Welfarists","Left-Wing Liberals"] },
+  { name: "Social Liberalism", zones: ["Cultural Center","Center-Libertarian Left","Culturally Left"], categories: ["Culturally Variable","Liberals","Internationalists","Capitalists","Welfarists","Democratic","Left-Wing Liberals"] },
+  { name: "Social Libertarianism", zones: ["Center-Libertarian Unity","Libertarian Unity","Culturally Left","Syncretic"], categories: ["Liberals","Libertarians","Internationalists","Capitalists","Welfarists","Democratic","Culturally Variable"] },
+  { name: "Socialism", zones: ["Left Unity","Cultural Center"], categories: ["Socialists","Communists"] },
+  { name: "Socialism of the 21st Century", aliases: ["21st Century Socialism"], zones: ["Left Unity"], categories: ["Culturally Variable","Socialists","Nationalists","Populists","Anti-Colonial","Welfarists"] },
+  { name: "Socialist Transhumanism", aliases: ["☭+","Soch+","Transhumanist Socialism"], zones: ["Left Unity","Culturally Left"], categories: ["Transhumanists","Socialists","Communists"] },
+  { name: "Soulism", fictional: true, zones: ["Off The Compass","Libertarian Left"], categories: ["Anarchists","Egoists","Transhumanists","Communists","Post-Leftists","Esoteric"] },
+  { name: "State Atheism", aliases: ["Atheist State","Atheocracy"], zones: ["Authoritarian Unity","Authoritarian Left"], categories: ["Culturally Variable"] },
+  { name: "State Capitalism", zones: ["Authoritarian Unity"], categories: ["Capitalists","Corporatists"] },
+  { name: "State Liberalism", fictional: true, zones: ["Authoritarian Right","Culturally Far-Left","Syncretic"], categories: ["Capitalists","Environmentalists","Ethnonationalists","Feminists","Globalists","LGBT","Liberals","Quasi-Fascists"] },
+  { name: "State Oriental Orthodoxy", zones: ["Authoritarian Unity","Culturally Right"], categories: [] },
+  { name: "State Shinto", aliases: ["Shinto Theocracy"], zones: ["Authoritarian Unity","Culturally Right"], categories: ["Religious","Esoteric","Monarchists","Theocracies"] },
+  { name: "State Socialism", zones: ["Authoritarian Left"], categories: ["Socialists"] },
+  { name: "Steiner-Vallentyne School", aliases: ["Steinerism","Hillel-Vallentyne School"], zones: ["Center-Libertarian Left","Culturally Left"], categories: ["Liberals","Libertarians","Georgists","Welfarists","Left-Wing Liberals"] },
+  { name: "Stransserism", aliases: ["Trans-Strasserism"], fictional: true, zones: ["Authoritarian Left","Culturally Far-Right","Culturally Alternate Modernist"], categories: ["Nationalists","Revolutionary Nationalists","Ethnonationalists","Ultranationalists","Socialists","Fascists","LGBT"] },
+  { name: "Strasserism", aliases: ["Strasserismus","Straßerismus"], zones: ["Syncretic","Authoritarian Left","Culturally Far-Right"], categories: ["Agrarians","Nationalists","Ethnonationalists","Ultranationalists","Socialists","Third Position","Environmentalists","Quasi-Fascists","Revolutionary Nationalists"] },
+  { name: "Stratocracy", aliases: ["Khakistocracy"], zones: ["Authoritarian Unity"], categories: [] },
+  { name: "Syndicalism", aliases: ["Trade Unionism","Orthodox Syndicalism"], zones: ["Left Unity","Libertarian Left","Cultural Center","Cultural Center-Left"], categories: ["Socialists","Syndicalists","Communists","Internationalists"] },
+  { name: "Synthesis Anarchism", zones: ["Libertarian Left","Libertarian Unity","Culturally Left"], categories: ["Egoists","Environmentalists","Nationalists","Anti-Colonial","Syndicalists","Anarchists","Left-Wing Anarchists"] },
   { name: "Taoist Anarchism", aliases: ["Anarchist Taoism","Bao JingYan Thought"], zones: ["Libertarian Unity","Culturally Right"], categories: ["Anarchists","Religious","Environmentalists","Primitivists"] },
   { name: "Techno-Anarchism", aliases: ["Techno-Anarchy"], zones: ["Libertarian Unity","Libertarian Right"], categories: ["Culturally Variable","Diplomatically Variable","Technologically Progressive","Anarchists","Capitalists"] },
   { name: "Technocracy", zones: ["Non-Quadrant","Authoritarian Unity"], categories: [] },
